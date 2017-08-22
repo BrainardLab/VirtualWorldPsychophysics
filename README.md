@@ -1,2 +1,2 @@
-# VirtualWorldPsychophysics
-Code for running psychophysical experiments related to our VirtualWorld project.
+# LightnessPopCode
+How do neural populations code lightness?
