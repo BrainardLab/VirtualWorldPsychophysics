@@ -21,12 +21,12 @@ analysisFitType = 'gain';
 COMPUTE = false;
 
 %% Figure directory
-outputBaseDir = getpref('LightnessPopCode','outputBaseDir');
+outputBaseDir = getpref('VirtualWorldPsychophysics','outputBaseDir');
  switch (analysisFitType)
         case 'intercept'
-            outputDir = fullfile(outputBaseDir,'xPsychoSummary','Intercept');
+            outputDir = fullfile(outputBaseDir,'LightnessPopCode','xPsychoSummary','Intercept');
         case 'gain'
-            outputDir = fullfile(outputBaseDir,'xPsychoSummary','Gain');
+            outputDir = fullfile(outputBaseDir,'LightnessPopCode','xPsychoSummary','Gain');
         otherwise
             error('Unknown analysisFitType specified');
     end

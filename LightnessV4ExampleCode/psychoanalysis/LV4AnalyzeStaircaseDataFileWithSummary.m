@@ -18,8 +18,8 @@ function [dataStruct] = LV4AnalyzeStaircaseDataFileWithSummary(protocol, subject
 close all;
 
 %% Figure out where the image configuration file is
-stimulusDefInputBaseDir = getpref('LightnessPopCode','stimulusDefInputBaseDir');
-stimulusDefinitionsFile = fullfile(fileparts(fileparts(which(mfilename))), 'stimuli', 'StimulusDefinitions.txt');
+stimulusDefInputBaseDir = getpref('VirtualWorldPsychophysics','stimulusDefInputBaseDir');
+stimulusDefinitionsFile = fullfile(fileparts(fileparts(which(mfilename))),'LightnessV4ExampleCode',' 'stimuli', 'StimulusDefinitions.txt');
 stimulusDefinitionsStruct = ReadStructsFromText(stimulusDefinitionsFile);
 
 %% Construct the data file name we want to analyze.
@@ -159,7 +159,7 @@ for i = 1:data.params.numStims
     %
     %fileName = fullfile(data.params.stimuliDir,[data.params.stimInfo(i).imageName '.mat']);
     [a,b] = fileparts(data.params.stimuliDir);
-    fileName = fullfile(getpref('LightnessPopCode','stimulusInputBaseDir'),b,[data.params.stimInfo(i).imageName '.mat']);
+    fileName = fullfile(getpref('VirtualWorldPsychophysics','stimulusInputBaseDir'),b,[data.params.stimInfo(i).imageName '.mat']);
     imageData = load(fileName);
     
     % Get image data

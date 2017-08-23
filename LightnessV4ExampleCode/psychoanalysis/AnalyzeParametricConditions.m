@@ -52,14 +52,14 @@ analysisParams = SetFigParams(analysisParams,'psychophysics');
 % AddToMatlabPathDynamically(codeDir);
 
 % Figure out where the top level data directory is.
-psychoInputBaseDir = getpref('LightnessPopCode','psychoInputBaseDir');
+psychoInputBaseDir = getpref('VirtualWorldPsychophysics','psychoInputBaseDir');
 dataSubDir = ['parametricConditions' num2str(pcCode)];
 dataDir = fullfile(psychoInputBaseDir, dataSubDir,'');
 
 curDir = pwd;
 
 % Figure directory
-figTopLevelDir = fullfile(getpref('LightnessPopCode','outputBaseDir'),'xPsychoBasic');
+figTopLevelDir = fullfile(getpref('VirtualWorldPsychophysics','outputBaseDir'),'xPsychoBasic');
 if (~exist(figTopLevelDir,'dir'))
     mkdir(figTopLevelDir);
 end

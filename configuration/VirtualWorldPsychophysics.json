@@ -1,18 +1,5 @@
 [
-	{
-		"flavor": "",
-		"hook": "",
-		"importance": "",
-		"localHookTemplate": "configuration/LightnessPopCodeLocalHookTemplate",
-		"name": "LightnessPopCode",
-		"pathPlacement": "append",
-		"subfolder": "toolbox",
-		"toolboxRoot": "",
-		"type": "git",
-		"update": "",
-		"url": "https://github.com/DavidBrainard/LightnessPopCode.git"
-	},
-{
+    {
 		"flavor": "",
 		"hook": "",
 		"importance": "",
@@ -38,6 +25,19 @@
 		"update": "",
 		"url": ""
 	},
+    {
+		"flavor": "",
+		"hook": "",
+		"importance": "",
+		"localHookTemplate": "",
+		"name": "mgl",
+		"pathPlacement": "append",
+		"subfolder": "",
+		"toolboxRoot": "",
+		"type": "git",
+		"update": "never",
+		"url": "https://github.com/justingardner/mgl"
+	},
 	{
 		"flavor": "",
 		"hook": "",
@@ -50,5 +50,18 @@
 		"type": "webget",
 		"update": "never",
 		"url": "http://palamedestoolbox.org/sitebuildercontent/sitebuilderfiles/palamedes1.8.2.zip"
+	},
+    {
+		"flavor": "",
+		"hook": "",
+		"importance": "",
+		"localHookTemplate": "configuration/VirtualWorldPsychophysicsLocalHookTemplate.m",
+		"name": "VirtualWorldPsychophysics",
+		"pathPlacement": "append",
+		"subfolder": "toolbox",
+		"toolboxRoot": "",
+		"type": "git",
+		"update": "",
+		"url": "https://github.com/brainardlab/VirtualWorldPsychophysics.git"
 	}
 ]
