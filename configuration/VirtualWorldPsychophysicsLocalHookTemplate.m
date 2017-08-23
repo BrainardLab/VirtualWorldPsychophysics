@@ -32,7 +32,7 @@ sysInfo = GetComputerInfo();
 switch (sysInfo.localHostName)
     case 'eagleray'
         % DHB's desktop
-        baseDir = fullfile(filesep,'Volumes','Users1','Dropbox (Aguirre-Brainard Lab)');
+        baseDir = fullfile(filesep,'Volumes','Users1','DropboxLab');
  
     otherwise
         % Some unspecified machine, try user specific customization
@@ -47,7 +47,7 @@ end
 %% Set preferences for project output
 %
 % This will need to be locally configured.
-outputBaseDir = fullfile(baseDir,'CNST_data',theProject);
+outputBaseDir = fullfile(baseDir,'CNST_materials',theProject);
 stimulusInputBaseDir = fullfile(baseDir,'CNST_materials',theProject);
 stimulusDefInputBaseDir = fullfile(projectBaseDir,'stimuli');
 

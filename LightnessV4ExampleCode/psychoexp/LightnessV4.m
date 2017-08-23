@@ -9,7 +9,7 @@ AddToMatlabPathDynamically(exp.codeDir);
 
 %% Determine the paths to our data, stimuli, and analysis folders.  The will
 % be the same level as the code folder.
-exp.dataDir = fullfile(fileparts(exp.codeDir), 'data');
+exp.dataDir = fullfile(getpref('VirtualWorldPsychophysics','outputBaseDir'),'LightnessV4', 'data');
 
 %% Standard read of configuration information
 [exp.configFileDir,exp.configFileName,exp.protocolDataDir,exp.protocolList,exp.protocolIndex,exp.conditionName,exp.stimuliDir] = GetExperimentConfigInfo(exp.codeDir,exp.mFileName,exp.dataDir);
