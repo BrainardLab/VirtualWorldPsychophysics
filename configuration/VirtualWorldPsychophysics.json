@@ -61,7 +61,7 @@
 		"subfolder": "",
 		"toolboxRoot": "",
 		"type": "svn",
-		"update": "",
+		"update": "never",
 		"url": "https://platypus.psych.upenn.edu/repos/toolboxes/PsychCalLocalData"
 	},
     {
