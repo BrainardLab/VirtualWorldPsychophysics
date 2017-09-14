@@ -71,7 +71,7 @@
 		"localHookTemplate": "configuration/VirtualWorldPsychophysicsLocalHookTemplate.m",
 		"name": "VirtualWorldPsychophysics",
 		"pathPlacement": "append",
-		"subfolder": "toolbox",
+		"subfolder": "",
 		"toolboxRoot": "",
 		"type": "git",
 		"update": "",
