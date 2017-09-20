@@ -1,4 +1,4 @@
-function LightnessPopCodeLocalHook
+function VirtualWorldPsychophysicsLocalHook
 % VirtualWorldPsychophysicsLocalHook
 %
 % Configure things for working on the VirtualWorldPsychophysics project.
