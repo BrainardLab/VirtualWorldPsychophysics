@@ -1,9 +1,5 @@
-% WHEN I GOT THIS VERSION OF THE EXPERIMENT WORKING, I MODIFIED THIS FUNCTION THAT WAS IN THE BLTB.  THAT MODIFICATION WOULD BREAK OTHER THINGS.
-% SO I BROUGHT THE MODIFIED FILE HERE.  NEED TO INTEGRATE THIS CHANGE INTO THE CODE HERE.  SEARCH ON WHERE 'VirtualWorldPsychophysics'
-% IS USED BELOW.
-
-function [configFileDir,configFileName,dataDir,protocolList,protocolIndex,conditionName,stimulusDir] = GetExperimentConfigInfo(baseDir,mFileName,dataRootDir)
-% [configFileDir,configFileName,dataDir,protocolList,protocolIndex,conditionName,,stimulusDir] = GetExperimentConfigInfo(baseDir,mFileName,dataRootDir)
+function [configFileDir,configFileName,dataDir,protocolList,protocolIndex,conditionName,stimulusDir] = VWPGetExperimentConfigInfo(baseDir,mFileName,dataRootDir)
+% [configFileDir,configFileName,dataDir,protocolList,protocolIndex,conditionName,,stimulusDir] = VWPGetExperimentConfigInfo(baseDir,mFileName,dataRootDir)
 %
 % Interface with user to get top level configuration info for the standard BrainardLab experimental code
 % setup.  Reads a top level tab delimited configuration file and prompts user to choose one of the
@@ -32,9 +28,13 @@ function [configFileDir,configFileName,dataDir,protocolList,protocolIndex,condit
 % NOTE: This routine developed over time and is not perfectly designed.  When I (DHB) added conditionName 
 % and stimulusRootDir fields, I kept backwards compatibility to the way this was done without these.
 %
+% This version is modified from the original in the BrainardLabToolbox, so that it draws from the
+% VirtualWorldPsychophysics preference to get some of the needed dirctory info.
+%
 % 8/19/12  xxx   Pull out as function.
 % 6/23/13  dhb   Add stimulusRootDir and conditionName returns
 % 6/25/13  dhb   Add the trialing '.cfg' to the condition configuration file name if it isn't there already.
+% 9/20/17  dhb, vs  Pull out custom version into VirtualWorldPsychophysics directory.
 
 
 %% Directory where we expect the top level configuration file to be

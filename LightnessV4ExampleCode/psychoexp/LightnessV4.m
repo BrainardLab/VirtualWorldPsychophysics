@@ -12,7 +12,7 @@ AddToMatlabPathDynamically(exp.codeDir);
 exp.dataDir = fullfile(getpref('VirtualWorldPsychophysics','outputBaseDir'),'LightnessV4', 'data');
 
 %% Standard read of configuration information
-[exp.configFileDir,exp.configFileName,exp.protocolDataDir,exp.protocolList,exp.protocolIndex,exp.conditionName,exp.stimuliDir] = GetExperimentConfigInfo(exp.codeDir,exp.mFileName,exp.dataDir);
+[exp.configFileDir,exp.configFileName,exp.protocolDataDir,exp.protocolList,exp.protocolIndex,exp.conditionName,exp.stimuliDir] = VWPGetExperimentConfigInfo(exp.codeDir,exp.mFileName,exp.dataDir);
 
 %exp.stimuliDir = fullfile(fileparts(exp.codeDir), 'stimuli');
 %exp.analysisDir = fullfile(fileparts(exp.codeDir), 'analysis');

@@ -32,7 +32,7 @@ sysInfo = GetComputerInfo();
 switch (sysInfo.localHostName)
     case 'eagleray'
         % DHB's desktop
-        baseDir = fullfile(filesep,'Volumes','Users1','DropboxLab');
+        baseDir = fullfile(filesep,'Volumes','Users1','Dropbox (Aguirre-Brainard Lab)');
  
     otherwise
         % Some unspecified machine, try user specific customization
