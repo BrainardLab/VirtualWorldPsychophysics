@@ -56,8 +56,3 @@ setpref(theProject,'outputBaseDir',outputBaseDir);
 setpref(theProject,'stimulusInputBaseDir',stimulusInputBaseDir);
 setpref(theProject,'stimulusDefInputBaseDir',stimulusDefInputBaseDir);
 
-%% To add java in the classpath.txt
-% Get computer user name
-sysInfo = GetComputerInfo();
-% Add PTB PsychJava to the path
-JavaAddToPath(sprintf('/Users/%s/Documents/Matlab/Toolboxes/Psychtoolbox-3/Psychtoolbox/PsychJava',sysInfo.userShortName), 'Psychtoolbox/PsychJava');
