@@ -55,5 +55,10 @@ stimulusDefInputBaseDir = fullfile(projectBaseDir,'stimuli');
 setpref(theProject,'outputBaseDir',outputBaseDir);
 setpref(theProject,'stimulusInputBaseDir',stimulusInputBaseDir);
 setpref(theProject,'stimulusDefInputBaseDir',stimulusDefInputBaseDir);
+
+% Calibration data lives in a project specific directory, which we define here.
 setpref(theProject,'calibrationDir',fullfile(baseDir,'CNST_materials',theProject,'CalibrationData'));
 
+% We sometimes need some images for testing.  We don't want these in the code repository (too big, 
+% separate code and data), so we define their home here.
+setpref(theProject,'testImageDir',fullfile(baseDir,'CNST_materials',theProject,'TestImages'));
