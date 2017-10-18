@@ -55,4 +55,5 @@ stimulusDefInputBaseDir = fullfile(projectBaseDir,'stimuli');
 setpref(theProject,'outputBaseDir',outputBaseDir);
 setpref(theProject,'stimulusInputBaseDir',stimulusInputBaseDir);
 setpref(theProject,'stimulusDefInputBaseDir',stimulusDefInputBaseDir);
+setpref(theProject,'calibrationDir',fullfile(baseDir,'CNST_materials',theProject,'CalibrationData'));
 

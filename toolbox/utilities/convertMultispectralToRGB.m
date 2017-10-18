@@ -1,41 +1,41 @@
-function [RGB RGBFromLMS RGBDirect] = convertMultispectralToRGB(multispectralImage, SMultispectral, cropSize, varargin)
-%Converts multispectral image to RGB image using monitor calibration file
-% USAGE: 
-%   RGB = convertMultispectralToRGB(multispectralImage, [400 10 31])
+function [rgbImage] = convertMultispectralToRGB(multispectralImage, SMultispectral, cropSize, varargin)
+%%convertMultispectralToRGB  Converts multispectral image to RGB image using monitor calibration file
+%
+% Usage: 
+%   [rgbImage] = convertMultispectralToRGB(multispectralImage, SMultispectral, cropSize)
 %
 % Description:
 %   Convert the multispectral image to gamma corrected RGB image using the
-%   monitor primaries given by the calibration file.
+%   monitor primaries and gamma functions given by the calibration file.
+%
+%   Calibration file directory is obtained by getpref('VirtualWorldPsychophysics','calibrationDir').
+%   This preference is set in the local hook file.
 %
 % Input:
-%   multispectralImage : multi spectral image [k wavelengths x n Pixels]
+%   multispectralImage : multi spectral image [m by n by k wavelengths]
 %   SMultispectral : Wavelength sampling of multispectral images. Foramt: [start del N]
-%   pathToCalibrationFile : path to monitor calibration file 
-%
-%  OptionalInput:
-%    whichCalibration : which calibration to use, if more than one
+%   cropSize : Scalar ... [DESCRIBE OR REMOVE]
 %
 % Output:
-%   RGB : gamma corrected RGB image [3 x nPixels]
+%   rgbImage : gamma corrected RGB image [m by n by 3]
 %
+% Optional key/value pairs:
+%    'whichCalibration' : (scalar) Which calibration in file to use (default 0 -> most recent)
+%    'nameOfCalibrationFile : (string) Name of calibration file (default 'NEC_MultisyncPA241W.mat')
 
 %% Get inputs and defaults.
 parser = inputParser();
-parser.addParameter('whichCalibration', 0, @isnumeric); 
-parser.addParameter('pathToCalibrationFile', 'NEC_MultisyncPA241W.mat', @isstring);
+parser.addParameter('whichCalibration', 0, @isscalar); 
+parser.addParameter('nameOfCalibrationFile', 'NEC_MultisyncPA241W.mat', @isstring);
 parser.parse(varargin{:});
 
 whichCalibration = parser.Results.whichCalibration;
 pathToCalibrationFile = parser.Results.pathToCalibrationFile;
 
-%% load calibration file
-load(pathToCalibrationFile);
-% choose the most recent calibration
-if (whichCalibration == 0)
-    cals = cals{end};
-else
-    cals = cals{whichCalibration};
-end
+%% Load calibration file
+cal = LoadCalFile(fullfile(getpref('VirtualWorldPsychophysics','calibrationDir'),pathToCalibrationFile),whichCalibration);
+
+%% Load
 
 % %% Invert the device primaries 
 P_deviceInv = pinv(cals.processedData.P_device);
@@ -60,7 +60,7 @@ SPMatrixInv = inv(T_Cones_Rescaled*cals.processedData.P_device);
 RGBFromLMS = SPMatrixInv*LMScalFormat;
 RGBFromLMS = CalFormatToImage(RGBFromLMS, nX, nY);
 
-RGB = RGBFromLMS;
+rgbImage = RGBFromLMS;
 
 
 
