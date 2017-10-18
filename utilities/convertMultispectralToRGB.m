@@ -1,7 +1,7 @@
-function RGB = convertMultispectralToRGB(multispectralImage, SMultispectral, varargin)
+function [RGB RGBFromLMS RGBDirect] = convertMultispectralToRGB(multispectralImage, SMultispectral, cropSize, varargin)
 %Converts multispectral image to RGB image using monitor calibration file
 % USAGE: 
-%   RGB = convertMultispectralToRGB(multispectralImage, '/Users/vijaysingh/Documents/MATLAB/projects/VirtualWorldPsychophysics/NEC_MultisyncPA241W.mat')
+%   RGB = convertMultispectralToRGB(multispectralImage, [400 10 31])
 %
 % Description:
 %   Convert the multispectral image to gamma corrected RGB image using the
@@ -42,24 +42,25 @@ P_deviceInv = pinv(cals.processedData.P_device);
 P_deviceInv = SplineCmf(cals.rawData.S, P_deviceInv, SMultispectral);
 
 % %% Make direct rgb conversion using inverse calibration file
-RGB = P_deviceInv*multispectralImage;
-% rgbImage = CalFormatToImage(rgbImage, S.cropSize, S.cropSize);
+RGBDirect = P_deviceInv*multispectralImage;
+RGBDirect = CalFormatToImage(RGBDirect, cropSize, cropSize);
 
-% % Need to gamma correct and figure out if there needs to be some kind of
-% % scaling
-% 
-% %% Load some cone sensitivities
-% load T_cones_ss2
-% 
-% %% 
-% LMSImage = rtbMultispectralToSensorImage(reshape(multispectralImage',S.cropSize,S.cropSize,[]),...
-%     SMultiSpectral, T_cones_ss2, S_cones_ss2);
-% [LMScalFormat, nX, nY] = ImageToCalFormat(LMSImage);
-% T_Cones_Rescaled = SplineCmf(S_cones_ss2,T_cones_ss2,cals{3}.rawData.S);
-% SPMatrixInv = inv(T_Cones_Rescaled*cals{3}.processedData.P_device);
-% RGBFromLMS = SPMatrixInv*LMScalFormat;
-% RGBFromLMS = CalFormatToImage(RGBFromLMS, nX, nY);
-% 
+% Need to gamma correct and figure out if there needs to be some kind of
+% scaling
+
+%% Load some cone sensitivities
+load T_cones_ss2
+
+%% 
+LMSImage = rtbMultispectralToSensorImage(reshape(multispectralImage',cropSize,cropSize,[]),...
+    SMultispectral, T_cones_ss2, S_cones_ss2);
+[LMScalFormat, nX, nY] = ImageToCalFormat(LMSImage);
+T_Cones_Rescaled = SplineCmf(S_cones_ss2,T_cones_ss2,cals.rawData.S);
+SPMatrixInv = inv(T_Cones_Rescaled*cals.processedData.P_device);
+RGBFromLMS = SPMatrixInv*LMScalFormat;
+RGBFromLMS = CalFormatToImage(RGBFromLMS, nX, nY);
+
+RGB = RGBFromLMS;
 
 
 
