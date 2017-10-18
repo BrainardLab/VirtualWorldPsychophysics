@@ -1,4 +1,4 @@
-function RGB = convertMultispectralToRGB(multispectralImage, SMultispectral, pathToCalibrationFile, varargin)
+function RGB = convertMultispectralToRGB(multispectralImage, SMultispectral, varargin)
 %Converts multispectral image to RGB image using monitor calibration file
 % USAGE: 
 %   RGB = convertMultispectralToRGB(multispectralImage, '/Users/vijaysingh/Documents/MATLAB/projects/VirtualWorldPsychophysics/NEC_MultisyncPA241W.mat')
@@ -21,10 +21,12 @@ function RGB = convertMultispectralToRGB(multispectralImage, SMultispectral, pat
 
 %% Get inputs and defaults.
 parser = inputParser();
-parser.addParameter('whichCalibration', 0, @isnumeric);
+parser.addParameter('whichCalibration', 0, @isnumeric); 
+parser.addParameter('pathToCalibrationFile', 'NEC_MultisyncPA241W.mat', @isstring);
 parser.parse(varargin{:});
 
 whichCalibration = parser.Results.whichCalibration;
+pathToCalibrationFile = parser.Results.pathToCalibrationFile;
 
 %% load calibration file
 load(pathToCalibrationFile);
@@ -36,13 +38,13 @@ else
 end
 
 % %% Invert the device primaries 
-% P_deviceInv = pinv(cals{3}.processedData.P_device);
-% P_deviceInv = SplineCmf(cals{2}.rawData.S, P_deviceInv, SMultiSpectral);
-% 
+P_deviceInv = pinv(cals.processedData.P_device);
+P_deviceInv = SplineCmf(cals.rawData.S, P_deviceInv, SMultispectral);
+
 % %% Make direct rgb conversion using inverse calibration file
-% rgbImage = P_deviceInv*multispectralImage;
+RGB = P_deviceInv*multispectralImage;
 % rgbImage = CalFormatToImage(rgbImage, S.cropSize, S.cropSize);
-% 
+
 % % Need to gamma correct and figure out if there needs to be some kind of
 % % scaling
 % 
