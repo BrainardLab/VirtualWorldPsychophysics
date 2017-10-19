@@ -25,7 +25,7 @@ function [RGBImage] = convertMultispectralToRGB(multispectralImage, SMultispectr
 %% Get inputs and defaults.
 parser = inputParser();
 parser.addParameter('whichCalibration', Inf, @isscalar); 
-parser.addParameter('nameOfCalibrationFile', 'NEC_MultisyncPA241W', @isstring);
+parser.addParameter('nameOfCalibrationFile', 'NEC_MultisyncPA241W', @ischar);
 parser.parse(varargin{:});
 
 whichCalibration = parser.Results.whichCalibration;

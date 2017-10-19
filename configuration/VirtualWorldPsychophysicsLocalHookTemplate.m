@@ -34,6 +34,9 @@ switch (sysInfo.localHostName)
         % DHB's desktop
         baseDir = fullfile(filesep,'Volumes','Users1','Dropbox (Aguirre-Brainard Lab)');
  
+    case 'stingray'
+        % Vijay's desktop
+        baseDir = fullfile(filesep,'Volumes','OWSHD','Dropbox (Aguirre-Brainard Lab)');
     otherwise
         % Some unspecified machine, try user specific customization
         switch(sysInfo.userShortName)
@@ -48,7 +51,7 @@ end
 %
 % This will need to be locally configured.
 outputBaseDir = fullfile(baseDir,'CNST_materials',theProject);
-stimulusInputBaseDir = fullfile(baseDir,'CNST_materials',theProject);
+stimulusInputBaseDir = fullfile(baseDir,'CNST_materials',theProject,'LightnessCases');
 stimulusDefInputBaseDir = fullfile(projectBaseDir,'stimuli');
 
 % Set the preferences
