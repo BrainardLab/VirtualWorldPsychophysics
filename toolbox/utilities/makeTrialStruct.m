@@ -41,7 +41,6 @@ parser.addParameter('outputFileName', 'exampleTrial', @ischar);
 parser.addParameter('nTrials', 10, @isscalar);
 parser.addParameter('stdY', 5, @isnumeric);
 parser.addParameter('cmpY', (1:10), @isnumeric);
-parser.addParameter('coneSensitivity', 'T_cones_ss2', @isnumeric);
 parser.parse(varargin{:});
 
 

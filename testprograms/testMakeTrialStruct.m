@@ -1,9 +1,8 @@
-%% testMakeTrialStruct
-%
-% Description:
-%    Test program to call makeTrialStruct.
-%
+%%testMakeTrialStruct test script for makeTrialStruct function
 
-%% Clear
-clear; close all;
-
+makeTrialStruct('directoryName','FixedTargetShapeFixedIlluminantFixedBkGnd',...
+    'LMSstructName', 'LMSStruct',...
+    'outputFileName', 'exampleTrial',...
+    'nTrials', 10,...
+    'stdY', 5, ...
+    'cmpY', (1:10));
