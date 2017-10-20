@@ -1,30 +1,32 @@
 function makeTrialStruct(varargin)
-%%makeTrialStruct Make the structure for doing color comparison experiment
+%%makeTrialStruct Make a struct with trial information about one experiment
 %
 % Usage: 
 %   makeTrialStruct();
 %
 % Description:
-%   Use the RGB struct to make a trial struct. The RGB struct must have
-%   fields RGBImageInCalFormat, luminanceLevels, uniqueLuminanceLevels, 
+%   Use the LMS struct to make a trial struct. The LMS struct must have
+%   fields LMSImageInCalFormat, luminanceLevels, uniqueLuminanceLevels, 
 %   reflectanceNumber
 %
 % Input:
+%   None
 %
 % Output:
+%   None
 %
-% Fields in S
-% S.trialStdIndex : Index of standard image to be used in the trials
-% S.trialCmpIndex : Index of comparison image to be used in the trial, 
+% Fields in trialStruct
+% trialStruct.trialStdIndex : Index of standard image to be used in the trials
+% trialStruct.trialCmpIndex : Index of comparison image to be used in the trial, 
 %               should be the same as S.trailStdIndex 
-% S.stdY : standard lightness level
-% S.cmpY : comparison lightness levels
-% S.stdYInTrial : std lightness for each trial
-% S.cmpYInTrial : cmp lightness for each trial
+% trialStruct.stdY : standard lightness level
+% trialStruct.cmpY : comparison lightness levels
+% trialStruct.stdYInTrial : std lightness for each trial
+% trialStruct.cmpYInTrial : cmp lightness for each trial
 %
 % Optional key/value pairs:
-%    'directoryName' : Name of directory to read RGB struct (default 'ExampleDirectory')
-%    'RGBstructName' : Name of RGB struct file (default RGBStruct)
+%    'directoryName' : Name of directory to read LMS struct (default 'ExampleCase')
+%    'LMSstructName' : Name of RGB struct file (default LMSStruct)
 %    'outputFileName': Name of file to save trial output struct (default 'exampleTrial')
 %    'nTrails' : Number of trials (default -> 10)
 %    'stdY' : Index of standard lightness level (default -> 5)
@@ -34,7 +36,7 @@ function makeTrialStruct(varargin)
 %% Get inputs and defaults.
 parser = inputParser();
 parser.addParameter('directoryName', 'ExampleCase', @ischar);
-parser.addParameter('RGBstructName', 'RGBStruct', @ischar);
+parser.addParameter('LMSstructName', 'LMSStruct', @ischar);
 parser.addParameter('outputFileName', 'exampleTrial', @ischar);
 parser.addParameter('nTrials', 10, @isscalar);
 parser.addParameter('stdY', 5, @isnumeric);
@@ -44,7 +46,7 @@ parser.parse(varargin{:});
 
 
 directoryName = parser.Results.directoryName;
-RGBstructName = parser.Results.RGBstructName;
+LMSstructName = parser.Results.LMSstructName;
 outputFileName = parser.Results.outputFileName;
 nTrials = parser.Results.nTrials;
 stdY = parser.Results.stdY;
@@ -55,33 +57,33 @@ projectName = 'VirtualWorldPsychophysics';
 %% Load the RGB struct
 % The load call needs to be changed use pref for VWP directory on dropbox
 pathToRGBFile = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
-                directoryName,[RGBstructName,'.mat']);
+                directoryName,[LMSstructName,'.mat']);
 load(pathToRGBFile);
 
 %%
-S.stdY = S.uniqueLuminanceLevels(stdY);
-S.cmpY = S.uniqueLuminanceLevels(cmpY);
-S.nTrials = nTrials;
+trialStruct.stdY = LMSStruct.uniqueLuminanceLevels(stdY);
+trialStruct.cmpY = LMSStruct.uniqueLuminanceLevels(cmpY);
+trialStruct.nTrials = nTrials;
 
-indexOfStandardImages = find(S.ctgInd == stdY);
+indexOfStandardImages = find(LMSStruct.luminanceCategoryIndex == stdY);
 
 for ii = 1 : nTrials
     % Pick a random index for the standard image
     tempStdIndex = randi(length(indexOfStandardImages));
-    S.trialStdIndex(ii) = indexOfStandardImages(tempStdIndex);
-    S.stdYInTrial(ii) = S.luminanceLevels(S.trialStdIndex(ii));
+    trialStruct.trialStdIndex(ii) = indexOfStandardImages(tempStdIndex);
+    trialStruct.stdYInTrial(ii) = LMSStruct.luminanceLevels(trialStruct.trialStdIndex(ii));
     
     % Pick a comparison level
     tempCmpLvl = cmpY(randi(length(cmpY)));
-    indexOfCmpImages = find(S.ctgInd == tempCmpLvl);
-    S.trialCmpIndex(ii) = indexOfCmpImages(tempStdIndex);
-    S.cmpYInTrial(ii) = S.luminanceLevels(S.trialCmpIndex(ii));
-    S.ctgIndInTrial(ii) = S.ctgInd(S.trialCmpIndex(ii));
+    indexOfCmpImages = find(LMSStruct.luminanceCategoryIndex == tempCmpLvl);
+    trialStruct.trialCmpIndex(ii) = indexOfCmpImages(tempStdIndex);
+    trialStruct.cmpYInTrial(ii) = LMSStruct.luminanceLevels(trialStruct.trialCmpIndex(ii));
+    trialStruct.luminanceCategoryIndexInTrial(ii) = LMSStruct.luminanceCategoryIndex(trialStruct.trialCmpIndex(ii));
 end
-    S.cmpInterval = zeros(1,nTrials);
+    trialStruct.cmpInterval = zeros(1,nTrials);
     tempIndex = randperm(nTrials);
-    S.cmpInterval(tempIndex(1:ceil(nTrials/2))) = 1;
+    trialStruct.cmpInterval(tempIndex(1:ceil(nTrials/2))) = 1;
 
 save(fullfile(getpref(projectName,'stimulusInputBaseDir'),...
     parser.Results.directoryName,[outputFileName,'.mat']),...
-    'S','-v7.3');
+    'trialStruct','-v7.3');

@@ -51,11 +51,13 @@ end
 %
 % This will need to be locally configured.
 outputBaseDir = fullfile(baseDir,'CNST_materials',theProject);
-stimulusInputBaseDir = fullfile(baseDir,'CNST_materials',theProject,'LightnessCasesStudied');
+multispectralInputBaseDir = fullfile(baseDir,'IBIO_analysis','VirtualWorldColorConstancy');
+stimulusInputBaseDir = fullfile(baseDir,'CNST_materials',theProject,'LightnessCasesForExperiment');
 stimulusDefInputBaseDir = fullfile(projectBaseDir,'stimuli');
 
 % Set the preferences
 setpref(theProject,'outputBaseDir',outputBaseDir);
+setpref(theProject,'multispectralInputBaseDir',multispectralInputBaseDir);
 setpref(theProject,'stimulusInputBaseDir',stimulusInputBaseDir);
 setpref(theProject,'stimulusDefInputBaseDir',stimulusDefInputBaseDir);
 
