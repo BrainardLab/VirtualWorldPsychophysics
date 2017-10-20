@@ -51,7 +51,7 @@ end
 %
 % This will need to be locally configured.
 outputBaseDir = fullfile(baseDir,'CNST_materials',theProject);
-stimulusInputBaseDir = fullfile(baseDir,'CNST_materials',theProject,'LightnessCases');
+stimulusInputBaseDir = fullfile(baseDir,'CNST_materials',theProject,'LightnessCasesStudied');
 stimulusDefInputBaseDir = fullfile(projectBaseDir,'stimuli');
 
 % Set the preferences
