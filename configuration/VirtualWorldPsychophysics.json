@@ -48,7 +48,7 @@
 		"subfolder": "",
 		"toolboxRoot": "",
 		"type": "git",
-		"update": "never",
+		"update": "",
 		"url": "https://github.com/brainardlab/mgl"
 	},
 	{
