@@ -75,11 +75,11 @@ end
 %% Load the cone sensitivity
 %
 % This is eventually going to draw from the loaded struct.
-T_conesLoaded = load('T_cones_ss2');                                                             % Load this using the LMS struct option 
-T_cones = SplineCmf(T_conesLoaded.S_cones_ss2,T_conesLoaded.T_cones_ss2, LMSStruct.wavelengths); % Fix the last option
+% T_conesLoaded = load('T_cones_ss2');                                                             % Load this using the LMS struct option 
+% T_cones = SplineCmf(T_conesLoaded.S_cones_ss2,T_conesLoaded.T_cones_ss2, LMSStruct.S); % Fix the last option
 
 %% Initialize calibration structure for the cones
-cal = SetSensorColorSpace(cal, T_cones, LMSStruct.wavelengths); % Fix the last option
+cal = SetSensorColorSpace(cal, LMSStruct.T_cones, LMSStruct.S); % Fix the last option
 cal = SetGammaMethod(cal,0);
 
 %% Now loop over the images for presentation on screen
