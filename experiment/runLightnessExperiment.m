@@ -11,6 +11,7 @@ function data = runLightnessExperiment(varargin)
 %
 % Input:
 %   None
+%
 % Output:
 %   None
 %
@@ -32,7 +33,6 @@ parser.addParameter('whichCalibration', Inf, @isscalar);
 parser.addParameter('subjectName', 'testSubject', @ischar);
 parser.parse(varargin{:});
 
-
 directoryName = parser.Results.directoryName;
 nameOfTrialStruct = parser.Results.nameOfTrialStruct;
 nameOfLMSStruct = parser.Results.nameOfLMSStruct;
@@ -45,12 +45,12 @@ projectName = 'VirtualWorldPsychophysics';
 %% Load the trial struct
 pathToTrialStruct = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
                     directoryName,[nameOfTrialStruct '.mat']);
-load(pathToTrialStruct);
+temp = load(pathToTrialStruct); trialStruct = temp.trialStruct; clear temp;
 
 %% Load the LMS struct
 pathToLMSStruct = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
                     directoryName,[nameOfLMSStruct '.mat']);
-load(pathToLMSStruct);
+temp = load(pathToLMSStruct); LMSStruct = temp.LMSStruct; clear temp;
 
 %% Load calibration file
 cal = LoadCalFile(nameOfCalibrationFile,whichCalibration,fullfile(getpref('VirtualWorldPsychophysics','calibrationDir')));
@@ -59,23 +59,31 @@ if (isempty(cal))
 end
 
 %% Load the cone sensitivity
-T_conesLoaded = load(nameOfConeSensitivityFile); % load this using the LMS struct option 
+%
+% This is eventually going to draw from the loaded struct.
+T_conesLoaded = load('T_cones_ss2');                                                             % Load this using the LMS struct option 
 T_cones = SplineCmf(T_conesLoaded.S_cones_ss2,T_conesLoaded.T_cones_ss2, LMSStruct.wavelengths); % Fix the last option
 
 %% Initialize calibration structure for the cones
-cal = SetSensorColorSpace(cal,T_cones, LMSStruct.wavelengths); % Fix the last option
+cal = SetSensorColorSpace(cal, T_cones, LMSStruct.wavelengths); % Fix the last option
 cal = SetGammaMethod(cal,0);
 
 %% Now loop over the images for presentation on screen
 % Before that figure out how long it takes to convert two LMS to RGB and
 % present on screen. Shouldn't be very long
-%% Use calibration machinery to get RGB
-StdRGBImage = SensorToSettings(cal,);
-CmpRGBImage = SensorToSettings(cal,);
 
-%% Save the response struct
-path2RGBOutputDirectory = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
-                                parser.Results.directoryName);
-outputfileName = fullfile(path2RGBOutputDirectory,[outputFileName,'.mat']);
-save(outputfileName,'S','-v7.3');
+%% Use calibration machinery to get RGB
+tic
+stdIndex = trialStruct.trialStdIndex(1);
+cmpIndex =  trialStruct.trialCmpIndex(1);
+stdRGBImage = CalFormatToImage(SensorToSettings(cal,LMSStruct.LMSImageInCalFormat(:,:,stdIndex)),LMSStruct.cropImageSize,LMSStruct.cropImageSize);
+cmpRGBImage = CalFormatToImage(SensorToSettings(cal,LMSStruct.LMSImageInCalFormat(:,:,cmpIndex)),LMSStruct.cropImageSize,LMSStruct.cropImageSize);
+toc
+
+% 
+% %% Save the response struct
+% path2RGBOutputDirectory = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
+%                                 parser.Results.directoryName);
+% outputfileName = fullfile(path2RGBOutputDirectory,[outputFileName,'.mat']);
+% save(outputfileName,'S','-v7.3');
 

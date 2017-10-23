@@ -22,6 +22,7 @@ function multispectralStructToLMSStruct(varargin)
 %    'outputFileName': Name of output file (default 'LMSStruct')
 
 % 10/16/2017 VS wrote this
+
 %% Get inputs and defaults.
 parser = inputParser();
 parser.addParameter('multipsectralStructFolder', 'ExampleCase', @ischar);
@@ -30,34 +31,34 @@ parser.addParameter('outputFileName', 'LMSStruct', @ischar);
 parser.addParameter('nameOfConeSensitivityFile', 'T_cones_ss2', @ischar);
 parser.parse(varargin{:});
 
-
 multipsectralStructFolder = parser.Results.multipsectralStructFolder;
 LMSStructFolder = parser.Results.LMSStructFolder;
 outputFileName = parser.Results.outputFileName;
-nameOfConeSensitivityFile = parser.Results.nameOfConeSensitivityFile;
+LMSStruct.nameOfConeSensitivityFile = parser.Results.nameOfConeSensitivityFile;
 
 projectName = 'VirtualWorldPsychophysics';
 
 %% Load the struct with multispectral image
+%
 % The load call needs to be changed use pref for VWP directory on dropbox
 pathToMultispectralFile = fullfile(getpref(projectName,'multispectralInputBaseDir'),...
                     multipsectralStructFolder,'multispectralStruct.mat');
 load(pathToMultispectralFile);
 
 %% Load the cone sensitivity
-T_conesLoaded = load(nameOfConeSensitivityFile);
-T_cones = SplineCmf(T_conesLoaded.S_cones_ss2,T_conesLoaded.T_cones_ss2,multispectralStruct.wavelengths);
+T_conesLoaded = load(LMSStruct.nameOfConeSensitivityFile);
+LMSStruct.T_cones = SplineCmf(T_conesLoaded.S_cones_ss2,T_conesLoaded.T_cones_ss2,multispectralStruct.wavelengths);
 
 %% Convert all multispectral images to LMS
 [k, nPixels, nImages] = size(multispectralStruct.multispectralImage);
 allMultispectralImagesReshaped = reshape(multispectralStruct.multispectralImage,k,nPixels*nImages);
-LMSImageReshaped = T_cones*allMultispectralImagesReshaped;
+LMSImageReshaped = LMSStruct.T_cones*allMultispectralImagesReshaped;
 multispectralStruct.LMSImageInCalFormat = reshape(LMSImageReshaped,size(LMSImageReshaped,1),nPixels,nImages);
 
 %% Remove the multispectralImage field from the struct
 multispectralStruct = rmfield(multispectralStruct,'multispectralImage');
 LMSStruct = multispectralStruct;
-LMSStruct.coneSensitivity = nameOfConeSensitivityFile;
+
 %% Save the struct
 path2LMSOutputDirectory = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
                                 parser.Results.LMSStructFolder);
