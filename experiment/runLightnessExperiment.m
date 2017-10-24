@@ -72,12 +72,6 @@ if (isempty(cal))
     error('Could not find specified calibration file');
 end
 
-%% Load the cone sensitivity
-%
-% This is eventually going to draw from the loaded struct.
-% T_conesLoaded = load('T_cones_ss2');                                                             % Load this using the LMS struct option 
-% T_cones = SplineCmf(T_conesLoaded.S_cones_ss2,T_conesLoaded.T_cones_ss2, LMSStruct.S); % Fix the last option
-
 %% Initialize calibration structure for the cones
 cal = SetSensorColorSpace(cal, LMSStruct.T_cones, LMSStruct.S); % Fix the last option
 cal = SetGammaMethod(cal,0);
@@ -90,8 +84,8 @@ cal = SetGammaMethod(cal,0);
 tic
 stdIndex = trialStruct.trialStdIndex(1);
 cmpIndex =  trialStruct.trialCmpIndex(1);
-stdRGBImage = CalFormatToImage(SensorToSettings(cal,LMSStruct.LMSImageInCalFormat(:,:,stdIndex)),LMSStruct.cropImageSize,LMSStruct.cropImageSize);
-cmpRGBImage = CalFormatToImage(SensorToSettings(cal,LMSStruct.LMSImageInCalFormat(:,:,cmpIndex)),LMSStruct.cropImageSize,LMSStruct.cropImageSize);
+stdRGBImage = CalFormatToImage(SensorToSettings(cal,LMSStruct.LMSImageInCalFormat(:,:,stdIndex)),LMSStruct.cropImageSizeX,LMSStruct.cropImageSizeY);
+cmpRGBImage = CalFormatToImage(SensorToSettings(cal,LMSStruct.LMSImageInCalFormat(:,:,cmpIndex)),LMSStruct.cropImageSizeX,LMSStruct.cropImageSizeY);
 toc
 
 %% Example of initializing display and showing one trial
