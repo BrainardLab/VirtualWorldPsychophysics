@@ -80,9 +80,8 @@ cal = SetGammaMethod(cal,0);
 % Before that figure out how long it takes to convert two LMS to RGB and
 % present on screen. Shouldn't be very long
 
-response = struct('subjectName',subjectName, ...
-    'correctResponse',[],...
-    'actualResponse',[]);
+response = struct('correctResponse',[],...
+    'actualResponse')
 
 %% Example of initializing display and showing one trial
 [win, params] = initDisplay(params);
@@ -107,7 +106,7 @@ for iterTrials = 1 : trialStruct.nTrials
     stdRGBImage = CalFormatToImage(SensorToSettings(cal,LMSStruct.LMSImageInCalFormat(:,:,stdIndex)),LMSStruct.cropImageSizeX,LMSStruct.cropImageSizeY);
     cmpRGBImage = CalFormatToImage(SensorToSettings(cal,LMSStruct.LMSImageInCalFormat(:,:,cmpIndex)),LMSStruct.cropImageSizeX,LMSStruct.cropImageSizeY);
     standardYLarger = (trialStruct.stdYInTrial(iterTrials) >= trialStruct.cmpYInTrial(iterTrials));
-    if trialStruct.cmpInterval(iterTrials) % comparison on the right
+    if trialStruct.cmpInterval(iterTrials)
         leftImage = stdRGBImage(end:-1:1,:,:);
         rightImage = cmpRGBImage(end:-1:1,:,:); 
         if standardYLarger
@@ -115,7 +114,7 @@ for iterTrials = 1 : trialStruct.nTrials
         else
             correctResponse(iterTrials) = 0;
         end
-    else                                   % comparison on the left
+    else
         leftImage = cmpRGBImage(end:-1:1,:,:);
         rightImage = stdRGBImage(end:-1:1,:,:);
         if standardYLarger
@@ -134,8 +133,7 @@ for iterTrials = 1 : trialStruct.nTrials
     fprintf('The character typed was %c\n',keyPress);
 end
 
-response.correctResponse = correctResponse;
-response.actualResponse = actualResponse;
+
 %% Done with experiment, close up
 %
 % Close our display.
