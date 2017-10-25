@@ -29,7 +29,7 @@ parser.addParameter('directoryName', 'ExampleCase', @ischar);
 parser.addParameter('nameOfTrialStruct', 'exampleTrial', @ischar);
 parser.addParameter('nameOfLMSStruct', 'LMSStruct', @ischar);
 parser.addParameter('nameOfCalibrationFile', 'NEC_MultisyncPA241W', @ischar);
-parser.addParameter('whichCalibration', Inf, @isscalar); 
+parser.addParameter('whichCalibration', Inf, @isscalar); who
 parser.addParameter('subjectName', 'testSubject', @ischar);
 parser.parse(varargin{:});
 
