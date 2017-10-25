@@ -29,7 +29,7 @@ parser.addParameter('directoryName', 'ExampleCase', @ischar);
 parser.addParameter('nameOfTrialStruct', 'exampleTrial', @ischar);
 parser.addParameter('nameOfLMSStruct', 'LMSStruct', @ischar);
 parser.addParameter('nameOfCalibrationFile', 'NEC_MultisyncPA241W', @ischar);
-parser.addParameter('whichCalibration', Inf, @isscalar); who
+parser.addParameter('whichCalibration', Inf, @isscalar);
 parser.addParameter('subjectName', 'testSubject', @ischar);
 parser.parse(varargin{:});
 
@@ -51,10 +51,13 @@ params.fpSize = [1 1];
 params.fpColor = [1 1 1];
 params.bgColor = [0 0 0];
 params.textColor = [1 0 0];
-params.leftImageLoc = [-3 0];
-params.rightImageLoc = [3 0];
+params.leftImageLoc = [0 0];
+params.rightImageLoc = [0 0];
 params.leftImageSize = [3 3];
 params.rightImageSize = [3 3];
+params.ISI = 0.25;
+params.ITI = 0.25;
+params.stimDuration = 0.5;
 
 %% Load the trial struct
 pathToTrialStruct = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
@@ -79,7 +82,6 @@ cal = SetGammaMethod(cal,0);
 %% Now loop over the images for presentation on screen
 % Before that figure out how long it takes to convert two LMS to RGB and
 % present on screen. Shouldn't be very long
-
 response = struct('subjectName',subjectName, ...
     'correctResponse',[],...
     'actualResponse',[]);
@@ -124,22 +126,54 @@ for iterTrials = 1 : trialStruct.nTrials
             correctResponse(iterTrials) = 1;
         end
     end
-    win.addImage(params.leftImageLoc, params.leftImageSize, leftImage, 'Name', 'leftImage');
+    
+    % Write the images into the window and disable
+    win.addImage(params.leftImageLoc, params.leftImageSize, leftImage, 'Name', 'leftImage'); 
     win.addImage(params.rightImageLoc, params.rightImageSize, rightImage, 'Name', 'rightImage');
-    win.draw;    
+    win.disableObject('leftImage');
+    win.disableObject('rightImage');
+    
+    % Enable "left" image and draw
+    win.enableObject('leftImage');
+    win.draw;  
+    
+    % Wait for duration
+    mglWaitSecs(params.stimDuration);
+    win.disableObject('leftImage');
+    win.draw;
+    
+    % Wait for ITI and show "right" image
+    mglWaitSecs(params.ITI);
+    win.enableObject('rightImage');
+    win.draw;
+    
+    % Wait for duration
+    mglWaitSecs(params.stimDuration);
+    win.disableObject('rightImage');
+    win.draw;
 
     %% Wait for key
-    keyPress = GetChar;
-    actualResponse(iterTrials) = str2num(keyPress);
-    fprintf('The character typed was %c\n',keyPress);
+    keyPress(iterTrials) = GetChar;
+    actualResponse(iterTrials) = str2num(keyPress(iterTrials));
+    fprintf('The character typed was %c\n',keyPress(iterTrials));
 end
 
 %% correct response can be found as
 % (trialStruct.stdYInTrial > trialStruct.cmpYInTrial).*(trialStruct.cmpInterval) + ...
 % (~(trialStruct.stdYInTrial > trialStruct.cmpYInTrial)).*(~(trialStruct.cmpInterval))
-
 response.correctResponse = correctResponse;
 response.actualResponse = actualResponse;
+
+%% Save data here
+% trialStruct
+% response
+% cal
+% LMSStruct
+% Start and end time
+% Subject information
+%
+% Data 
+
 %% Done with experiment, close up
 %
 % Close our display.
