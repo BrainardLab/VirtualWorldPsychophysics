@@ -134,6 +134,10 @@ for iterTrials = 1 : trialStruct.nTrials
     fprintf('The character typed was %c\n',keyPress);
 end
 
+%% correct response can be found as
+% (trialStruct.stdYInTrial > trialStruct.cmpYInTrial).*(trialStruct.cmpInterval) + ...
+% (~(trialStruct.stdYInTrial > trialStruct.cmpYInTrial)).*(~(trialStruct.cmpInterval))
+
 response.correctResponse = correctResponse;
 response.actualResponse = actualResponse;
 %% Done with experiment, close up
