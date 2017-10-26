@@ -1,4 +1,4 @@
-function runLightnessExperiment(varargin)
+function response = runLightnessExperiment(varargin)
 %%runExperiment : run lightness estimation experiment and record data
 %
 % Usage: 
@@ -199,10 +199,10 @@ if ~exist(dataFolder, 'dir')
     mkdir(dataFolder);
 end
 
-dataFile = sprintf('%s/%s-%d.mat', dataFolder,subjectName, GetNextDataFileNumber(dataFolder, '.mat'));
-fprintf('\nData will be saved in:\n%s\n', dataFile);
+dataFile = sprintf('%s-%d.mat', dataFolder, GetNextDataFileNumber(dataFolder, '.mat'));
+fprintf('\nData will be saved in:\n%s', dataFile);
 
-save(dataFile,'data','-v7.3');
+save('trialStruct','-v7.3');
 
 fprintf('Data was saved.\n');
 
