@@ -2,7 +2,7 @@ function runLightnessExperiment(varargin)
 %%runExperiment : run lightness estimation experiment and record data
 %
 % Usage:
-%   data = runLightnessExperiment();
+%   runLightnessExperiment();
 %
 % Description:
 %   Run the lightness estimation psychophysics experiment given the
@@ -199,6 +199,7 @@ endTime = datestr(now);
 
 %% Make data struct
 data = struct;
+data.response = response;
 data.trialStruct = trialStruct;
 data.startTime = startTime;
 data.endTime = endTime;
@@ -229,6 +230,9 @@ save(dataFile,'data','-v7.3');
 
 fprintf('Data was saved.\n');
 
+% drawPsychometricFunction('directoryName',caseName,...
+%     'subjectName', subjectName,...
+%     'fileNumber', (GetNextDataFileNumber(dataFolder, '.mat')-1));
 end
 %
 % %% Save the response struct
