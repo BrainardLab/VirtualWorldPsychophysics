@@ -1,7 +1,7 @@
 function runLightnessExperiment(varargin)
 %%runExperiment : run lightness estimation experiment and record data
 %
-% Usage: 
+% Usage:
 %   data = runLightnessExperiment();
 %
 % Description:
@@ -21,6 +21,7 @@ function runLightnessExperiment(varargin)
 %    'nameOfLMSStruct' : (string) Name of LMS stuct to be used in experiment (defalult 'LMSStruct')
 %    'nameOfCalibrationFile : (string) Name of calibration file (default 'NEC_MultisyncPA241W.mat')
 %    'whichCalibration' : (scalar) Which calibration in file to use (default Inf -> most recent)
+%    'controlSignal' : (string) How to collect user response (options: 'gamePad', 'keyboard', default 'keyboard')
 %    'subjectName' : (string) Name of subject (default 'testSubject')
 
 %% Get inputs and defaults.
@@ -30,6 +31,9 @@ parser.addParameter('nameOfTrialStruct', 'exampleTrial', @ischar);
 parser.addParameter('nameOfLMSStruct', 'LMSStruct', @ischar);
 parser.addParameter('nameOfCalibrationFile', 'NEC_MultisyncPA241W', @ischar);
 parser.addParameter('whichCalibration', Inf, @isscalar);
+parser.addParameter('controlSignal', 'keyboard', @ischar);
+parser.addParameter('interval1Key', '1', @ischar);
+parser.addParameter('interval2Key', '2', @ischar);
 parser.addParameter('subjectName', 'testSubject', @ischar);
 parser.parse(varargin{:});
 
@@ -38,6 +42,9 @@ nameOfTrialStruct = parser.Results.nameOfTrialStruct;
 nameOfLMSStruct = parser.Results.nameOfLMSStruct;
 nameOfCalibrationFile = parser.Results.nameOfCalibrationFile;
 whichCalibration = parser.Results.whichCalibration;
+controlSignal = parser.Results.controlSignal;
+interval1Key = parser.Results.interval1Key;
+interval2Key = parser.Results.interval2Key;
 subjectName = parser.Results.subjectName;
 
 projectName = 'VirtualWorldPsychophysics';
@@ -61,15 +68,17 @@ params.rightImageSize = [3 3];
 params.ISI = 0.25;
 params.ITI = 0.25;
 params.stimDuration = 0.5;
+params.interval1Key = interval1Key;
+params.interval2Key = interval2Key;
 
 %% Load the trial struct
 pathToTrialStruct = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
-                    directoryName,[nameOfTrialStruct '.mat']);
+    directoryName,[nameOfTrialStruct '.mat']);
 temp = load(pathToTrialStruct); trialStruct = temp.trialStruct; clear temp;
 
 %% Load the LMS struct
 pathToLMSStruct = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
-                    directoryName,[nameOfLMSStruct '.mat']);
+    directoryName,[nameOfLMSStruct '.mat']);
 temp = load(pathToLMSStruct); LMSStruct = temp.LMSStruct; clear temp;
 
 %% Load calibration file
@@ -92,16 +101,26 @@ response = struct('subjectName',subjectName, ...
     'correctResponse',[],...
     'actualResponse',[]);
 
-%% Example of initializing display and showing one trial
+%% Initiale display
 [win, params] = initDisplay(params);
 
 %% Start key capture and clear keyboard queue before we draw the stimuli.
 ListenChar(2);
+
+% Instantiate a gamePad object
+if (strcmp(controlSignal, 'gamePad'))
+    gamePad = GamePad();
+else
+    gamePad = [];
+end
+
+% Clear out any previous keypresses.
 FlushEvents;
-    
+
 %% Enable fixation and start text
 win.enableObject('fp');
 win.enableObject('startText');
+win.enableObject('keyOptions');
 win.draw;
 
 %% Wait for key
@@ -109,6 +128,8 @@ keyPress = GetChar;
 
 %% Turn off start text, add images and wait for another key
 win.disableObject('startText');
+win.disableObject('keyOptions');
+
 for iterTrials = 1 : length(trialStruct.trialStdIndex)
     stdIndex = trialStruct.trialStdIndex(iterTrials);
     cmpIndex =  trialStruct.trialCmpIndex(iterTrials);
@@ -117,7 +138,7 @@ for iterTrials = 1 : length(trialStruct.trialStdIndex)
     standardYLarger = (trialStruct.stdYInTrial(iterTrials) >= trialStruct.cmpYInTrial(iterTrials));
     if trialStruct.cmpInterval(iterTrials) % comparison on the second interval
         firstImage = stdRGBImage(end:-1:1,:,:);
-        secondImage = cmpRGBImage(end:-1:1,:,:); 
+        secondImage = cmpRGBImage(end:-1:1,:,:);
         if standardYLarger
             correctResponse(iterTrials) = 1;
         else
@@ -134,14 +155,14 @@ for iterTrials = 1 : length(trialStruct.trialStdIndex)
     end
     
     % Write the images into the window and disable
-    win.addImage(params.leftImageLoc, params.leftImageSize, firstImage, 'Name', 'firstImage'); 
+    win.addImage(params.leftImageLoc, params.leftImageSize, firstImage, 'Name', 'firstImage');
     win.addImage(params.rightImageLoc, params.rightImageSize, secondImage, 'Name', 'secondImage');
     win.disableObject('firstImage');
     win.disableObject('secondImage');
     
     % Enable "left" image and draw
     win.enableObject('firstImage');
-    win.draw;  
+    win.draw;
     
     % Wait for duration
     mglWaitSecs(params.stimDuration);
@@ -157,9 +178,11 @@ for iterTrials = 1 : length(trialStruct.trialStdIndex)
     mglWaitSecs(params.stimDuration);
     win.disableObject('secondImage');
     win.draw;
-
+    
     %% Wait for key
+    FlushEvents;
     keyPress(iterTrials) = GetChar;
+    
     actualResponse(iterTrials) = str2num(keyPress(iterTrials));
     fprintf('The character typed was %c\n',keyPress(iterTrials));
 end
@@ -187,7 +210,7 @@ data.subjectName = subjectName;
 %
 % Close our display.
 win.close;
-    
+
 % Make sure key capture is off.
 ListenChar(0);
 
@@ -206,8 +229,8 @@ save(dataFile,'data','-v7.3');
 
 fprintf('Data was saved.\n');
 
-    
-% 
+end
+%
 % %% Save the response struct
 % path2RGBOutputDirectory = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
 %                                 parser.Results.directoryName);
@@ -225,31 +248,6 @@ try
     % Open the display.
     win.open;
     
-%     % Add the images.  The image center parameters are meaningless here as
-%     % they'll be changed each trial.
-%     if (params.numStims ~= 2)
-%         error('Code assumes only two underlying images');
-%     end
-%     for i = 1:params.numStims
-%         fprintf('Image %d, %s\n',i,params.stimInfo(i).imageName);
-%         fileName = fullfile(params.stimuliDir, [params.stimInfo(i).imageName '.mat']);
-%         data = load(fileName);
-%         
-%         % Convert the image data to RGB format.
-%         rgbData = zeros([size(data.theImage), 3]);
-%         for j = 1:3
-%             rgbData(:,:,j) = data.theImage;
-%         end
-%         
-%         imagePixHeight = size(rgbData,1);
-%         imagePixWidth = size(rgbData,2);
-%         params.imageSize{i} = [params.imageWidth params.imageWidth*imagePixHeight/imagePixWidth];
-%         win.addImage([0 0], params.imageSize{i}, rgbData, 'Name', sprintf('im%d', i));
-%         params.rgbData{i} = rgbData;
-%         params.probeIndex{i} = data.probeIndex;
-%         params.blankcolor(i) = data.blankcolor;
-%     end
-    
     % Add the fixation point.
     win.addOval([0 0], params.fpSize, params.fpColor, 'Name', 'fp');
     
@@ -260,11 +258,33 @@ try
         'Color', params.textColor, ...  % RGB color
         'Name', 'startText');     % Identifier for the object.
     
+    % Add text
+    win.addText(['Key :', 'Interval 1 -> ', params.interval1Key,' Interval 2 -> ',params.interval2Key ], ...        % Text to display
+        'Center', [0 -8], ...% Where to center the text. (x,y)
+        'FontSize', 75, ...   % Font size
+        'Color', params.textColor, ...  % RGB color
+        'Name', 'keyOptions');     % Identifier for the object.
+    
     % Turn all objects off for now.
     win.disableAllObjects;
     
 catch e
     win.close;
     rethrow(e);
+end
+end
+
+
+function response = getUserResponse(params,key)
+response = [];
+switch key.charCode
+    % Left/Down
+    case params.interval1Key
+        response = 1;
+        
+        % Right/Up
+    case params.interval2Key
+        response = 2;
+end % switch
 end
 
