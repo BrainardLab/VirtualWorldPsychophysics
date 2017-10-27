@@ -26,11 +26,13 @@ parser = inputParser();
 parser.addParameter('directoryName', 'ExampleCase', @ischar);
 parser.addParameter('subjectName', 'testSubject', @ischar);
 parser.addParameter('fileNumber', 1, @isscalar);
+parser.addParameter('threshold', 0.75, @isscalar);
 parser.parse(varargin{:});
 
 directoryName = parser.Results.directoryName;
 subjectName = parser.Results.subjectName;
 fileNumber = parser.Results.fileNumber;
+threshold = parser.Results.threshold;
 
 projectName = 'VirtualWorldPsychophysics';
 
@@ -55,18 +57,53 @@ for ii = 1:length(data.trialStruct.cmpY)
 end
 
 hFig = figure();
+yLimits = [-0.05 1.05];
+xLimits = [(min(data.trialStruct.cmpY) - min(diff(data.trialStruct.cmpY))/2) ...
+    (max(data.trialStruct.cmpY)+ min(diff(data.trialStruct.cmpY))/2)];
 set(hFig,'units','pixels', 'Position', [1 1 600 500]);
 hold on; box on;
+% plot % comparison
+lData = plot(data.trialStruct.cmpY,fractionCorrect,'*');
 
-plot(data.trialStruct.cmpY,fractionCorrect,'*');
+% plot a vertical line indicating the standard
+lStdY = plot([data.trialStruct.stdY data.trialStruct.stdY], yLimits,':r');
+
+% Find the parameters for a cumulative Gaussian fit
+% Initial Guesses
+a = 10;
+mu = 0;
+sig = 1;
+guess0 = [a mu sig];
+% Call fmins
+ff = @(guess) fitcumgauss(guess,data.trialStruct.cmpY, fractionCorrect);
+pars = fmincon(ff, guess0, [], []);
+xx = linspace(xLimits(1), xLimits(2),1000);
+yy = pars(1)/(pars(3)*sqrt(2*pi)) * exp( -( (xx-pars(2)).^2 ./ (2.*pars(3)).^2 ) );
+yy = cumsum(yy) ./ sum(yy);
+
+lTh = plot(xx, yy);
+% Indicate threshold
+thresholdIndex = find(yy > threshold, 1); % find threshold
+plot([xx(1)-1 xx(thresholdIndex)],[yy(thresholdIndex) yy(thresholdIndex)],'k'); % Horizontal line
+plot([xx(thresholdIndex) xx(thresholdIndex)],[yLimits(1) yy(thresholdIndex)],'k'); % Vertical line
+lThMk = plot(xx(thresholdIndex),yy(thresholdIndex),'.k','MarkerSize',20); % 75% co-ordiante marker
+
+legend([lData lTh lThMk lStdY],...
+    {'Observed', 'Cum Gau Fit', [num2str(threshold*100),'% Threshold'], 'Std. Y'},...
+    'Location','Southeast');
+
+text(xx(thresholdIndex)*1.05,yy(thresholdIndex),...
+    ['(' num2str(xx(thresholdIndex),3) ',' num2str(round(threshold*100)) '%)'],...
+    'FontSize', 20); % Test to indicate the stimulusIntensities of 75% marker
+
 xlabel('Comparison Lightness');
 ylabel('Fraction Comparison Chosen');
 title(sprintf('%s-%d', subjectName, fileNumber));
-xlim([(min(data.trialStruct.cmpY) - min(diff(data.trialStruct.cmpY))/2) ...
-    (max(data.trialStruct.cmpY)+ min(diff(data.trialStruct.cmpY))/2)]);
-ylim([-0.05 1.05]);
+xlim(xLimits);
+ylim(yLimits);
 xticks(data.trialStruct.cmpY);
 hAxis = gca;
+
 set(hAxis,'FontSize',15);
 hAxis.XTickLabelRotation = 90;
 
@@ -81,12 +118,16 @@ figureFile = sprintf('%s/plots/%s-%d.pdf', analysisFolder,subjectName, fileNumbe
 fprintf('\nPlot will be saved in folder:\n%s\n', figureFile);
 
 save2pdf(figureFile, hFig, 600);
+close;
+end
 
+function SSE = fitcumgauss(guess, x, y)
+a = guess(1);
+mu = guess(2);
+sigma = guess(3);
 
+Est = a/(sigma*sqrt(2*pi)) * exp( -( (x-mu).^2 ./ (2.*sigma).^2 ) );
+Est = cumsum(Est) ./ sum(Est);
+SSE = sum( (y - Est).^2 );
 
-
-% save(dataFile,'data','-v7.3');
-% 
-% pathToTrialStruct = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
-%     directoryName,[nameOfTrialStruct '.mat']);
-% temp = load(pathToTrialStruct); trialStruct = temp.trialStruct; clear temp;
+end
