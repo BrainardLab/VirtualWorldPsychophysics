@@ -63,8 +63,8 @@ params.bgColor = [0 0 0];
 params.textColor = [1 0 0];
 params.leftImageLoc = [0 0];
 params.rightImageLoc = [0 0];
-params.leftImageSize = [3 3];
-params.rightImageSize = [3 3];
+params.leftImageSize = [6 6];
+params.rightImageSize = [6 6];
 params.ISI = 0.25;
 params.ITI = 0.25;
 params.stimDuration = 0.5;
@@ -185,6 +185,7 @@ for iterTrials = 1 : length(trialStruct.trialStdIndex)
     
     actualResponse(iterTrials) = str2num(keyPress(iterTrials));
     fprintf('The character typed was %c\n',keyPress(iterTrials));
+    mglWaitSecs(params.ISI);
 end
 
 %% correct response can be found as
@@ -230,9 +231,9 @@ save(dataFile,'data','-v7.3');
 
 fprintf('Data was saved.\n');
 
-% drawPsychometricFunction('directoryName',caseName,...
-%     'subjectName', subjectName,...
-%     'fileNumber', (GetNextDataFileNumber(dataFolder, '.mat')-1));
+drawPsychometricFunction('directoryName',caseName,...
+    'subjectName', subjectName,...
+    'fileNumber', (GetNextDataFileNumber(dataFolder, '.mat')-1));
 end
 %
 % %% Save the response struct
