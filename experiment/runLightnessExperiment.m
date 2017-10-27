@@ -233,7 +233,8 @@ fprintf('Data was saved.\n');
 
 drawPsychometricFunction('directoryName',caseName,...
     'subjectName', subjectName,...
-    'fileNumber', (GetNextDataFileNumber(dataFolder, '.mat')-1));
+    'fileNumber', (GetNextDataFileNumber(dataFolder, '.mat')-1),...
+    'threshold', 0.75);
 end
 %
 % %% Save the response struct
