@@ -3,4 +3,4 @@ runLightnessExperiment('directoryName', 'RandomTargetShapeFixedIlluminantFixedBk
         'nameOfLMSStruct', 'LMSStruct', ...
         'subjectName', 'testSubject');
     
-% mglClose  ListenChar(0);
+% mglClose;  ListenChar(0);
