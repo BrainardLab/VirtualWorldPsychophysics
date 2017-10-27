@@ -88,10 +88,23 @@ for iterBlocks = 1 : nBlocks
     trialStruct.luminanceCategoryIndexInTrial((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels) = ...
         LMSStruct.luminanceCategoryIndex(trialStruct.trialCmpIndex((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels));
 end
-    trialStruct.cmpInterval = zeros(1,nBlocks*nCmpLevels);
-    tempIndex = randperm(nBlocks*nCmpLevels);
-    trialStruct.cmpInterval(tempIndex(1:ceil((nBlocks*nCmpLevels)/2))) = 1;
 
+% Till now each block contains one data point at each comparison level.
+% This is not good as the subject might learn that a particular levels is
+% not going to come once it comes in a block. To fix this the trials need
+% to be shuffled.
+
+newIndex = randperm(nBlocks*nCmpLevels);
+trialStruct.trialStdIndex = trialStruct.trialStdIndex(newIndex);
+trialStruct.trialCmpIndex= trialStruct.trialCmpIndex(newIndex);
+trialStruct.stdYInTrial= trialStruct.stdYInTrial(newIndex);
+trialStruct.cmpYInTrial = trialStruct.cmpYInTrial(newIndex);
+trialStruct.luminanceCategoryIndexInTrial = trialStruct.luminanceCategoryIndexInTrial(newIndex);
+
+trialStruct.cmpInterval = zeros(1,nBlocks*nCmpLevels);
+tempIndex = randperm(nBlocks*nCmpLevels);
+trialStruct.cmpInterval(tempIndex(1:ceil((nBlocks*nCmpLevels)/2))) = 1;
+    
 save(fullfile(getpref(projectName,'stimulusInputBaseDir'),...
     parser.Results.directoryName,[outputFileName,'.mat']),...
     'trialStruct','-v7.3');
