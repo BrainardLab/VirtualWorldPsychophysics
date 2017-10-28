@@ -53,12 +53,13 @@ cmpYIndex = parser.Results.cmpYIndex;
 
 projectName = 'VirtualWorldPsychophysics';
 
-%% Load the RGB struct
-pathToRGBFile = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
+%% Load the LMS struct
+pathToLMSStruct = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
                 directoryName,[LMSstructName,'.mat']);
-load(pathToRGBFile);
+load(pathToLMSStruct);
 
 %%
+trialStruct.LMSstructName = LMSstructName;
 trialStruct.stdY = LMSStruct.uniqueLuminanceLevels(stdYIndex);
 trialStruct.cmpY = LMSStruct.uniqueLuminanceLevels(cmpYIndex);
 trialStruct.nBlocks = nBlocks;
