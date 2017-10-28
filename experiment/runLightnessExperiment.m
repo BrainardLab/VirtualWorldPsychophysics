@@ -71,6 +71,10 @@ params.stimDuration = 0.5;
 params.interval1Key = interval1Key;
 params.interval2Key = interval2Key;
 
+% If the game pad has symbol 1 2 3 4, instead of X A B Y
+if strcmp(interval1Key,'GP:1') params.interval1Key = 'GP:X'; end
+if strcmp(interval2Key,'GP:2') params.interval2Key = 'GP:A'; end
+
 %% Load the trial struct
 pathToTrialStruct = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
     directoryName,[nameOfTrialStruct '.mat']);
@@ -106,6 +110,7 @@ response = struct('subjectName',subjectName, ...
 
 %% Start key capture and clear keyboard queue before we draw the stimuli.
 ListenChar(2);
+mglGetKeyEvent;
 
 % Instantiate a gamePad object
 if (strcmp(controlSignal, 'gamePad'))
@@ -124,13 +129,25 @@ win.enableObject('keyOptions');
 win.draw;
 
 %% Wait for key
-keyPress = GetChar;
+% keyPress = GetChar;
+key = [];
+while (isempty(key))
+    key = mglGetKeyEvent;
+end
 
 %% Turn off start text, add images and wait for another key
 win.disableObject('startText');
 win.disableObject('keyOptions');
 
-for iterTrials = 1 : length(trialStruct.trialStdIndex)
+% Reset the keyboard queue.
+mglGetKeyEvent;
+
+saveData = 1;
+keepLooping = 1;
+iterTrials = 0;
+
+while keepLooping
+    iterTrials = iterTrials + 1;
     stdIndex = trialStruct.trialStdIndex(iterTrials);
     cmpIndex =  trialStruct.trialCmpIndex(iterTrials);
     stdRGBImage = CalFormatToImage(SensorToSettings(cal,LMSStruct.LMSImageInCalFormat(:,:,stdIndex)),LMSStruct.cropImageSizeX,LMSStruct.cropImageSizeY);
@@ -181,33 +198,96 @@ for iterTrials = 1 : length(trialStruct.trialStdIndex)
     
     %% Wait for key
     FlushEvents;
-    keyPress(iterTrials) = GetChar;
     
-    actualResponse(iterTrials) = str2num(keyPress(iterTrials));
-    fprintf('The character typed was %c\n',keyPress(iterTrials));
-    mglWaitSecs(params.ISI);
+    key =[];
+    while (isempty(key))
+        % Get user response from keyboard
+        if (strcmp(controlSignal, 'keyboard'))
+            key = mglGetKeyEvent;
+            if (~isempty(key))
+                switch key.charCode
+                    case {params.interval1Key,params.interval2Key}
+                        keyPress(iterTrials) = getUserResponse(params,key);
+                    case {'q'}
+                        fprintf('Do you want to quit? Press Y for Yes, otherwise give your response \n');
+                        key2 = [];
+                        while (isempty(key2))
+                            key2 = mglGetKeyEvent;
+                            if (~isempty(key2))
+                                switch key2.charCode
+                                    case {params.interval1Key,params.interval2Key}
+                                        keyPress(iterTrials) = getUserResponse(params,key2);
+                                    case {'y'}
+                                        keepLooping = false;
+                                    otherwise
+                                        key2 = [];
+                                end
+                            end                            
+                        end
+                    otherwise
+                        key = [];
+                end
+            end
+            % Get user response from gamePad
+        else
+            key = gamePad.getKeyEvent();
+            if (~isempty(key))
+                switch key.charCode
+                    case {params.interval1Key,params.interval2Key}
+                        keyPress(iterTrials) = getUserResponse(params,key);
+                    otherwise
+                        key = [];
+                end
+            end
+            pressedKeyboard = mglGetKeyEvent;
+            if (~isempty(pressedKeyboard))
+                switch pressedKeyboard.charCode
+                    case {'q'}
+                        fprintf('Do you want to quit? Press Y for Yes, otherwise give your response using gamepad \n');
+                        key2 = [];
+                        keyG = [];
+                        FlushEvents;
+                        while (isempty(key2) && isempty(keyG))
+                            key2 = mglGetKeyEvent;
+                            keyG = gamePad.getKeyEvent();
+                            if (~isempty(key2))
+                                switch key2.charCode
+                                    case {'y'}
+                                        keepLooping = false;
+                                        key = 0; % set key = 0 in order to exit this loop
+                                    otherwise
+                                        key2 = [];
+                                end
+                            elseif (~isempty(keyG))
+                                switch keyG.charCode
+                                    case {params.interval1Key,params.interval2Key}
+                                        key = keyG;
+                                        keyPress(iterTrials) = getUserResponse(params,key);
+                                    otherwise
+                                        keyG = [];
+                                end
+                            end
+                        end
+                end
+            end
+        end
+    end
+    
+% Check if the experiment continues, otherwise quit without saving data    
+    if keepLooping
+        actualResponse(iterTrials) = keyPress(iterTrials);
+        fprintf('The character typed was %d\n',keyPress(iterTrials));
+        mglWaitSecs(params.ISI);
+    else
+        fprintf('Quitting without saving any data.\n');
+        saveData = 0;
+    end
+
+% Check if end of experiment is reached
+    if (iterTrials == length(trialStruct.trialStdIndex))
+        keepLooping = false;
+    end
 end
-
-%% correct response can be found as
-% (trialStruct.stdYInTrial > trialStruct.cmpYInTrial).*(trialStruct.cmpInterval) + ...
-% (~(trialStruct.stdYInTrial > trialStruct.cmpYInTrial)).*(~(trialStruct.cmpInterval))
-response.correctResponse = correctResponse;
-response.actualResponse = actualResponse;
-response.keyPress = keyPress;
-
-%% End Time of Experiment
-endTime = datestr(now);
-
-%% Make data struct
-data = struct;
-data.response = response;
-data.trialStruct = trialStruct;
-data.startTime = startTime;
-data.endTime = endTime;
-data.cal = cal;
-data.LMSStruct = LMSStruct;
-data.subjectName = subjectName;
-
 %% Done with experiment, close up
 %
 % Close our display.
@@ -216,25 +296,44 @@ win.close;
 % Make sure key capture is off.
 ListenChar(0);
 
-%% Save data here
-
-% Figure out some data saving parameters.
-dataFolder = fullfile(getpref(projectName,'dataDir'), caseName, subjectName);
-if ~exist(dataFolder, 'dir')
-    mkdir(dataFolder);
+if saveData
+    %% correct response can be found as
+    response.correctResponse = correctResponse;
+    response.actualResponse = actualResponse;
+    response.keyPress = keyPress;
+    
+    %% End Time of Experiment
+    endTime = datestr(now);
+    
+    %% Make data struct
+    data = struct;
+    data.response = response;
+    data.trialStruct = trialStruct;
+    data.startTime = startTime;
+    data.endTime = endTime;
+    data.cal = cal;
+    data.LMSStruct = LMSStruct;
+    data.subjectName = subjectName;
+    
+    %% Save data here
+    % Figure out some data saving parameters.
+    dataFolder = fullfile(getpref(projectName,'dataDir'), caseName, subjectName);
+    if ~exist(dataFolder, 'dir')
+        mkdir(dataFolder);
+    end
+    
+    dataFile = sprintf('%s/%s-%d.mat', dataFolder,subjectName, GetNextDataFileNumber(dataFolder, '.mat'));
+    fprintf('\nData will be saved in:\n%s\n', dataFile);
+    
+    save(dataFile,'data','-v7.3');
+    
+    fprintf('Data was saved.\n');
+    
+    drawPsychometricFunction('directoryName',caseName,...
+        'subjectName', subjectName,...
+        'fileNumber', (GetNextDataFileNumber(dataFolder, '.mat')-1),...
+        'threshold', 0.75);
 end
-
-dataFile = sprintf('%s/%s-%d.mat', dataFolder,subjectName, GetNextDataFileNumber(dataFolder, '.mat'));
-fprintf('\nData will be saved in:\n%s\n', dataFile);
-
-save(dataFile,'data','-v7.3');
-
-fprintf('Data was saved.\n');
-
-drawPsychometricFunction('directoryName',caseName,...
-    'subjectName', subjectName,...
-    'fileNumber', (GetNextDataFileNumber(dataFolder, '.mat')-1),...
-    'threshold', 0.75);
 end
 %
 % %% Save the response struct
