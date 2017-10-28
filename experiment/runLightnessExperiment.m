@@ -18,7 +18,6 @@ function runLightnessExperiment(varargin)
 % Optional key/value pairs:
 %    'directoryName' : (string) Directory name of the case which will be studied (default 'ExampleDirectory')
 %    'nameOfTrialStruct' : (string) Name of trail stuct to be used in experiment (defalult 'exampleTrial')
-%    'nameOfLMSStruct' : (string) Name of LMS stuct to be used in experiment (defalult 'LMSStruct')
 %    'nameOfCalibrationFile : (string) Name of calibration file (default 'NEC_MultisyncPA241W.mat')
 %    'whichCalibration' : (scalar) Which calibration in file to use (default Inf -> most recent)
 %    'controlSignal' : (string) How to collect user response (options: 'gamePad', 'keyboard', default 'keyboard')
@@ -28,7 +27,6 @@ function runLightnessExperiment(varargin)
 parser = inputParser();
 parser.addParameter('directoryName', 'ExampleCase', @ischar);
 parser.addParameter('nameOfTrialStruct', 'exampleTrial', @ischar);
-parser.addParameter('nameOfLMSStruct', 'LMSStruct', @ischar);
 parser.addParameter('nameOfCalibrationFile', 'NEC_MultisyncPA241W', @ischar);
 parser.addParameter('whichCalibration', Inf, @isscalar);
 parser.addParameter('controlSignal', 'keyboard', @ischar);
@@ -39,7 +37,6 @@ parser.parse(varargin{:});
 
 directoryName = parser.Results.directoryName;
 nameOfTrialStruct = parser.Results.nameOfTrialStruct;
-nameOfLMSStruct = parser.Results.nameOfLMSStruct;
 nameOfCalibrationFile = parser.Results.nameOfCalibrationFile;
 whichCalibration = parser.Results.whichCalibration;
 controlSignal = parser.Results.controlSignal;
@@ -81,8 +78,9 @@ pathToTrialStruct = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
 temp = load(pathToTrialStruct); trialStruct = temp.trialStruct; clear temp;
 
 %% Load the LMS struct
+LMSstructName = trialStruct.LMSstructName;
 pathToLMSStruct = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
-    directoryName,[nameOfLMSStruct '.mat']);
+    directoryName,[LMSstructName '.mat']);
 temp = load(pathToLMSStruct); LMSStruct = temp.LMSStruct; clear temp;
 
 %% Load calibration file
