@@ -54,8 +54,8 @@ caseName = directoryName;
 % May want to read these from a file at
 % some point.
 params.screenDimsCm = [59.5 33.8];
-params.fpSize = [0.1 0.1];
-params.fpColor = [1 1 0];
+params.fpSize = [0.1 0.1]; % fixation point size
+params.fpColor = [34 139 34]/255; % fixation point color
 params.bgColor = [0 0 0];
 params.textColor = [1 0 0];
 params.leftImageLoc = [0 0];
