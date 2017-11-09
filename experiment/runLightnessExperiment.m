@@ -32,6 +32,7 @@ parser.addParameter('whichCalibration', Inf, @isscalar);
 parser.addParameter('controlSignal', 'keyboard', @ischar);
 parser.addParameter('interval1Key', '1', @ischar);
 parser.addParameter('interval2Key', '2', @ischar);
+parser.addParameter('feedback', 0, @isscalar);
 parser.addParameter('subjectName', 'testSubject', @ischar);
 parser.parse(varargin{:});
 
@@ -45,10 +46,12 @@ interval2Key = parser.Results.interval2Key;
 subjectName = parser.Results.subjectName;
 
 projectName = 'VirtualWorldPsychophysics';
-
+ExperimentType = 'Lightness';
 % May want to change this to name the experiment cases differently
 caseName = directoryName;
 
+rightSound = sin(2*pi*[1:1000]/10)/10;
+wrongSound = rand(1,1000).*sin(2*pi*[1:1000]/10)/10;
 %% Some experimental parameters.
 %
 % May want to read these from a file at
@@ -275,7 +278,15 @@ while keepLooping
     if keepLooping
         actualResponse(iterTrials) = keyPress(iterTrials);
         fprintf('The character typed was %d\n',keyPress(iterTrials));
-        mglWaitSecs(params.ISI);
+        % Give feedback if option is on
+        if parser.Results.feedback
+            if (actualResponse(iterTrials) == correctResponse(iterTrials));
+                sound(rightSound);
+            else
+                sound(wrongSound);
+            end
+        end
+        mglWaitSecs(params.ISI);        
     else
         fprintf('Quitting without saving any data.\n');
         saveData = 0;
@@ -315,7 +326,7 @@ if saveData
     
     %% Save data here
     % Figure out some data saving parameters.
-    dataFolder = fullfile(getpref(projectName,'dataDir'), caseName, subjectName);
+    dataFolder = fullfile(getpref(projectName,'dataDir'), ExperimentType, caseName, subjectName, datestr(now,1));
     if ~exist(dataFolder, 'dir')
         mkdir(dataFolder);
     end
@@ -327,8 +338,10 @@ if saveData
     
     fprintf('Data was saved.\n');
     
-    drawPsychometricFunction('directoryName',caseName,...
-        'subjectName', subjectName,...
+    drawPsychometricFunction('ExperimentType', ExperimentType,...
+        'directoryName', caseName, ...
+        'subjectName', subjectName, ...
+        'date', datestr(now,1), ...
         'fileNumber', (GetNextDataFileNumber(dataFolder, '.mat')-1),...
         'threshold', 0.75);
 end
