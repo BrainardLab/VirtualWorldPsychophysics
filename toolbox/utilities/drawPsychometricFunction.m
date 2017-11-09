@@ -23,21 +23,25 @@ function drawPsychometricFunction(varargin)
 
 %% Get inputs and defaults.
 parser = inputParser();
+parser.addParameter('experimentType', 'Lightness', @ischar);
 parser.addParameter('directoryName', 'ExampleCase', @ischar);
 parser.addParameter('subjectName', 'testSubject', @ischar);
+parser.addParameter('dateString', datestr(now,1), @ischar);
 parser.addParameter('fileNumber', 1, @isscalar);
 parser.addParameter('threshold', 0.75, @isscalar);
 parser.parse(varargin{:});
 
+experimentType = parser.Results.experimentType;
 directoryName = parser.Results.directoryName;
 subjectName = parser.Results.subjectName;
+dateString = parser.Results.dateString;
 fileNumber = parser.Results.fileNumber;
 threshold = parser.Results.threshold;
 
 projectName = 'VirtualWorldPsychophysics';
 
 %% Load the data struct
-dataFolder = fullfile(getpref(projectName,'dataDir'), directoryName, subjectName);
+dataFolder = fullfile(getpref(projectName,'dataDir'), experimentType, directoryName, subjectName, dateString);
 
 dataFile = sprintf('%s/%s-%d.mat', dataFolder,subjectName, fileNumber);
 
@@ -71,7 +75,7 @@ lStdY = plot([data.trialStruct.stdY data.trialStruct.stdY], yLimits,':r');
 % Find the parameters for a cumulative Gaussian fit
 % Initial Guesses
 a = 10;
-mu = 0;
+mu = data.trialStruct.stdY;
 sig = 1;
 guess0 = [a mu sig];
 % Call fmins
@@ -92,7 +96,7 @@ legend([lData lTh lThMk lStdY],...
     {'Observed', 'Cum Gau Fit', [num2str(threshold*100),'% Threshold'], 'Std. Y'},...
     'Location','Southeast');
 
-text(xx(thresholdIndex)*1.05,yy(thresholdIndex),...
+text(xx(thresholdIndex)*.95,1.05*yy(thresholdIndex),...
     ['(' num2str(xx(thresholdIndex),3) ',' num2str(round(threshold*100)) '%)'],...
     'FontSize', 20); % Test to indicate the stimulusIntensities of 75% marker
 
@@ -108,7 +112,7 @@ set(hAxis,'FontSize',15);
 hAxis.XTickLabelRotation = 90;
 
 %% Save the plot and the analysis data
-analysisFolder = fullfile(getpref(projectName,'analysisDir'), directoryName, subjectName);
+analysisFolder = fullfile(getpref(projectName,'analysisDir'), experimentType, directoryName, subjectName, dateString);
 if ~exist(fullfile(analysisFolder,'plots'), 'dir')
     mkdir(fullfile(analysisFolder,'plots'));
 end
