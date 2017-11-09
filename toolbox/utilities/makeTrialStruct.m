@@ -65,7 +65,7 @@ trialStruct.cmpY = LMSStruct.uniqueLuminanceLevels(cmpYIndex);
 trialStruct.nBlocks = nBlocks;
 nCmpLevels = length(cmpYIndex);
 
-indexOfStandardImages = find(LMSStruct.luminanceCategoryIndex == stdYIndex);
+indexOfStandardImages = find(LMSStruct.luminanceLevelIndex == stdYIndex);
 
 for iterBlocks = 1 : nBlocks
 %     for iterCmpLevels = 1 : length()
@@ -81,13 +81,17 @@ for iterBlocks = 1 : nBlocks
     % level
     tempCmpLvl = cmpYIndex(randperm(nCmpLevels));
     for ii = 1 : length(tempCmpLvl)
-        indexOfCmpImages = find(LMSStruct.luminanceCategoryIndex == tempCmpLvl(ii));
+        indexOfCmpImages = find(LMSStruct.luminanceLevelIndex == tempCmpLvl(ii));
         trialStruct.trialCmpIndex((iterBlocks-1)*nCmpLevels+ii) = indexOfCmpImages(tempStdIndex(ii));
     end
     trialStruct.cmpYInTrial((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels) = ...
         LMSStruct.luminanceLevels(trialStruct.trialCmpIndex((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels));
-    trialStruct.luminanceCategoryIndexInTrial((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels) = ...
-        LMSStruct.luminanceCategoryIndex(trialStruct.trialCmpIndex((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels));
+    trialStruct.luminanceLevelIndexInTrialCmp((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels) = ...
+        LMSStruct.luminanceLevelIndex(trialStruct.trialCmpIndex((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels));
+
+    trialStruct.luminanceLevelIndexInTrialStd((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels) = ...
+        LMSStruct.luminanceLevelIndex(trialStruct.trialStdIndex((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels));
+
 end
 
 % Till now each block contains one data point at each comparison level.
@@ -100,7 +104,8 @@ trialStruct.trialStdIndex = trialStruct.trialStdIndex(newIndex);
 trialStruct.trialCmpIndex= trialStruct.trialCmpIndex(newIndex);
 trialStruct.stdYInTrial= trialStruct.stdYInTrial(newIndex);
 trialStruct.cmpYInTrial = trialStruct.cmpYInTrial(newIndex);
-trialStruct.luminanceCategoryIndexInTrial = trialStruct.luminanceCategoryIndexInTrial(newIndex);
+trialStruct.luminanceLevelIndexInTrialCmp = trialStruct.luminanceLevelIndexInTrialCmp(newIndex);
+trialStruct.luminanceLevelIndexInTrialStd = trialStruct.luminanceLevelIndexInTrialStd(newIndex);
 
 trialStruct.cmpInterval = zeros(1,nBlocks*nCmpLevels);
 tempIndex = randperm(nBlocks*nCmpLevels);
