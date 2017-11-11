@@ -61,8 +61,12 @@ setpref(theProject,'multispectralInputBaseDir',multispectralInputBaseDir);
 setpref(theProject,'stimulusInputBaseDir',stimulusInputBaseDir);
 setpref(theProject,'stimulusDefInputBaseDir',stimulusDefInputBaseDir);
 
-% Calibration data lives in a project specific directory, which we define here.
+% Calibration data lives in a project specific directory, which we define
+% here.  Also set the BrainardLabToolbox 'CalDataFolder' preference, so
+% that calibration data will get written to the correct place if the
+% calibration is run after the tbUseProject (which it should be).
 setpref(theProject,'calibrationDir',fullfile(baseDir,'CNST_materials',theProject,'CalibrationData'));
+setpref('BrainardLabToolbox','CalDataFolder',getpref(theProject,'calibrationDir'));
 
 % We sometimes need some images for testing.  We don't want these in the code repository (too big, 
 % separate code and data), so we define their home here.
