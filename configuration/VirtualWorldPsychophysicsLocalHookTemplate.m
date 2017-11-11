@@ -55,11 +55,19 @@ multispectralInputBaseDir = fullfile(baseDir,'IBIO_analysis','VirtualWorldColorC
 stimulusInputBaseDir = fullfile(baseDir,'CNST_materials',theProject,'LightnessCasesForExperiment');
 stimulusDefInputBaseDir = fullfile(projectBaseDir,'stimuli');
 
+% This is where the data will be stored
+dataDir = fullfile(baseDir,'CNST_materials',theProject,'data');
+
+% This is where the initial psychometric functions will be stored
+analysisDir = fullfile(baseDir,'CNST_materials',theProject,'Analysis');
+
 % Set the preferences
 setpref(theProject,'outputBaseDir',outputBaseDir);
 setpref(theProject,'multispectralInputBaseDir',multispectralInputBaseDir);
 setpref(theProject,'stimulusInputBaseDir',stimulusInputBaseDir);
 setpref(theProject,'stimulusDefInputBaseDir',stimulusDefInputBaseDir);
+setpref(theProject,'dataDir',dataDir);
+setpref(theProject,'analysisDir',analysisDir);
 
 % Calibration data lives in a project specific directory, which we define
 % here.  Also set the BrainardLabToolbox 'CalDataFolder' preference, so

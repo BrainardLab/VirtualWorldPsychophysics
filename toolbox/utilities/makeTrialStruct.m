@@ -38,51 +38,79 @@ parser = inputParser();
 parser.addParameter('directoryName', 'ExampleCase', @ischar);
 parser.addParameter('LMSstructName', 'LMSStruct', @ischar);
 parser.addParameter('outputFileName', 'exampleTrial', @ischar);
-parser.addParameter('nTrials', 10, @isscalar);
-parser.addParameter('stdY', 5, @isnumeric);
-parser.addParameter('cmpY', (1:10), @isnumeric);
+parser.addParameter('nBlocks', 10, @isscalar);
+parser.addParameter('stdYIndex', 5, @isnumeric);
+parser.addParameter('cmpYIndex', (1:10), @isnumeric);
 parser.parse(varargin{:});
 
 
 directoryName = parser.Results.directoryName;
 LMSstructName = parser.Results.LMSstructName;
 outputFileName = parser.Results.outputFileName;
-nTrials = parser.Results.nTrials;
-stdY = parser.Results.stdY;
-cmpY = parser.Results.cmpY;
+nBlocks = parser.Results.nBlocks;
+stdYIndex = parser.Results.stdYIndex;
+cmpYIndex = parser.Results.cmpYIndex;
 
 projectName = 'VirtualWorldPsychophysics';
 
-%% Load the RGB struct
-% The load call needs to be changed use pref for VWP directory on dropbox
-pathToRGBFile = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
+%% Load the LMS struct
+pathToLMSStruct = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
                 directoryName,[LMSstructName,'.mat']);
-load(pathToRGBFile);
+load(pathToLMSStruct);
 
 %%
-trialStruct.stdY = LMSStruct.uniqueLuminanceLevels(stdY);
-trialStruct.cmpY = LMSStruct.uniqueLuminanceLevels(cmpY);
-trialStruct.nTrials = nTrials;
+trialStruct.LMSstructName = LMSstructName;
+trialStruct.stdY = LMSStruct.uniqueLuminanceLevels(stdYIndex);
+trialStruct.cmpY = LMSStruct.uniqueLuminanceLevels(cmpYIndex);
+trialStruct.nBlocks = nBlocks;
+nCmpLevels = length(cmpYIndex);
 
-indexOfStandardImages = find(LMSStruct.luminanceCategoryIndex == stdY);
+indexOfStandardImages = find(LMSStruct.luminanceLevelIndex == stdYIndex);
 
-for ii = 1 : nTrials
-    % Pick a random index for the standard image
-    tempStdIndex = randi(length(indexOfStandardImages));
-    trialStruct.trialStdIndex(ii) = indexOfStandardImages(tempStdIndex);
-    trialStruct.stdYInTrial(ii) = LMSStruct.luminanceLevels(trialStruct.trialStdIndex(ii));
+for iterBlocks = 1 : nBlocks
+%     for iterCmpLevels = 1 : length()
+    % Pick random indices for the standard image equal to the number of
+    % comparison levels
+    tempStdIndex = randi(length(indexOfStandardImages),1,nCmpLevels);
+    trialStruct.trialStdIndex((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels) = ...
+        indexOfStandardImages(tempStdIndex);
+    trialStruct.stdYInTrial((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels) = ...
+        LMSStruct.luminanceLevels(trialStruct.trialStdIndex((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels));
     
-    % Pick a comparison level
-    tempCmpLvl = cmpY(randi(length(cmpY)));
-    indexOfCmpImages = find(LMSStruct.luminanceCategoryIndex == tempCmpLvl);
-    trialStruct.trialCmpIndex(ii) = indexOfCmpImages(tempStdIndex);
-    trialStruct.cmpYInTrial(ii) = LMSStruct.luminanceLevels(trialStruct.trialCmpIndex(ii));
-    trialStruct.luminanceCategoryIndexInTrial(ii) = LMSStruct.luminanceCategoryIndex(trialStruct.trialCmpIndex(ii));
-end
-    trialStruct.cmpInterval = zeros(1,nTrials);
-    tempIndex = randperm(nTrials);
-    trialStruct.cmpInterval(tempIndex(1:ceil(nTrials/2))) = 1;
+    % Pick a comparison levels randomly for each randomly chosen standard
+    % level
+    tempCmpLvl = cmpYIndex(randperm(nCmpLevels));
+    for ii = 1 : length(tempCmpLvl)
+        indexOfCmpImages = find(LMSStruct.luminanceLevelIndex == tempCmpLvl(ii));
+        trialStruct.trialCmpIndex((iterBlocks-1)*nCmpLevels+ii) = indexOfCmpImages(tempStdIndex(ii));
+    end
+    trialStruct.cmpYInTrial((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels) = ...
+        LMSStruct.luminanceLevels(trialStruct.trialCmpIndex((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels));
+    trialStruct.luminanceLevelIndexInTrialCmp((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels) = ...
+        LMSStruct.luminanceLevelIndex(trialStruct.trialCmpIndex((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels));
 
+    trialStruct.luminanceLevelIndexInTrialStd((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels) = ...
+        LMSStruct.luminanceLevelIndex(trialStruct.trialStdIndex((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels));
+
+end
+
+% Till now each block contains one data point at each comparison level.
+% This is not good as the subject might learn that a particular levels is
+% not going to come once it comes in a block. To fix this the trials need
+% to be shuffled.
+
+newIndex = randperm(nBlocks*nCmpLevels);
+trialStruct.trialStdIndex = trialStruct.trialStdIndex(newIndex);
+trialStruct.trialCmpIndex= trialStruct.trialCmpIndex(newIndex);
+trialStruct.stdYInTrial= trialStruct.stdYInTrial(newIndex);
+trialStruct.cmpYInTrial = trialStruct.cmpYInTrial(newIndex);
+trialStruct.luminanceLevelIndexInTrialCmp = trialStruct.luminanceLevelIndexInTrialCmp(newIndex);
+trialStruct.luminanceLevelIndexInTrialStd = trialStruct.luminanceLevelIndexInTrialStd(newIndex);
+
+trialStruct.cmpInterval = zeros(1,nBlocks*nCmpLevels);
+tempIndex = randperm(nBlocks*nCmpLevels);
+trialStruct.cmpInterval(tempIndex(1:ceil((nBlocks*nCmpLevels)/2))) = 1;
+    
 save(fullfile(getpref(projectName,'stimulusInputBaseDir'),...
     parser.Results.directoryName,[outputFileName,'.mat']),...
     'trialStruct','-v7.3');
