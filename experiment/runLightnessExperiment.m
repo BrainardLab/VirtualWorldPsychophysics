@@ -61,10 +61,10 @@ params.fpSize = [0.1 0.1]; % fixation point size
 params.fpColor = [34 139 34]/255; % fixation point color
 params.bgColor = [0 0 0];
 params.textColor = [1 0 0];
-params.leftImageLoc = [0 0];
-params.rightImageLoc = [0 0];
-params.leftImageSize = [6 6];
-params.rightImageSize = [6 6];
+params.firstImageLoc = [0 0];
+params.secondImageLoc = [0 0];
+params.firstImageSize = [3.701 3.337];
+params.secondImageSize = [3.701 3.337];
 params.ISI = 0.25;
 params.ITI = 0.25;
 params.stimDuration = 0.5;
@@ -173,8 +173,8 @@ while keepLooping
     end
     
     % Write the images into the window and disable
-    win.addImage(params.leftImageLoc, params.leftImageSize, firstImage, 'Name', 'firstImage');
-    win.addImage(params.rightImageLoc, params.rightImageSize, secondImage, 'Name', 'secondImage');
+    win.addImage(params.firstImageLoc, params.firstImageSize, firstImage, 'Name', 'firstImage');
+    win.addImage(params.secondImageLoc, params.secondImageSize, secondImage, 'Name', 'secondImage');
     win.disableObject('firstImage');
     win.disableObject('secondImage');
     
