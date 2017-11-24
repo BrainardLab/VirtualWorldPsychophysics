@@ -41,6 +41,7 @@ parser.addParameter('outputFileName', 'exampleTrial', @ischar);
 parser.addParameter('nBlocks', 10, @isscalar);
 parser.addParameter('stdYIndex', 5, @isnumeric);
 parser.addParameter('cmpYIndex', (1:10), @isnumeric);
+parser.addParameter('comparisionTargetSameSpectralShape', true, @islogical);
 parser.parse(varargin{:});
 
 
@@ -77,18 +78,21 @@ for iterBlocks = 1 : nBlocks
     trialStruct.stdYInTrial((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels) = ...
         LMSStruct.luminanceLevels(trialStruct.trialStdIndex((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels));
     
-    % Pick a comparison levels randomly for each randomly chosen standard
+    % Pick a comparison level randomly for each randomly chosen standard
     % level
     tempCmpLvl = cmpYIndex(randperm(nCmpLevels));
     for ii = 1 : length(tempCmpLvl)
         indexOfCmpImages = find(LMSStruct.luminanceLevelIndex == tempCmpLvl(ii));
-        trialStruct.trialCmpIndex((iterBlocks-1)*nCmpLevels+ii) = indexOfCmpImages(tempStdIndex(ii));
+        if (parser.Results.comparisionTargetSameSpectralShape)
+            trialStruct.trialCmpIndex((iterBlocks-1)*nCmpLevels+ii) = indexOfCmpImages(tempStdIndex(ii));
+        else
+            trialStruct.trialCmpIndex((iterBlocks-1)*nCmpLevels+ii) = indexOfCmpImages(randi(length(indexOfCmpImages)));
+        end
     end
     trialStruct.cmpYInTrial((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels) = ...
         LMSStruct.luminanceLevels(trialStruct.trialCmpIndex((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels));
     trialStruct.luminanceLevelIndexInTrialCmp((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels) = ...
         LMSStruct.luminanceLevelIndex(trialStruct.trialCmpIndex((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels));
-
     trialStruct.luminanceLevelIndexInTrialStd((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels) = ...
         LMSStruct.luminanceLevelIndex(trialStruct.trialStdIndex((iterBlocks-1)*nCmpLevels+1:iterBlocks*nCmpLevels));
 
