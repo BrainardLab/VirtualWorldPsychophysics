@@ -291,7 +291,37 @@ while keepLooping
         fprintf('Quitting without saving any data.\n');
         saveData = 0;
     end
+    
+    % Check if one third of experiment is reached
+    if (iterTrials == ceil(length(trialStruct.trialStdIndex)/3))
+        win.enableObject('oneThirdText');
+        win.draw;
+        %% Wait for key
+        key = [];
+        while (isempty(key))
+            key = mglGetKeyEvent;
+        end
+        %% Turn off start text, add images and wait for another key
+        win.disableObject('oneThirdText');
+        % Reset the keyboard queue.
+        mglGetKeyEvent;
+    end
 
+% Check if two third of experiment is reached
+    if (iterTrials == ceil(2*length(trialStruct.trialStdIndex)/3))
+        win.enableObject('twoThirdText');
+        win.draw;
+        %% Wait for key
+        key = [];
+        while (isempty(key))
+            key = mglGetKeyEvent;
+        end
+        %% Turn off start text, add images and wait for another key
+        win.disableObject('twoThirdText');
+        % Reset the keyboard queue.
+        mglGetKeyEvent;
+    end
+    
 % Check if end of experiment is reached
     if (iterTrials == length(trialStruct.trialStdIndex))
         keepLooping = false;
@@ -343,7 +373,8 @@ if saveData
         'subjectName', subjectName, ...
         'date', datestr(now,1), ...
         'fileNumber', (GetNextDataFileNumber(dataFolder, '.mat')-1),...
-        'threshold', 0.75);
+        'thresholdU', 0.75, ...
+        'thresholdL', 0.25);
 end
 end
 %
@@ -381,6 +412,20 @@ try
         'Color', params.textColor, ...  % RGB color
         'Name', 'keyOptions');     % Identifier for the object.
     
+    % Add text
+    win.addText('One third of trials over. Hit any button to continue', ...        % Text to display
+        'Center', [0 8], ...% Where to center the text. (x,y)
+        'FontSize', 75, ...   % Font size
+        'Color', params.textColor, ...  % RGB color
+        'Name', 'oneThirdText');     % Identifier for the object.
+
+    % Add text
+    win.addText('Two third of trials over. Hit any button to continue', ...        % Text to display
+        'Center', [0 8], ...% Where to center the text. (x,y)
+        'FontSize', 75, ...   % Font size
+        'Color', params.textColor, ...  % RGB color
+        'Name', 'twoThirdText');     % Identifier for the object.
+
     % Turn all objects off for now.
     win.disableAllObjects;
     
