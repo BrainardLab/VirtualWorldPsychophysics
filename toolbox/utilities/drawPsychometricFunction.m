@@ -20,7 +20,8 @@ function drawPsychometricFunction(varargin)
 %    'directoryName' : (string) Directory name of the case which will be studied (default 'ExampleDirectory')
 %    'subjectName' : (string) Name of subject (default 'testSubject')
 %    'fileNumber' : (scalar) (default 1)
-
+%    'thresholdU' : (scalar) Upper Threshold
+%    'thresholdL' : (scalar) Lower Threshold
 %% Get inputs and defaults.
 parser = inputParser();
 parser.addParameter('experimentType', 'Lightness', @ischar);
@@ -28,7 +29,8 @@ parser.addParameter('directoryName', 'ExampleCase', @ischar);
 parser.addParameter('subjectName', 'testSubject', @ischar);
 parser.addParameter('dateString', datestr(now,1), @ischar);
 parser.addParameter('fileNumber', 1, @isscalar);
-parser.addParameter('threshold', 0.75, @isscalar);
+parser.addParameter('thresholdU', 0.75, @isscalar);
+parser.addParameter('thresholdL', 0.25, @isscalar);
 parser.parse(varargin{:});
 
 experimentType = parser.Results.experimentType;
@@ -36,7 +38,8 @@ directoryName = parser.Results.directoryName;
 subjectName = parser.Results.subjectName;
 dateString = parser.Results.dateString;
 fileNumber = parser.Results.fileNumber;
-threshold = parser.Results.threshold;
+thresholdU = parser.Results.thresholdU;
+thresholdL = parser.Results.thresholdL;
 
 projectName = 'VirtualWorldPsychophysics';
 
@@ -68,11 +71,9 @@ xLimits = [(min(data.trialStruct.cmpY) - min(diff(data.trialStruct.cmpY))/2) ...
     (max(data.trialStruct.cmpY)+ min(diff(data.trialStruct.cmpY))/2)];
 set(hFig,'units','pixels', 'Position', [1 1 600 500]);
 hold on; box on;
-% plot % comparison
-lData = plot(data.trialStruct.cmpY,fractionCorrect,'*');
 
 % plot a vertical line indicating the standard
-lStdY = plot([data.trialStruct.stdY data.trialStruct.stdY], yLimits,':r');
+lStdY = plot([data.trialStruct.stdY data.trialStruct.stdY], yLimits,':r','LineWidth', 1);
 
 % Psychometric function form
 PF = @PAL_CumulativeNormal;         % Alternatives: PAL_Gumbel, PAL_Weibull, PAL_CumulativeNormal, PAL_HyperbolicSecant
@@ -104,24 +105,40 @@ yy = PF(paramsValues,xx');
 psePal = PF(paramsValues,0.5,'inverse');
 threshPal = PF(paramsValues,0.75,'inverse')-psePal;
 
-lTh = plot(xx, yy);
-% Indicate threshold
-thresholdIndex = find(yy > threshold, 1); % find threshold
+% Plot Fit Line
+lTh = plot(xx, yy, 'LineWidth', 1);
+
+% Plot Raw Data % comparison
+lData = plot(data.trialStruct.cmpY,fractionCorrect,'*');
+
+% Indicate 75% threshold
+thresholdIndex = find(yy > thresholdU, 1); % find threshold
 plot([xx(1)-1 xx(thresholdIndex)],[yy(thresholdIndex) yy(thresholdIndex)],'k'); % Horizontal line
 plot([xx(thresholdIndex) xx(thresholdIndex)],[yLimits(1) yy(thresholdIndex)],'k'); % Vertical line
 lThMk = plot(xx(thresholdIndex),yy(thresholdIndex),'.k','MarkerSize',20); % 75% co-ordiante marker
 
-legend([lData lTh lThMk lStdY],...
-    {'Observed', 'Cum Gau Fit', [num2str(threshold*100),'% Threshold'], 'Std. Y'},...
+text(min(data.trialStruct.cmpY),0.9,...
+    ['(' num2str(xx(thresholdIndex),3) ',' num2str(round(thresholdU*100)) '%)'],...
+    'FontSize', 15); % Test to indicate the stimulusIntensities of 75% marker
+
+% Indicate 25% threshold
+thresholdIndex = find(yy > thresholdL, 1); % find threshold
+plot([xx(1)-1 xx(thresholdIndex)],[yy(thresholdIndex) yy(thresholdIndex)],'k'); % Horizontal line
+plot([xx(thresholdIndex) xx(thresholdIndex)],[yLimits(1) yy(thresholdIndex)],'k'); % Vertical line
+lThMk = plot(xx(thresholdIndex),yy(thresholdIndex),'.k','MarkerSize',20); % 25% co-ordiante marker
+
+text(min(data.trialStruct.cmpY),0.4,...
+    ['(' num2str(xx(thresholdIndex),3) ',' num2str(round(thresholdL*100)) '%)'],...
+    'FontSize', 15); % Test to indicate the stimulusIntensities of 75% marker
+
+legend([lData lTh lStdY],...
+    {'Observation', 'Cum Gauss', 'Standard'},...
     'Location','Southeast');
 
-text(min(data.trialStruct.cmpY),0.9,...
-    ['(' num2str(xx(thresholdIndex),3) ',' num2str(round(threshold*100)) '%)'],...
-    'FontSize', 20); % Test to indicate the stimulusIntensities of 75% marker
 
 xlabel('Comparison Lightness');
 ylabel(['Fraction Comparison Chosen (N per level =',num2str(length(trialsWithThisCmpLvl)),')']);
-title(sprintf('%s-%d', subjectName, fileNumber));
+title(sprintf('%s-%d', subjectName, fileNumber),'interpreter','none');
 xlim(xLimits);
 ylim(yLimits);
 xticks(data.trialStruct.cmpY);
