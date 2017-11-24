@@ -55,8 +55,10 @@ for ii = 1:length(data.trialStruct.cmpY)
     numberOfCorrectResponses = (data.response.actualResponse(trialsWithThisCmpLvl) == data.response.correctResponse(trialsWithThisCmpLvl));
     if (data.trialStruct.cmpY(ii) < data.trialStruct.stdY)
         fractionCorrect(ii) = 1 - mean(numberOfCorrectResponses);
+        totalCorrectResponse(ii) = length(numberOfCorrectResponses) - sum(numberOfCorrectResponses);
     else
         fractionCorrect(ii) = mean(numberOfCorrectResponses);
+        totalCorrectResponse(ii) = sum(numberOfCorrectResponses);
     end
 end
 
@@ -72,18 +74,35 @@ lData = plot(data.trialStruct.cmpY,fractionCorrect,'*');
 % plot a vertical line indicating the standard
 lStdY = plot([data.trialStruct.stdY data.trialStruct.stdY], yLimits,':r');
 
-% Find the parameters for a cumulative Gaussian fit
-% Initial Guesses
-a = 10;
-mu = data.trialStruct.stdY;
-sig = 1;
-guess0 = [a mu sig];
-% Call fmins
-ff = @(guess) fitcumgauss(guess,data.trialStruct.cmpY, fractionCorrect);
-pars = fmincon(ff, guess0, [], []);
+% Psychometric function form
+PF = @PAL_CumulativeNormal;         % Alternatives: PAL_Gumbel, PAL_Weibull, PAL_CumulativeNormal, PAL_HyperbolicSecant
+
+% paramsFree is a boolean vector that determins what parameters get
+% searched over. 1: free parameter, 0: fixed parameter
+paramsFree = [1 1 1 1];  
+
+% Initial guess.  Setting the first parameter to the middle of the stimulus
+% range and the second to 1 puts things into a reasonable ballpark here.
+paramsValues0 = [mean(data.trialStruct.cmpY) 1/((max(data.trialStruct.cmpY)-min(data.trialStruct.cmpY))) 0 0];
+
+lapseLimits = [0 0.05];
+
+% Set up standard options for Palamedes search
+options = PAL_minimize('options');
+
+% Fit with Palemedes Toolbox.  The parameter constraints match the psignifit parameters above.  Some thinking is
+% required to initialize the parameters sensibly.  We know that the mean of the cumulative normal should be 
+% roughly within the range of the comparison stimuli, so we initialize this to the mean.  The standard deviation
+% should be some moderate fraction of the range of the stimuli, so again this is used as the initializer.
 xx = linspace(xLimits(1), xLimits(2),1000);
-yy = pars(1)/(pars(3)*sqrt(2*pi)) * exp( -( (xx-pars(2)).^2 ./ (2.*pars(3)).^2 ) );
-yy = cumsum(yy) ./ sum(yy);
+
+[paramsValues] = PAL_PFML_Fit(...
+    data.trialStruct.cmpY',totalCorrectResponse',length(numberOfCorrectResponses)*ones(size(data.trialStruct.cmpY')), ...
+    paramsValues0,paramsFree,PF,'searchOptions',options, ...
+    'lapseLimits',lapseLimits,'gammaEQlambda',true);
+yy = PF(paramsValues,xx');
+psePal = PF(paramsValues,0.5,'inverse');
+threshPal = PF(paramsValues,0.75,'inverse')-psePal;
 
 lTh = plot(xx, yy);
 % Indicate threshold
