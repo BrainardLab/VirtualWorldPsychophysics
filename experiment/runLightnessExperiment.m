@@ -56,15 +56,15 @@ wrongSound = rand(1,1000).*sin(2*pi*[1:1000]/10)/10;
 %
 % May want to read these from a file at
 % some point.
-params.screenDimsCm = [59.5 33.8];
+params.screenDimsCm = [51.84 32.4];
 params.fpSize = [0.1 0.1]; % fixation point size
 params.fpColor = [34 139 34]/255; % fixation point color
 params.bgColor = [0 0 0];
 params.textColor = [1 0 0];
 params.firstImageLoc = [0 0];
 params.secondImageLoc = [0 0];
-params.firstImageSize = [3.701 3.337];
-params.secondImageSize = [3.701 3.337];
+params.firstImageSize = [3.40 3.40];
+params.secondImageSize = [3.40 3.40];
 params.ISI = 0.25;
 params.ITI = 0.25;
 params.stimDuration = 0.5;
@@ -187,8 +187,8 @@ while keepLooping
     win.disableObject('firstImage');
     win.draw;
     
-    % Wait for ITI and show "right" image
-    mglWaitSecs(params.ITI);
+    % Wait for ISI and show "second" image
+    mglWaitSecs(params.ISI);
     win.enableObject('secondImage');
     win.draw;
     
@@ -286,7 +286,7 @@ while keepLooping
                 sound(wrongSound);
             end
         end
-        mglWaitSecs(params.ISI);        
+        mglWaitSecs(params.ITI);        
     else
         fprintf('Quitting without saving any data.\n');
         saveData = 0;
