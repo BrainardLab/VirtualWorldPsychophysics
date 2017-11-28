@@ -63,11 +63,11 @@ params.bgColor = [0 0 0];
 params.textColor = [1 0 0];
 params.firstImageLoc = [0 0];
 params.secondImageLoc = [0 0];
-params.firstImageSize = [3.40 3.40];
-params.secondImageSize = [3.40 3.40];
+params.firstImageSize = [2.26 2.26];
+params.secondImageSize = [2.26 2.26];
 params.ISI = 0.25;
 params.ITI = 0.25;
-params.stimDuration = 0.5;
+params.stimDuration = 0.25;
 params.interval1Key = interval1Key;
 params.interval2Key = interval2Key;
 
