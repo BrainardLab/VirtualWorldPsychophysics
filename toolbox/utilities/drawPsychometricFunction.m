@@ -113,23 +113,26 @@ lData = plot(data.trialStruct.cmpY,fractionCorrect,'*');
 
 % Indicate 75% threshold
 thresholdIndex = find(yy > thresholdU, 1); % find threshold
-plot([xx(1)-1 xx(thresholdIndex)],[yy(thresholdIndex) yy(thresholdIndex)],'k'); % Horizontal line
-plot([xx(thresholdIndex) xx(thresholdIndex)],[yLimits(1) yy(thresholdIndex)],'k'); % Vertical line
-lThMk = plot(xx(thresholdIndex),yy(thresholdIndex),'.k','MarkerSize',20); % 75% co-ordiante marker
-
-text(min(data.trialStruct.cmpY),0.9,...
-    ['(' num2str(xx(thresholdIndex),3) ',' num2str(round(thresholdU*100)) '%)'],...
-    'FontSize', 15); % Test to indicate the stimulusIntensities of 75% marker
-
+if ~isempty(thresholdIndex)
+    plot([xx(1)-1 xx(thresholdIndex)],[yy(thresholdIndex) yy(thresholdIndex)],'k'); % Horizontal line
+    plot([xx(thresholdIndex) xx(thresholdIndex)],[yLimits(1) yy(thresholdIndex)],'k'); % Vertical line
+    lThMk = plot(xx(thresholdIndex),yy(thresholdIndex),'.k','MarkerSize',20); % 75% co-ordiante marker
+    
+    text(min(data.trialStruct.cmpY),0.9,...
+        ['(' num2str(xx(thresholdIndex),3) ',' num2str(round(thresholdU*100)) '%)'],...
+        'FontSize', 15); % Test to indicate the stimulusIntensities of 75% marker
+end
 % Indicate 25% threshold
 thresholdIndex = find(yy > thresholdL, 1); % find threshold
-plot([xx(1)-1 xx(thresholdIndex)],[yy(thresholdIndex) yy(thresholdIndex)],'k'); % Horizontal line
-plot([xx(thresholdIndex) xx(thresholdIndex)],[yLimits(1) yy(thresholdIndex)],'k'); % Vertical line
-lThMk = plot(xx(thresholdIndex),yy(thresholdIndex),'.k','MarkerSize',20); % 25% co-ordiante marker
+if ~isempty(thresholdIndex)
+    plot([xx(1)-1 xx(thresholdIndex)],[yy(thresholdIndex) yy(thresholdIndex)],'k'); % Horizontal line
+    plot([xx(thresholdIndex) xx(thresholdIndex)],[yLimits(1) yy(thresholdIndex)],'k'); % Vertical line
+    lThMk = plot(xx(thresholdIndex),yy(thresholdIndex),'.k','MarkerSize',20); % 25% co-ordiante marker
 
-text(min(data.trialStruct.cmpY),0.4,...
-    ['(' num2str(xx(thresholdIndex),3) ',' num2str(round(thresholdL*100)) '%)'],...
-    'FontSize', 15); % Test to indicate the stimulusIntensities of 75% marker
+    text(min(data.trialStruct.cmpY),0.4,...
+        ['(' num2str(xx(thresholdIndex),3) ',' num2str(round(thresholdL*100)) '%)'],...
+        'FontSize', 15); % Test to indicate the stimulusIntensities of 75% marker
+end
 
 legend([lData lTh lStdY],...
     {'Observation', 'Cum Gauss', 'Standard'},...
