@@ -94,6 +94,11 @@ end
 
 %% Initialize calibration structure for the cones
 cal = SetSensorColorSpace(cal, LMSStruct.T_cones, LMSStruct.S); % Fix the last option
+
+%% Find the scale factor
+scaleFactor = findScaleFactor(cal, LMSStruct);
+
+%% Set Gamma Method
 cal = SetGammaMethod(cal,0);
 
 %% Start Time of Experiment
@@ -151,8 +156,10 @@ while keepLooping
     iterTrials = iterTrials + 1;
     stdIndex = trialStruct.trialStdIndex(iterTrials);
     cmpIndex =  trialStruct.trialCmpIndex(iterTrials);
-    stdRGBImage = CalFormatToImage(SensorToSettings(cal,LMSStruct.LMSImageInCalFormat(:,:,stdIndex)),LMSStruct.cropImageSizeX,LMSStruct.cropImageSizeY);
-    cmpRGBImage = CalFormatToImage(SensorToSettings(cal,LMSStruct.LMSImageInCalFormat(:,:,cmpIndex)),LMSStruct.cropImageSizeX,LMSStruct.cropImageSizeY);
+    stdRGBImage = CalFormatToImage(SensorToSettings(cal, scaleFactor*LMSStruct.LMSImageInCalFormat(:,:,stdIndex)),LMSStruct.cropImageSizeX,LMSStruct.cropImageSizeY);
+    cmpRGBImage = CalFormatToImage(SensorToSettings(cal, scaleFactor*LMSStruct.LMSImageInCalFormat(:,:,cmpIndex)),LMSStruct.cropImageSizeX,LMSStruct.cropImageSizeY);
+    stdRGBImage(stdRGBImage < 0 ) = 0;
+    cmpRGBImage(cmpRGBImage < 0 ) = 0;
     standardYLarger = (trialStruct.stdYInTrial(iterTrials) >= trialStruct.cmpYInTrial(iterTrials));
     if trialStruct.cmpInterval(iterTrials) % comparison on the second interval
         firstImage = stdRGBImage(end:-1:1,:,:);
