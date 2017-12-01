@@ -299,29 +299,45 @@ while keepLooping
         saveData = 0;
     end
     
-    % Check if one third of experiment is reached
+    %% Check if one third of experiment is reached
     if (iterTrials == ceil(length(trialStruct.trialStdIndex)/3))
         win.enableObject('oneThirdText');
         win.draw;
+        FlushEvents;
         %% Wait for key
-        key = [];
-        while (isempty(key))
-            key = mglGetKeyEvent;
+        if (strcmp(controlSignal, 'keyboard'))
+            key = [];
+            while (isempty(key))
+                key = mglGetKeyEvent;
+            end
+        else
+            key = [];
+            while (isempty(key))
+                key = gamePad.getKeyEvent();
+            end
         end
-        %% Turn off start text, add images and wait for another key
+        % Turn off text
         win.disableObject('oneThirdText');
         % Reset the keyboard queue.
         mglGetKeyEvent;
     end
-
-% Check if two third of experiment is reached
+    
+    %% Check if two third of experiment is reached
     if (iterTrials == ceil(2*length(trialStruct.trialStdIndex)/3))
         win.enableObject('twoThirdText');
         win.draw;
+        FlushEvents;
         %% Wait for key
-        key = [];
-        while (isempty(key))
-            key = mglGetKeyEvent;
+        if (strcmp(controlSignal, 'keyboard'))
+            key = [];
+            while (isempty(key))
+                key = mglGetKeyEvent;
+            end
+        else
+            key = [];
+            while (isempty(key))
+                key = gamePad.getKeyEvent();
+            end
         end
         %% Turn off start text, add images and wait for another key
         win.disableObject('twoThirdText');
