@@ -1,3 +1,6 @@
+startup;
+tbUseProject('VirtualWorldPsychophysics');
+
 % Run Sessions for the lightness experiment
 
 % Vijay's order: Chosen as psuedo-random by Vijay
@@ -54,9 +57,14 @@
 % hardwware gamma table size (1024). Interpolating using nearest neighbors
 % - this should make the gamma table act as expected for an 10 bit display"
 
-session = 3;
-condition = 1;
-subjectName = 'David';
+% Johannes's order: Random permuations
+% Session 1 : Condition 2 3 1
+% Session 2 : Condition 2 1 3
+% Session 3 : Condition 3 2 1
+
+session = 2;
+condition = 3;
+subjectName = 'Johannes';
 nameOfTrialStruct = [subjectName,'Session',num2str(session),'_StdY_0_40_dY_0_01'];
 
 switch condition
