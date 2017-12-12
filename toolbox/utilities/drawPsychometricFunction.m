@@ -103,7 +103,12 @@ xx = linspace(xLimits(1), xLimits(2),1000);
     'lapseLimits',lapseLimits,'gammaEQlambda',true);
 yy = PF(paramsValues,xx');
 psePal = PF(paramsValues,0.5,'inverse');
-threshPal = PF(paramsValues,0.75,'inverse')-psePal;
+threshPal = PF(paramsValues,0.7602,'inverse')-psePal;
+
+
+text(min(data.trialStruct.cmpY),0.55,...
+        ['Threshold = ', num2str(threshPal,3)],...
+        'FontSize', 15); % Test to indicate the stimulusIntensities of 75% marker
 
 % Plot Fit Line
 lTh = plot(xx, yy, 'LineWidth', 1);
@@ -123,7 +128,7 @@ if ~isempty(thresholdIndex)
         'FontSize', 15); % Test to indicate the stimulusIntensities of 75% marker
 end
 % Indicate 25% threshold
-thresholdIndex = find(yy > thresholdL, 1); % find threshold
+thresholdIndex = find(yy < thresholdL, 1); % find threshold
 if ~isempty(thresholdIndex)
     plot([xx(1)-1 xx(thresholdIndex)],[yy(thresholdIndex) yy(thresholdIndex)],'k'); % Horizontal line
     plot([xx(thresholdIndex) xx(thresholdIndex)],[yLimits(1) yy(thresholdIndex)],'k'); % Vertical line
