@@ -27,7 +27,7 @@ function runLightnessExperiment(varargin)
 parser = inputParser();
 parser.addParameter('directoryName', 'ExampleCase', @ischar);
 parser.addParameter('nameOfTrialStruct', 'exampleTrial', @ischar);
-parser.addParameter('nameOfCalibrationFile', 'NEC_MultisyncPA241W', @ischar);
+parser.addParameter('nameOfCalibrationFile', 'VirtualWorldCalibration', @ischar);
 parser.addParameter('whichCalibration', Inf, @isscalar);
 parser.addParameter('controlSignal', 'keyboard', @ischar);
 parser.addParameter('interval1Key', '1', @ischar);
@@ -56,7 +56,7 @@ wrongSound = rand(1,1000).*sin(2*pi*[1:1000]/10)/10;
 %
 % May want to read these from a file at
 % some point.
-params.screenDimsCm = [51.84 32.4];
+params.screenDimsCm = [59.75 32.95];
 params.fpSize = [0.1 0.1]; % fixation point size
 params.fpColor = [34 139 34]/255; % fixation point color
 params.bgColor = [0 0 0];
