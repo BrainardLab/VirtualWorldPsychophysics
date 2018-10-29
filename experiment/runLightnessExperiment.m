@@ -72,8 +72,8 @@ params.interval1Key = interval1Key;
 params.interval2Key = interval2Key;
 
 % If the game pad has symbol 1 2 3 4, instead of X A B Y
-if strcmp(interval1Key,'GP:1') params.interval1Key = 'GP:X'; end
-if strcmp(interval2Key,'GP:2') params.interval2Key = 'GP:A'; end
+if strcmp(interval1Key,'GP:1') params.interval1Key = 'GP:UpperLeftTrigger'; end
+if strcmp(interval2Key,'GP:2') params.interval2Key = 'GP:UpperRightTrigger'; end
 
 %% Load the trial struct
 pathToTrialStruct = fullfile(getpref(projectName,'stimulusInputBaseDir'),...
@@ -139,7 +139,9 @@ win.draw;
 key = [];
 while (isempty(key))
     key = mglGetKeyEvent;
+    key = gamePad.getKeyEvent();
 end
+
 
 %% Turn off start text, add images and wait for another key
 win.disableObject('startText');
