@@ -63,8 +63,8 @@ params.bgColor = [0 0 0];
 params.textColor = [1 0 0];
 params.firstImageLoc = [0 0];
 params.secondImageLoc = [0 0];
-params.firstImageSize = [2.26 2.26];
-params.secondImageSize = [2.26 2.26];
+params.firstImageSize = [2.62 2.62];
+params.secondImageSize = [2.62 2.62];
 params.ISI = 0.25;
 params.ITI = 0.25;
 params.stimDuration = 0.25;
@@ -138,8 +138,11 @@ win.draw;
 % keyPress = GetChar;
 key = [];
 while (isempty(key))
-    key = mglGetKeyEvent;
-    key = gamePad.getKeyEvent();
+    if (strcmp(controlSignal, 'keyboard'))
+        key = mglGetKeyEvent;
+    else
+        key = gamePad.getKeyEvent();
+    end
 end
 
 
