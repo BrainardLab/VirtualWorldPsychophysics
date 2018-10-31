@@ -128,7 +128,7 @@ if ~isempty(thresholdIndex)
         'FontSize', 15); % Test to indicate the stimulusIntensities of 75% marker
 end
 % Indicate 25% threshold
-thresholdIndex = find(yy < thresholdL, 1); % find threshold
+thresholdIndex = find(yy > thresholdL, 1); % find threshold
 if ~isempty(thresholdIndex)
     plot([xx(1)-1 xx(thresholdIndex)],[yy(thresholdIndex) yy(thresholdIndex)],'k'); % Horizontal line
     plot([xx(thresholdIndex) xx(thresholdIndex)],[yLimits(1) yy(thresholdIndex)],'k'); % Vertical line
