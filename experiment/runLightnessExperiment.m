@@ -34,6 +34,7 @@ parser.addParameter('interval1Key', '1', @ischar);
 parser.addParameter('interval2Key', '2', @ischar);
 parser.addParameter('feedback', 0, @isscalar);
 parser.addParameter('subjectName', 'testSubject', @ischar);
+parser.addParameter('theoreticalPsychophysicsMode', 0, @isscalar);
 parser.parse(varargin{:});
 
 directoryName = parser.Results.directoryName;
@@ -44,6 +45,7 @@ controlSignal = parser.Results.controlSignal;
 interval1Key = parser.Results.interval1Key;
 interval2Key = parser.Results.interval2Key;
 subjectName = parser.Results.subjectName;
+theoreticalPsychophysicsMode = parser.Results.theoreticalPsychophysicsMode;
 
 projectName = 'VirtualWorldPsychophysics';
 ExperimentType = 'Lightness';
@@ -56,7 +58,7 @@ wrongSound = rand(1,1000).*sin(2*pi*[1:1000]/10)/10;
 %
 % May want to read these from a file at
 % some point.
-params.screenDimsCm = [59.75 32.95];
+params.screenDimsCm = [59.65 33.55];
 params.fpSize = [0.1 0.1]; % fixation point size
 params.fpColor = [34 139 34]/255; % fixation point color
 params.bgColor = [0 0 0];
@@ -184,6 +186,14 @@ while keepLooping
         end
     end
     
+    if theoreticalPsychophysicsMode
+        meanRGBFirstImage = mean(mean(mean(firstImage(floor(LMSStruct.cropImageSizeX/2)-4:floor(LMSStruct.cropImageSizeX/2)+5, ...
+                                                        floor(LMSStruct.cropImageSizeX/2)-4:floor(LMSStruct.cropImageSizeX/2)+5,:))));
+        meanRGBSecondImage = mean(mean(mean(secondImage(floor(LMSStruct.cropImageSizeX/2)-4:floor(LMSStruct.cropImageSizeX/2)+5, ...
+                                                        floor(LMSStruct.cropImageSizeX/2)-4:floor(LMSStruct.cropImageSizeX/2)+5,:))));
+        keyPress(iterTrials) = (meanRGBSecondImage > meanRGBFirstImage) + 1;
+        actualResponse(iterTrials) = keyPress(iterTrials);
+    else
     % For testing, extract average RGB values from center of first and
     % second image, and figure out which is bigger
     
@@ -352,8 +362,9 @@ while keepLooping
         % Reset the keyboard queue.
         mglGetKeyEvent;
     end
-    
+        
 % Check if end of experiment is reached
+    end
     if (iterTrials == length(trialStruct.trialStdIndex))
         keepLooping = false;
     end
