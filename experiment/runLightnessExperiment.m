@@ -184,6 +184,9 @@ while keepLooping
         end
     end
     
+    % For testing, extract average RGB values from center of first and
+    % second image, and figure out which is bigger
+    
     % Write the images into the window and disable
     win.addImage(params.firstImageLoc, params.firstImageSize, firstImage, 'Name', 'firstImage');
     win.addImage(params.secondImageLoc, params.secondImageSize, secondImage, 'Name', 'secondImage');
