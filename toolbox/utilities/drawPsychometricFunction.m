@@ -1,4 +1,4 @@
-function drawPsychometricFunction(varargin)
+function thresholds = drawPsychometricFunction(varargin)
 %%drawPsychometricFunction : draw psychometric function for lightness experiment
 %
 % Usage:
@@ -14,7 +14,10 @@ function drawPsychometricFunction(varargin)
 %   None
 %
 % Output:
-%   None
+%   'thresholds' : struct with these options thresholds.U thresholds.L
+%   thresholds.PSE thresholds.thresholds thresholds.fractionCorrect
+%   thresholds.stimPerLevel thresholds.cmpY
+%
 %
 % Optional key/value pairs:
 %    'directoryName' : (string) Directory name of the case which will be studied (default 'ExampleDirectory')
@@ -64,6 +67,7 @@ for ii = 1:length(data.trialStruct.cmpY)
         totalCorrectResponse(ii) = sum(numberOfCorrectResponses);
     end
 end
+thresholds.stimPerLevel = length(numberOfCorrectResponses);
 
 hFig = figure();
 yLimits = [-0.05 1.05];
@@ -130,6 +134,8 @@ if ~isempty(thresholdIndex)
         ['(' num2str(xx(thresholdIndex),3) ',' num2str(round(thresholdU*100)) '%)'],...
         'FontSize', 15); % Test to indicate the stimulusIntensities of 75% marker
 end
+thresholds.U = xx(thresholdIndex);
+
 % Indicate 25% threshold
 thresholdIndex = find(yy > thresholdL, 1); % find threshold
 if ~isempty(thresholdIndex)
@@ -141,6 +147,7 @@ if ~isempty(thresholdIndex)
         ['(' num2str(xx(thresholdIndex),3) ',' num2str(round(thresholdL*100)) '%)'],...
         'FontSize', 15); % Test to indicate the stimulusIntensities of 75% marker
 end
+thresholds.L = xx(thresholdIndex);
 
 legend([lData lTh lStdY],...
     {'Observation', 'Cum Gauss', 'Standard'},...
@@ -170,6 +177,11 @@ fprintf('\nPlot will be saved in folder:\n%s\n', figureFile);
 
 save2pdf(figureFile, hFig, 600);
 close;
+
+thresholds.cmpY = data.trialStruct.cmpY;
+thresholds.PSE = psePal;
+thresholds.threshold = threshPal;
+thresholds.fractionCorrect = fractionCorrect;
 end
 
 function SSE = fitcumgauss(guess, x, y)
