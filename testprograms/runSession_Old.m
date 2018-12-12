@@ -1,15 +1,20 @@
-function runSession(subjectName, session, condition)
+% startup;
+% tbUseProject('VirtualWorldPsychophysics');
 
-% This script runs the sessions over three conditions of lightness experiment.
-% First generate random sequence for the conditions for the three sessions
-% and save it in the excel file
-% VirtualWorldPsychophysics/data/SubjectInformation/SequenceForExperiment.
-% This random sequence is the order in which the conditions will be ru for
-% a given session.
+% Run Sessions for the lightness experiment
+
+% David's order: Chosen Randomly.
 %
+% Session 1 : Condition 2 1 3
 %
-%% Update this section for each acquisition
-nameOfTrialStruct = [subjectName,'_Session_',num2str(session)];
+% Session 2 : Condition 3 2 1
+% Session 3 : Condition 1 3 2
+% 
+
+session = 3;
+condition = 5;
+subjectName = 'Vijay';
+nameOfTrialStruct = [subjectName,'Session',num2str(session),'_StdY_0_40_dY_0_01'];
 
 switch condition
     case 1
@@ -31,4 +36,4 @@ runLightnessExperiment('directoryName', directoryName,...
     'interval2Key', 'GP:UpperRightTrigger', ...
     'feedback', 1, ...
     'subjectName', nameOfTrialStruct);
-end
+

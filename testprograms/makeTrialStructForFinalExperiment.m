@@ -1,10 +1,19 @@
-%%testMakeTrialStruct test script for makeTrialStruct function
+function makeTrialStructForFinalExperiment(subjectName,sessionNumber)
+
+% This function makes trial structs for all three cases.
+%
+% subjectName = Subject Name Ex. 'Vijay'
+% numberOfStructs = number of trial structs required, Ex 3
+%
+% The trial structs will be saved in
+%           LightnessCasesForExperiment/StimuliFixedFlatTargetShapeFixedIlluminantFixedBkGnd
+%           LightnessCasesForExperiment/StimuliFixedFlatTargetShapeFixedIlluminantBetweentrialBkGndVariation
+%           LightnessCasesForExperiment/StimuliFixedFlatTargetShapeFixedIlluminantWithintrialBkGndVariation
+%
+% Vijay Singh wrote this. Dec 12 2018
 
 
-session = 1;
-subjectName = 'David';
-nameOfTrialStruct = [subjectName,'Session',num2str(session),'_StdY_0_40_dY_0_01'];
-
+nameOfTrialStruct = [subjectName,'_Session_',num2str(sessionNumber)];
 
 makeTrialStruct('directoryName','StimuliFixedFlatTargetShapeFixedIlluminantFixedBkGnd',...
     'LMSstructName', 'LMSStruct',...
@@ -14,12 +23,10 @@ makeTrialStruct('directoryName','StimuliFixedFlatTargetShapeFixedIlluminantFixed
     'cmpYIndex', (1:11), ...
     'comparisionTargetSameSpectralShape',true);
 
-
 makeTrialStruct('directoryName','StimuliFixedFlatTargetShapeFixedIlluminantBetweentrialBkGndVariation',...
     'LMSstructName', 'LMSStruct',...
     'outputFileName', nameOfTrialStruct,...
     'nBlocks', 30,...
-    'stdYIndex', 6, ...
     'cmpYIndex', (1:11), ...
     'comparisionTargetSameSpectralShape',true);
 
@@ -31,3 +38,4 @@ makeTrialStruct('directoryName','StimuliFixedFlatTargetShapeFixedIlluminantWithi
     'cmpYIndex', (1:11), ...
     'comparisionTargetSameSpectralShape',false);
 
+end
