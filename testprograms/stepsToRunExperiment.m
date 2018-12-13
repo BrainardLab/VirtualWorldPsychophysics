@@ -23,14 +23,17 @@ runSubjectSelectionSession(subjectName, TrialId)
 
 %% Make final trial for the session
 % Update the subject name as needed
-sessionNumber = 2;
-makeTrialStructForFinalExperiment(subjectName,sessionNumber)
+% Generate and store random sequence using randperm(3) in the file 
+% ConditionNames = {'1', '2', '2a', '3', '3a'}
+% ConditionNames(randperm(5))
+% VirtualWorldPsychophysics/data/SubjectInformation/SequenceForExperiment
+
+iterationNumber = 2;
+condition = '3a';    % Condition number according to the random sequence for this session
+makeTrialStructForFinalExperiment(subjectName,iterationNumber, condition)
 
 %% Run Session
-% Generate and store random sequence using randperm(3) in the file 
-% VirtualWorldPsychophysics/data/SubjectInformation/SequenceForExperiment
 % 
 % Run the three conditions for this session according to the random sequence
 
-condition = 1;    % Condition number according to the random sequence for this session
-runSession(subjectName, sessionNumber, condition);
+runSession(subjectName, iterationNumber, condition);

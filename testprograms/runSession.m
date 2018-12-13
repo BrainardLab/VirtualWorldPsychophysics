@@ -9,19 +9,19 @@ function runSession(subjectName, session, condition)
 %
 %
 %% Update this section for each acquisition
-nameOfTrialStruct = [subjectName,'_Session_',num2str(session)];
+nameOfTrialStruct = [subjectName,'_Iteration_',num2str(session)];
 
 switch condition
-    case 1
+    case '1'
         directoryName = 'StimuliFixedFlatTargetShapeFixedIlluminantFixedBkGnd';
-    case 2
+    case '2'
         directoryName = 'StimuliFixedFlatTargetShapeFixedIlluminantBetweentrialBkGndVariation';
-    case 3
-        directoryName = 'StimuliFixedFlatTargetShapeFixedIlluminantWithintrialBkGndVariation';
-    case 4
-        directoryName = 'StimuliFixedFlatTargetShapeFixedIlluminantWithintrialBkGndVariationNoReflection';
-    case 5
+    case '2a'
         directoryName = 'StimuliFixedFlatTargetShapeFixedIlluminantBetweentrialBkGndVariationNoReflection';
+    case '3'
+        directoryName = 'StimuliFixedFlatTargetShapeFixedIlluminantWithintrialBkGndVariation';
+    case '3a'
+        directoryName = 'StimuliFixedFlatTargetShapeFixedIlluminantWithintrialBkGndVariationNoReflection';
 end
 
 runLightnessExperiment('directoryName', directoryName,...
