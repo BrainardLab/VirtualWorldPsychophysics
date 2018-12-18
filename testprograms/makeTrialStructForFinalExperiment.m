@@ -13,7 +13,7 @@ function makeTrialStructForFinalExperiment(subjectName,iterationNumber, conditio
 % Vijay Singh wrote this. Dec 12 2018
 
 
-nameOfTrialStruct = [subjectName,'_Iteration_',num2str(iterationNumber)];
+nameOfTrialStruct = [subjectName,'_Condition_',condition,'_Iteration_',num2str(iterationNumber)];
 
 switch condition
     case '1'

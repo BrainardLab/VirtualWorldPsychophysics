@@ -1,4 +1,4 @@
-function runSession(subjectName, session, condition)
+function runSession(subjectName, iterationNumber, condition)
 
 % This script runs the sessions over three conditions of lightness experiment.
 % First generate random sequence for the conditions for the three sessions
@@ -9,7 +9,7 @@ function runSession(subjectName, session, condition)
 %
 %
 %% Update this section for each acquisition
-nameOfTrialStruct = [subjectName,'_Iteration_',num2str(session)];
+nameOfTrialStruct = [subjectName,'_Condition_',condition,'_Iteration_',num2str(iterationNumber)];
 
 switch condition
     case '1'
