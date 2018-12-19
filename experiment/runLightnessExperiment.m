@@ -1,4 +1,4 @@
-function runLightnessExperiment(varargin)
+function acquisitionStatus = runLightnessExperiment(varargin)
 %%runExperiment : run lightness estimation experiment and record data
 %
 % Usage:
@@ -54,6 +54,8 @@ caseName = directoryName;
 
 rightSound = sin(2*pi*[1:1000]/10)/10;
 wrongSound = rand(1,1000).*sin(2*pi*[1:1000]/10)/10;
+
+acquisitionStatus = 0;
 %% Some experimental parameters.
 %
 % May want to read these from a file at
@@ -417,7 +419,9 @@ if saveData
         'fileNumber', (GetNextDataFileNumber(dataFolder, '.mat')-1),...
         'thresholdU', 0.75, ...
         'thresholdL', 0.25);
+    acquisitionStatus = 1;
 end
+
 end
 %
 % %% Save the response struct
