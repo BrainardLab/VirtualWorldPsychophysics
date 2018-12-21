@@ -28,6 +28,7 @@ parser = inputParser();
 parser.addParameter('directoryName', 'ExampleCase', @ischar);
 parser.addParameter('nameOfTrialStruct', 'exampleTrial', @ischar);
 parser.addParameter('nameOfCalibrationFile', 'VirtualWorldCalibration', @ischar);
+parser.addParameter('scaleFactor', 0, @isscalar);
 parser.addParameter('whichCalibration', Inf, @isscalar);
 parser.addParameter('controlSignal', 'keyboard', @ischar);
 parser.addParameter('interval1Key', '1', @ischar);
@@ -41,6 +42,7 @@ directoryName = parser.Results.directoryName;
 nameOfTrialStruct = parser.Results.nameOfTrialStruct;
 nameOfCalibrationFile = parser.Results.nameOfCalibrationFile;
 whichCalibration = parser.Results.whichCalibration;
+scaleFactor = parser.Results.scaleFactor;
 controlSignal = parser.Results.controlSignal;
 interval1Key = parser.Results.interval1Key;
 interval2Key = parser.Results.interval2Key;
@@ -100,7 +102,9 @@ end
 cal = SetSensorColorSpace(cal, LMSStruct.T_cones, LMSStruct.S); % Fix the last option
 
 %% Find the scale factor
-scaleFactor = findScaleFactor(cal, LMSStruct);
+if (scaleFactor == 0)
+    scaleFactor = findScaleFactor(cal, LMSStruct);
+end
 
 %% Set Gamma Method
 cal = SetGammaMethod(cal,0);
