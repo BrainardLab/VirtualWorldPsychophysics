@@ -25,6 +25,17 @@ numberOfExperimentIterations = 3;
 numberOfConditions = 5;
 ConditionNames = {'1', '2', '2a', '3', '3a'};
 
+scaleFactor = 4.2; % This scale factor is determined using the function 
+                   % findScaleFactor(cal, LMSStruct). For all images that
+                   % are displayed in one experiment the scale factor
+                   % should be the same. In our case there are 5
+                   % conditions. The scale factor for case 2a/3a is the
+                   % lowest and for 1 is the highest. This is because there
+                   % is a lot variability in the background in case 2a/3a
+                   % and none in case 1. So, by random chance one of the
+                   % pixels in one of the image of case 2a/3a was the
+                   % brightest. We have chosen the value based on this.
+
 % Check for the file with the information about this subject's acquisitons
 subjectInfoFileName = fullfile(getpref('VirtualWorldPsychophysics','dataDir'),'SubjectInformation',[subjectName,'.mat']);
 if exist(subjectInfoFileName,'file')
@@ -47,7 +58,7 @@ if nextSubjectSelectionTrial < (numberOfSubjectSelectionAcquisitions+1)
     %Make the trial struct
     makeTrialStructForSubjectSelection(subjectName,nextSubjectSelectionTrial);
     % Run the acquisition   
-    acquisitionStatus = runSubjectSelectionAcquisition(subjectName, nextSubjectSelectionTrial);
+    acquisitionStatus = runSubjectSelectionAcquisition(subjectName, nextSubjectSelectionTrial, scaleFactor);
         
     % If the acquisition was completed update the acquisition information
     % and save the updated struct
@@ -63,7 +74,7 @@ else
     % Make the required trial struct for this condition
     makeTrialStructForFinalExperiment(subjectName, iterationNumber, nextConditioToBeRun);
     % Run this trial struct
-    acquisitionStatus = runAcquisition(subjectName, iterationNumber, nextConditioToBeRun);
+    acquisitionStatus = runAcquisition(subjectName, iterationNumber, nextConditioToBeRun, scaleFactor);
     
     % If the acquisition was completed update the acquisition information
     % and save the updated struct
