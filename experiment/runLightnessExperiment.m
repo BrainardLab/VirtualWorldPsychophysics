@@ -64,7 +64,7 @@ acquisitionStatus = 0;
 % some point.
 params.screenDimsCm = [59.65 33.55];
 params.fpSize = [0.1 0.1]; % fixation point size
-params.fpColor = [34 139 34]/255; % fixation point color
+params.fpColor = [34 70 34]/255; % fixation point color
 params.bgColor = [0 0 0];
 params.textColor = [1 0 0];
 params.firstImageLoc = [0 0];
