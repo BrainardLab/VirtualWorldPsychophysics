@@ -45,8 +45,10 @@ else
     subjectInfoStruct = struct();
     subjectInfoStruct.Name = subjectName;
     subjectInfoStruct.SelectionTrialFinished = zeros(1,numberOfSubjectSelectionAcquisitions);
+    subjectInfoStruct.SelectionTrialDate = cell(1,numberOfSubjectSelectionAcquisitions);
     subjectInfoStruct.FinalExperimentAcquisition = zeros(1,numberOfExperimentIterations*numberOfConditions);
     subjectInfoStruct.FinalExperimentOrder = [ConditionNames(randperm(5)) ConditionNames(randperm(5)) ConditionNames(randperm(5))];
+    subjectInfoStruct.FinalExperimentDate = cell(1,numberOfExperimentIterations*numberOfConditions);
 end
 
 %% Find out which session needs to be run
@@ -64,6 +66,7 @@ if nextSubjectSelectionTrial < (numberOfSubjectSelectionAcquisitions+1)
     % and save the updated struct
     if acquisitionStatus
         subjectInfoStruct.SelectionTrialFinished(nextSubjectSelectionTrial) = 1;
+        subjectInfoStruct.SelectionTrialDate{nextSubjectSelectionTrial} = date;
         save(subjectInfoFileName, 'subjectInfoStruct');
     end
 else
@@ -80,6 +83,7 @@ else
     % and save the updated struct
     if acquisitionStatus
         subjectInfoStruct.FinalExperimentAcquisition(nextAcquisition) = 1;
+        subjectInfoStruct.FinalExperimentDate{nextAcquisition} = date;
         save(subjectInfoFileName, 'subjectInfoStruct');
     end
 end
