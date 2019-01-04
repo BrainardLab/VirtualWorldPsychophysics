@@ -1,14 +1,10 @@
 function makeTrialStructForFinalExperiment(subjectName,iterationNumber, condition)
 
-% This function makes trial structs for all three cases.
+% This function makes trial structs for all cases.
 %
 % subjectName = Subject Name Ex. 'Vijay'
-% numberOfStructs = number of trial structs required, Ex 3
-%
-% The trial structs will be saved in
-%           LightnessCasesForExperiment/StimuliFixedFlatTargetShapeFixedIlluminantFixedBkGnd
-%           LightnessCasesForExperiment/StimuliFixedFlatTargetShapeFixedIlluminantBetweentrialBkGndVariation
-%           LightnessCasesForExperiment/StimuliFixedFlatTargetShapeFixedIlluminantWithintrialBkGndVariation
+% iterationNumber = iteration number for the condition. Ex. 2
+% condition = condition name. Ex. '2a'
 %
 % Vijay Singh wrote this. Dec 12 2018
 

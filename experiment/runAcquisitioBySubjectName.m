@@ -69,6 +69,7 @@ if nextSubjectSelectionTrial < (numberOfSubjectSelectionAcquisitions+1)
         subjectInfoStruct.SelectionTrialDate{nextSubjectSelectionTrial} = date;
         save(subjectInfoFileName, 'subjectInfoStruct');
     end
+    deleteTrialStructForSubjectSelection(subjectName, nextSubjectSelectionTrial)
 else
     % Iteration number
     iterationNumber = ceil(nextAcquisition/numberOfConditions);
@@ -86,4 +87,5 @@ else
         subjectInfoStruct.FinalExperimentDate{nextAcquisition} = date;
         save(subjectInfoFileName, 'subjectInfoStruct');
     end
+    deleteTrialStructForFinalExperiment(subjectName,iterationNumber, nextConditioToBeRun)
 end
