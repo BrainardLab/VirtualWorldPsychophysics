@@ -34,6 +34,7 @@ parser.addParameter('controlSignal', 'keyboard', @ischar);
 parser.addParameter('interval1Key', '1', @ischar);
 parser.addParameter('interval2Key', '2', @ischar);
 parser.addParameter('feedback', 0, @isscalar);
+parser.addParameter('isDemo', 0, @isscalar);
 parser.addParameter('subjectName', 'testSubject', @ischar);
 parser.addParameter('theoreticalPsychophysicsMode', 0, @isscalar);
 parser.parse(varargin{:});
@@ -383,6 +384,10 @@ win.close;
 % Make sure key capture is off.
 ListenChar(0);
 
+if parser.Results.isDemo
+   saveData = 0;
+end
+    
 if saveData
     %% correct response can be found as
     response.correctResponse = correctResponse;
