@@ -159,6 +159,10 @@ end
 win.disableObject('startText');
 win.disableObject('keyOptions');
 
+% Run easy trials
+nEasyTrials = 5;
+runEasyTrials(nEasyTrials, trialStruct, cal, scaleFactor, LMSStruct, params, controlSignal, win, gamePad, parser);
+
 % Reset the keyboard queue.
 mglGetKeyEvent;
 
