@@ -124,7 +124,7 @@ l.Position = [    0.2301    0.7920    0.3893    0.1012];
 title([subjectName,' Thresholds'],'interpreter','latex');
 set(gca,'FontSize',20);
 
-pathToFolder = fullfile(getpref('VirtualWorldPsychophysics','analysisDir'),'Lightness','SubjectThresholds',subjectName);
+pathToFolder = fullfile(getpref('VirtualWorldPsychophysics','analysisDir'),'Lightness','SubjectThresholdsSummary',subjectName);
 if ~(exist(pathToFolder))
     mkdir(pathToFolder)
 end
