@@ -114,7 +114,7 @@ errorbar([1 2 3 4 5], meanthreshold, SEMthreshold);
 hold on;box on;
 axis square;
 xlim([0.5 5.5]);
-ylim([-0.005 0.04]);
+ylim([-0.005 0.06]);
 xlabel('Condition');
 ylabel('');
 xticks([1:5])
@@ -133,7 +133,7 @@ save2pdf(fullfile(pathToFolder,[subjectName,'.pdf']),gcf,600);
 close all;
 
 else
-    display(['All 15 trials have not been finished. Remaining trails = ',num2str(15 - length(find(subjectInfoStruct.FinalExperimentAcquisition)))]);
+    display(['All 15 trials have not been finished. Remaining trials = ',num2str(15 - length(find(subjectInfoStruct.FinalExperimentAcquisition)))]);
 end
 
 end
