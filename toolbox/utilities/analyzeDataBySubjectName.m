@@ -133,7 +133,7 @@ save2pdf(fullfile(pathToFolder,[subjectName,'.pdf']),gcf,600);
 close all;
 
 else
-    display(['All 15 trials have not been finished. Remaining trials = ',num2str(15 - length(find(subjectInfoStruct.FinalExperimentAcquisition)))]);
+    display(['All 15 acquisitions have not been finished. Remaining acquisitions = ',num2str(15 - length(find(subjectInfoStruct.FinalExperimentAcquisition)))]);
 end
 
 end
