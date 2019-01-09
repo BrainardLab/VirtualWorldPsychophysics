@@ -18,7 +18,7 @@ function acquisitionStatus = runLightnessExperiment(varargin)
 % Optional key/value pairs:
 %    'directoryName' : (string) Directory name of the case which will be studied (default 'ExampleDirectory')
 %    'nameOfTrialStruct' : (string) Name of trail stuct to be used in experiment (defalult 'exampleTrial')
-%    'nameOfCalibrationFile : (string) Name of calibration file (default 'VirtualWorldCalibration_Jan09_2019.mat')
+%    'nameOfCalibrationFile : (string) Name of calibration file (default 'NEC_MultisyncPA241W.mat')
 %    'whichCalibration' : (scalar) Which calibration in file to use (default Inf -> most recent)
 %    'controlSignal' : (string) How to collect user response (options: 'gamePad', 'keyboard', default 'keyboard')
 %    'subjectName' : (string) Name of subject (default 'testSubject')
@@ -27,7 +27,7 @@ function acquisitionStatus = runLightnessExperiment(varargin)
 parser = inputParser();
 parser.addParameter('directoryName', 'ExampleCase', @ischar);
 parser.addParameter('nameOfTrialStruct', 'exampleTrial', @ischar);
-parser.addParameter('nameOfCalibrationFile', 'VirtualWorldCalibration_Jan09_2019', @ischar);
+parser.addParameter('nameOfCalibrationFile', 'VirtualWorldCalibration', @ischar);
 parser.addParameter('scaleFactor', 0, @isscalar);
 parser.addParameter('whichCalibration', Inf, @isscalar);
 parser.addParameter('controlSignal', 'keyboard', @ischar);
