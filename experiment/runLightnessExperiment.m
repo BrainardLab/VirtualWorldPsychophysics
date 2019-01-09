@@ -18,7 +18,7 @@ function acquisitionStatus = runLightnessExperiment(varargin)
 % Optional key/value pairs:
 %    'directoryName' : (string) Directory name of the case which will be studied (default 'ExampleDirectory')
 %    'nameOfTrialStruct' : (string) Name of trail stuct to be used in experiment (defalult 'exampleTrial')
-%    'nameOfCalibrationFile : (string) Name of calibration file (default 'NEC_MultisyncPA241W.mat')
+%    'nameOfCalibrationFile : (string) Name of calibration file (default 'VirtualWorldCalibration.mat')
 %    'whichCalibration' : (scalar) Which calibration in file to use (default Inf -> most recent)
 %    'controlSignal' : (string) How to collect user response (options: 'gamePad', 'keyboard', default 'keyboard')
 %    'subjectName' : (string) Name of subject (default 'testSubject')
