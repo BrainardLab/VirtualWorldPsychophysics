@@ -436,6 +436,7 @@ if saveData
 end
 
 win.enableObject('finishText');
+win.draw;
 pause(10);
 win.disableObject('finishText');
 
@@ -490,7 +491,7 @@ try
         'Name', 'twoThirdText');     % Identifier for the object.
 
     % Add text
-    win.addText('Acquisition over.', ...        % Text to display
+    win.addText('Experiment finished.', ...        % Text to display
         'Center', [0 8], ...% Where to center the text. (x,y)
         'FontSize', 75, ...   % Font size
         'Color', params.textColor, ...  % RGB color
