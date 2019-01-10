@@ -67,7 +67,7 @@ params.screenDimsCm = [59.65 33.55];
 params.fpSize = [0.1 0.1]; % fixation point size
 params.fpColor = [34 70 34]/255; % fixation point color
 params.bgColor = [0 0 0];
-params.textColor = [1 0 0];
+params.textColor = [0.6 0.2 0.2];
 params.firstImageLoc = [0 0];
 params.secondImageLoc = [0 0];
 params.firstImageSize = [2.62 2.62];
@@ -435,6 +435,10 @@ if saveData
     acquisitionStatus = 1;
 end
 
+win.enableObject('finishText');
+pause(10);
+win.disableObject('finishText');
+
 end
 %
 % %% Save the response struct
@@ -484,6 +488,13 @@ try
         'FontSize', 75, ...   % Font size
         'Color', params.textColor, ...  % RGB color
         'Name', 'twoThirdText');     % Identifier for the object.
+
+    % Add text
+    win.addText('Acquisition over.', ...        % Text to display
+        'Center', [0 8], ...% Where to center the text. (x,y)
+        'FontSize', 75, ...   % Font size
+        'Color', params.textColor, ...  % RGB color
+        'Name', 'finishText');     % Identifier for the object.
 
     % Turn all objects off for now.
     win.disableAllObjects;

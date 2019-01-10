@@ -40,13 +40,13 @@ for iterTrial = 1:3
         'fileNumber', 1,...
         'thresholdU', 0.75, ...
         'thresholdL', 0.25);
-    U(iterTrial) = thresholds.U;
-    L(iterTrial) = thresholds.L;
-    PSE(iterTrial) = thresholds.PSE;
+%     U(iterTrial) = thresholds.U;
+%     L(iterTrial) = thresholds.L;
+%     PSE(iterTrial) = thresholds.PSE;
     threshold(iterTrial) = thresholds.threshold;
-    fractionCorrect(iterTrial,:) = thresholds.fractionCorrect;
-    stimPerLevel(iterTrial,:) = thresholds.stimPerLevel;
-    cmpY(iterTrial,:) = thresholds.cmpY;
+%     fractionCorrect(iterTrial,:) = thresholds.fractionCorrect;
+%     stimPerLevel(iterTrial,:) = thresholds.stimPerLevel;
+%     cmpY(iterTrial,:) = thresholds.cmpY;
 end
 
 % Display if the crietria is met or not.
