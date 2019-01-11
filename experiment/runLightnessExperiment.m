@@ -382,6 +382,12 @@ while keepLooping
 end
 %% Done with experiment, close up
 %
+% Show end of experimetn text
+win.enableObject('finishText');
+win.draw;
+pause(10);
+win.disableObject('finishText');
+
 % Close our display.
 win.close;
 
@@ -434,11 +440,6 @@ if saveData
         'thresholdL', 0.25);
     acquisitionStatus = 1;
 end
-
-win.enableObject('finishText');
-win.draw;
-pause(10);
-win.disableObject('finishText');
 
 end
 %
