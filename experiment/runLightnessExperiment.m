@@ -332,28 +332,9 @@ while keepLooping
     if (iterTrials == ceil(length(trialStruct.trialStdIndex)/3))
         win.enableObject('oneThirdText');
         win.draw;
-        FlushEvents;
-        %% Wait for key
-        if (strcmp(controlSignal, 'keyboard'))
-            key = [];
-            while (isempty(key))
-                key = mglGetKeyEvent;
-            end
-        else
-            key = [];
-            while (isempty(key))
-                key = gamePad.getKeyEvent();
-            end
-        end
-        % Turn off text
+        pause(60);
         win.disableObject('oneThirdText');
-        % Reset the keyboard queue.
-        mglGetKeyEvent;
-    end
-    
-    %% Check if two third of experiment is reached
-    if (iterTrials == ceil(2*length(trialStruct.trialStdIndex)/3))
-        win.enableObject('twoThirdText');
+        win.enableObject('restOver');
         win.draw;
         FlushEvents;
         %% Wait for key
@@ -368,8 +349,35 @@ while keepLooping
                 key = gamePad.getKeyEvent();
             end
         end
-        %% Turn off start text, add images and wait for another key
+        % Turn off text
+        win.disableObject('restOver');
+        % Reset the keyboard queue.
+        mglGetKeyEvent;
+    end
+    
+    %% Check if two third of experiment is reached
+    if (iterTrials == ceil(2*length(trialStruct.trialStdIndex)/3))
+        win.enableObject('twoThirdText');
+        win.draw;
+        pause(60);
         win.disableObject('twoThirdText');
+        win.enableObject('restOver');
+        win.draw;        
+        FlushEvents;
+        %% Wait for key
+        if (strcmp(controlSignal, 'keyboard'))
+            key = [];
+            while (isempty(key))
+                key = mglGetKeyEvent;
+            end
+        else
+            key = [];
+            while (isempty(key))
+                key = gamePad.getKeyEvent();
+            end
+        end
+        %% Turn off start text, add images and wait for another key
+        win.disableObject('restOver');
         % Reset the keyboard queue.
         mglGetKeyEvent;
     end
@@ -478,14 +486,21 @@ try
         'Name', 'keyOptions');     % Identifier for the object.
     
     % Add text
-    win.addText('One third of trials over. Hit any button to continue', ...        % Text to display
+    win.addText('One third of trials over. Take 1 minute rest.', ...        % Text to display
         'Center', [0 8], ...% Where to center the text. (x,y)
         'FontSize', 75, ...   % Font size
         'Color', params.textColor, ...  % RGB color
         'Name', 'oneThirdText');     % Identifier for the object.
 
     % Add text
-    win.addText('Two third of trials over. Hit any button to continue', ...        % Text to display
+    win.addText('Rest over. Hit any button to continue', ...        % Text to display
+        'Center', [0 8], ...% Where to center the text. (x,y)
+        'FontSize', 75, ...   % Font size
+        'Color', params.textColor, ...  % RGB color
+        'Name', 'restOver');     % Identifier for the object.
+
+    % Add text
+    win.addText('Two third of trials over. Take 1 minute rest.', ...        % Text to display
         'Center', [0 8], ...% Where to center the text. (x,y)
         'FontSize', 75, ...   % Font size
         'Color', params.textColor, ...  % RGB color
