@@ -109,5 +109,7 @@ else
         end
         deleteTrialStructForFinalExperiment(subjectName,iterationNumber, nextConditioToBeRun)
     end
+    % Send email to Vijay when experiment finishes.
+    SendEmail('vsin@sas.upenn.edu', 'experimentFinished', 'experimentFinished');
 end
 end
