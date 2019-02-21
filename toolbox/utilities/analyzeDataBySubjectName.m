@@ -34,7 +34,7 @@ if (subjectInfoStruct.SelectionTrialFinished(3))
 iterCond = 1;
 for iterTrial = 1:3
     thresholds = drawPsychometricFunction('ExperimentType', 'Lightness',...
-        'directoryName', 'StimuliFixedFlatTargetShapeFixedIlluminantFixedBkGnd', ...
+        'directoryName', 'StimuliCondition2_covScaleFactor_1', ...
         'subjectName', [subjectName,'_SelectionSessionId_',num2str(iterTrial)], ...
         'date', char(subjectInfoStruct.SelectionTrialDate(iterTrial)), ...
         'fileNumber', 1,...
@@ -66,11 +66,11 @@ end
 
 if (subjectInfoStruct.FinalExperimentAcquisition(15))
 
-condition1.directoryName = 'StimuliFixedFlatTargetShapeFixedIlluminantFixedBkGnd';
-condition2.directoryName = 'StimuliFixedFlatTargetShapeFixedIlluminantBetweentrialBkGndVariation';
-condition2a.directoryName = 'StimuliFixedFlatTargetShapeFixedIlluminantBetweentrialBkGndVariationNoReflection';
-condition3.directoryName = 'StimuliFixedFlatTargetShapeFixedIlluminantWithintrialBkGndVariation';
-condition3a.directoryName = 'StimuliFixedFlatTargetShapeFixedIlluminantWithintrialBkGndVariationNoReflection';
+condition1.directoryName = 'StimuliCondition2_covScaleFactor_0_1';
+condition2.directoryName = 'StimuliCondition2_covScaleFactor_0_5';
+condition2a.directoryName = 'StimuliCondition2_covScaleFactor_1';
+condition3.directoryName = 'StimuliCondition2_covScaleFactor_5';
+condition3a.directoryName = 'StimuliCondition2_covScaleFactor_10';
 
 threshold = zeros(5,3);
 
@@ -114,11 +114,11 @@ errorbar([1 2 3 4 5], meanthreshold, SEMthreshold);
 hold on;box on;
 axis square;
 xlim([0.5 5.5]);
-ylim([-0.005 0.06]);
-xlabel('Condition');
+ylim([-0.005 0.08]);
+xlabel('Covariance Scale Factor');
 ylabel('');
 xticks([1:5])
-xticklabels({'1', '2', '2a', '3', '3a'});
+xticklabels({'0.1', '0.5', '1', '5', '10'});
 l = legend({'Threshold (Mean +/- SEM)'}, 'location', 'best', 'fontsize',15);
 l.Position = [    0.2301    0.7920    0.3893    0.1012];
 title([subjectName,' Thresholds'],'interpreter','latex');
