@@ -3,8 +3,8 @@ function acquisitionStatus = runAcquisition(subjectName, iterationNumber, condit
 % This script runs the sessions over three conditions of lightness experiment.
 % First generate random sequence for the conditions for the three sessions
 % and save it in the excel file
-% VirtualWorldPsychophysics/data/SubjectInformation/SequenceForExperiment.
-% This random sequence is the order in which the conditions will be ru for
+% VirtualWorldPsychophysics/data/Experiment3/SubjectInformation/SequenceForExperiment.
+% This random sequence is the order in which the conditions will be run for
 % a given session.
 %
 %
@@ -12,16 +12,16 @@ function acquisitionStatus = runAcquisition(subjectName, iterationNumber, condit
 nameOfTrialStruct = [subjectName,'_Condition_',condition,'_Iteration_',num2str(iterationNumber)];
 
 switch condition
+    case '0_1'
+        directoryName = 'StimuliCondition2_covScaleFactor_0_1';
+    case '0_5'
+        directoryName = 'StimuliCondition2_covScaleFactor_0_5';
     case '1'
-        directoryName = 'StimuliFixedFlatTargetShapeFixedIlluminantFixedBkGnd';
-    case '2'
-        directoryName = 'StimuliFixedFlatTargetShapeFixedIlluminantBetweentrialBkGndVariation';
-    case '2a'
-        directoryName = 'StimuliFixedFlatTargetShapeFixedIlluminantBetweentrialBkGndVariationNoReflection';
-    case '3'
-        directoryName = 'StimuliFixedFlatTargetShapeFixedIlluminantWithintrialBkGndVariation';
-    case '3a'
-        directoryName = 'StimuliFixedFlatTargetShapeFixedIlluminantWithintrialBkGndVariationNoReflection';
+        directoryName = 'StimuliCondition2_covScaleFactor_1';
+    case '5'
+        directoryName = 'StimuliCondition2_covScaleFactor_5';
+    case '10'
+        directoryName = 'StimuliCondition2_covScaleFactor_10';
 end
 
 acquisitionStatus = runLightnessExperiment('directoryName', directoryName,...

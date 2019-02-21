@@ -18,23 +18,22 @@ function runAcquisitioBySubjectName(subjectName)
 %   None
 %
 % Vijay Singh wrote this Dec 19 2018
+% Vijay Singh updated this Feb 21 2019
 
 % Some information about the experiment
 numberOfSubjectSelectionAcquisitions = 3;
 numberOfExperimentIterations = 3;
 numberOfConditions = 5;
-ConditionNames = {'1', '2', '2a', '3', '3a'};
+ConditionNames = {'0_1', '0_5', '1', '5', '10'};
 
-scaleFactor = 4.6; % This scale factor is determined using the function
-% findScaleFactor(cal, LMSStruct). For all images that
-% are displayed in one experiment the scale factor
-% should be the same. In our case there are 5
-% conditions. The scale factor for case 2a/3a is the
-% lowest and for 1 is the highest. This is because there
-% is a lot variability in the background in case 2a/3a
-% and none in case 1. So, by random chance one of the
-% pixels in one of the image of case 2a/3a was the
-% brightest. We have chosen the value based on this.
+scaleFactor = 4.5; % This scale factor is determined using the function
+                   % findScaleFactor(cal, LMSStruct). For all images that
+                   % are displayed in one experiment the scale factor
+                   % should be the same. In our case there are 5
+                   % conditions. The scale factor for condition 5 is the
+                   % lowest (4.5460) and for condition 1 is the highest 
+                   % (9.6869). We have chosen the scale factor a little 
+                   % lower than Condition 5.
 
 % Check for the file with the information about this subject's acquisitons
 subjectInfoFileName = fullfile(getpref('VirtualWorldPsychophysics','dataDir'),'SubjectInformation',[subjectName,'.mat']);
@@ -56,7 +55,7 @@ end
 if ~subjectInfoStruct.DemoFinished
     
     % Run  demo 
-    runLightnessExperiment('directoryName', 'StimuliFixedFlatTargetShapeFixedIlluminantFixedBkGnd',...
+    runLightnessExperiment('directoryName', 'StimuliCondition2_covScaleFactor_1',...
         'nameOfTrialStruct', 'demoTrialStruct', ...
         'controlSignal', 'gamePad', ...
         'interval1Key', 'GP:UpperLeftTrigger', ...
