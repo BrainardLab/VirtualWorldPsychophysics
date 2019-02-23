@@ -6,7 +6,7 @@ dir = fullfile(getpref('VirtualWorldPsychophysics','calibrationDir'));
 
 
 %% Load the LMS struct
-pathToLMSStruct = '/Users/colorlab/Dropbox (Aguirre-Brainard Lab)/CNST_materials/VirtualWorldPsychophysics/Experiment2/StimuliFixedFlatTargetShapeFixedIlluminantWithintrialBkGndVariationNoReflection/LMSStruct.mat';
+pathToLMSStruct = '/Users/colorlab/Dropbox (Aguirre-Brainard Lab)/CNST_materials/VirtualWorldPsychophysics/Experiment3/StimuliCondition2_covScaleFactor_5/LMSStruct.mat';
 temp = load(pathToLMSStruct); 
 LMSStruct = temp.LMSStruct; 
 clear temp;
@@ -23,11 +23,11 @@ scaleFactor = findScaleFactor(cal, LMSStruct);
 
 %% Experiment 3
 
-% CovScaleFactor = 0_1 ; monitor scalefactor = 9.6869
-% CovScaleFactor = 0_5 ; monitor scalefactor = 5.3691
+% CovScaleFactor = 0_1 ; monitor scalefactor = 9.4164
+% CovScaleFactor = 0_5 ; monitor scalefactor = 5.2961
 % CovScaleFactor = 1 ; monitor scalefactor = 4.9302
-% CovScaleFactor = 5 ; monitor scalefactor = 4.7015
-% CovScaleFactor = 10 ; monitor scalefactor = 4.5460
+% CovScaleFactor = 5 ; monitor scalefactor = 5.0180
+% CovScaleFactor = 10 ; monitor scalefactor = 4.9173
 
 
 %% Experiment 2

@@ -26,7 +26,7 @@ numberOfExperimentIterations = 3;
 numberOfConditions = 5;
 ConditionNames = {'0_1', '0_5', '1', '5', '10'};
 
-scaleFactor = 4.5; % This scale factor is determined using the function
+scaleFactor = 4.9; % This scale factor is determined using the function
                    % findScaleFactor(cal, LMSStruct). For all images that
                    % are displayed in one experiment the scale factor
                    % should be the same. In our case there are 5
