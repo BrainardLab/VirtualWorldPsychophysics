@@ -66,11 +66,11 @@ end
 
 if (subjectInfoStruct.FinalExperimentAcquisition(15))
 
-condition1.directoryName = 'StimuliCondition2_covScaleFactor_0_1';
-condition2.directoryName = 'StimuliCondition2_covScaleFactor_0_5';
-condition2a.directoryName = 'StimuliCondition2_covScaleFactor_1';
-condition3.directoryName = 'StimuliCondition2_covScaleFactor_5';
-condition3a.directoryName = 'StimuliCondition2_covScaleFactor_10';
+condition0_1.directoryName = 'StimuliCondition2_covScaleFactor_0_1';
+condition0_5.directoryName = 'StimuliCondition2_covScaleFactor_0_5';
+condition1.directoryName = 'StimuliCondition2_covScaleFactor_1';
+condition5.directoryName = 'StimuliCondition2_covScaleFactor_5';
+condition10.directoryName = 'StimuliCondition2_covScaleFactor_10';
 
 threshold = zeros(5,3);
 
@@ -89,15 +89,15 @@ for iterTrial = 1:3
 %         L(iterTrial) = thresholds.L;
 %         PSE(iterTrial) = thresholds.PSE;
         switch char(whichCondition)
-            case '1'
+            case '0_1'
                 threshold(1, iterTrial) = thresholds.threshold;
-            case '2'
+            case '0_5'
                 threshold(2, iterTrial) = thresholds.threshold;
-            case '2a'
+            case '1'
                 threshold(3, iterTrial) = thresholds.threshold;
-            case '3'
+            case '5'
                 threshold(4, iterTrial) = thresholds.threshold;
-            case '3a'
+            case '10'
                 threshold(5, iterTrial) = thresholds.threshold;
         end
         
