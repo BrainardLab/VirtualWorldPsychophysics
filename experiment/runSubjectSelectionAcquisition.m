@@ -1,10 +1,11 @@
 function acquisitionStatus = runSubjectSelectionAcquisition(subjectName, TrialId, scaleFactor)
 % Run subject selection session
 %
+% VS modified this May 1 2019
 
 nameOfTrialStruct = [subjectName,'_SelectionSessionId_',num2str(TrialId)];
 
-directoryName = 'StimuliCondition2_covScaleFactor_1';
+directoryName = 'StimuliCondition2_covScaleFactor_0_0';
 
 acquisitionStatus = runLightnessExperiment('directoryName', directoryName,...
     'nameOfTrialStruct', nameOfTrialStruct, ...

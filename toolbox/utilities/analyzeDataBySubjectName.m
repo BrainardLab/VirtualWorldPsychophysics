@@ -16,6 +16,7 @@ function analyzeDataBySubjectName(subjectName)
 % The figures are saved in Analysis/Lightness/subjectName
 %
 % Vijay Singh wrote this Jan 03 2019
+% Vijay Singh modified May 01 2019
 
 %% Load the struct with subject information
 subjectInfoFileName = fullfile(getpref('VirtualWorldPsychophysics','dataDir'),'SubjectInformation',[subjectName,'.mat']);
@@ -34,7 +35,7 @@ if (subjectInfoStruct.SelectionTrialFinished(3))
 iterCond = 1;
 for iterTrial = 1:3
     thresholds = drawPsychometricFunction('ExperimentType', 'Lightness',...
-        'directoryName', 'StimuliCondition2_covScaleFactor_1', ...
+        'directoryName', 'StimuliCondition2_covScaleFactor_0_0', ...
         'subjectName', [subjectName,'_SelectionSessionId_',num2str(iterTrial)], ...
         'date', char(subjectInfoStruct.SelectionTrialDate(iterTrial)), ...
         'fileNumber', 1,...
@@ -66,18 +67,22 @@ end
 
 if (subjectInfoStruct.FinalExperimentAcquisition(15))
 
-condition0_1.directoryName = 'StimuliCondition2_covScaleFactor_0_1';
-condition0_5.directoryName = 'StimuliCondition2_covScaleFactor_0_5';
-condition1.directoryName = 'StimuliCondition2_covScaleFactor_1';
-condition5.directoryName = 'StimuliCondition2_covScaleFactor_5';
-condition10.directoryName = 'StimuliCondition2_covScaleFactor_10';
+condition_0_0.directoryName = 'StimuliCondition2_covScaleFactor_0_0';
+condition_0_01.directoryName = 'StimuliCondition2_covScaleFactor_0_01';
+condition_0_05.directoryName = 'StimuliCondition2_covScaleFactor_0_05';
+condition_0_1.directoryName = 'StimuliCondition2_covScaleFactor_0_1';
+condition_0_5.directoryName = 'StimuliCondition2_covScaleFactor_0_5';
+condition_1.directoryName = 'StimuliCondition2_covScaleFactor_1';
+% condition5.directoryName = 'StimuliCondition2_covScaleFactor_5';
+% condition10.directoryName = 'StimuliCondition2_covScaleFactor_10';
 
-threshold = zeros(5,3);
+nConditions = 6;
+threshold = zeros(nConditions,3);
 
 for iterTrial = 1:3
-    for iterCond = 1:5
+    for iterCond = 1:nConditions
         whichCondition = subjectInfoStruct.FinalExperimentOrder((iterTrial-1)*5 + iterCond);
-        condition = eval(['condition', char(whichCondition)]);
+        condition = eval(['condition_', char(whichCondition)]);
         thresholds = drawPsychometricFunction('ExperimentType', 'Lightness',...
             'directoryName', condition.directoryName, ...
             'subjectName', [subjectName,'_Condition_',char(whichCondition),'_Iteration_',num2str(iterTrial)], ...
@@ -89,16 +94,18 @@ for iterTrial = 1:3
 %         L(iterTrial) = thresholds.L;
 %         PSE(iterTrial) = thresholds.PSE;
         switch char(whichCondition)
-            case '0_1'
+            case '0_0'
                 threshold(1, iterTrial) = thresholds.threshold;
-            case '0_5'
+            case '0_01'
                 threshold(2, iterTrial) = thresholds.threshold;
-            case '1'
+            case '0_05'
                 threshold(3, iterTrial) = thresholds.threshold;
-            case '5'
+            case '0_1'
                 threshold(4, iterTrial) = thresholds.threshold;
-            case '10'
+            case '0_5'
                 threshold(5, iterTrial) = thresholds.threshold;
+            case '1'
+                threshold(6, iterTrial) = thresholds.threshold;
         end
         
 %         fractionCorrect(iterTrial,:) = thresholds.fractionCorrect;
@@ -118,7 +125,7 @@ ylim([-0.005 0.08]);
 xlabel('Covariance Scale Factor');
 ylabel('');
 xticks([1:5])
-xticklabels({'0.1', '0.5', '1', '5', '10'});
+xticklabels({'0.0', '0.01', '0.05', '0.1', '0.5', '1'});
 l = legend({'Threshold (Mean +/- SEM)'}, 'location', 'best', 'fontsize',15);
 l.Position = [    0.2301    0.7920    0.3893    0.1012];
 title([subjectName,' Thresholds'],'interpreter','latex');
@@ -133,7 +140,7 @@ save2pdf(fullfile(pathToFolder,[subjectName,'.pdf']),gcf,600);
 close all;
 
 else
-    display(['All 15 acquisitions have not been finished. Remaining acquisitions = ',num2str(15 - length(find(subjectInfoStruct.FinalExperimentAcquisition)))]);
+    display(['All 18 acquisitions have not been finished. Remaining acquisitions = ',num2str(18 - length(find(subjectInfoStruct.FinalExperimentAcquisition)))]);
 end
 
 end

@@ -12,6 +12,12 @@ function acquisitionStatus = runAcquisition(subjectName, iterationNumber, condit
 nameOfTrialStruct = [subjectName,'_Condition_',condition,'_Iteration_',num2str(iterationNumber)];
 
 switch condition
+    case '0_0'
+        directoryName = 'StimuliCondition2_covScaleFactor_0_0';
+    case '0_01'
+        directoryName = 'StimuliCondition2_covScaleFactor_0_01';
+    case '0_05'
+        directoryName = 'StimuliCondition2_covScaleFactor_0_05';
     case '0_1'
         directoryName = 'StimuliCondition2_covScaleFactor_0_1';
     case '0_5'

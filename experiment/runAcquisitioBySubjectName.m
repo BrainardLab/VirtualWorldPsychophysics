@@ -19,21 +19,22 @@ function runAcquisitioBySubjectName(subjectName)
 %
 % Vijay Singh wrote this Dec 19 2018
 % Vijay Singh updated this Feb 21 2019
+% Vijay Singh updated this May 1 2019
 
 % Some information about the experiment
 numberOfSubjectSelectionAcquisitions = 3;
 numberOfExperimentIterations = 3;
-numberOfConditions = 5;
-ConditionNames = {'0_1', '0_5', '1', '5', '10'};
+numberOfConditions = 6;
+ConditionNames = {'0_0','0_01', '0_05', '0_1', '0_5', '1'};
 
 scaleFactor = 4.9; % This scale factor is determined using the function
                    % findScaleFactor(cal, LMSStruct). For all images that
                    % are displayed in one experiment the scale factor
-                   % should be the same. In our case there are 5
-                   % conditions. The scale factor for condition 5 is the
-                   % lowest (4.5460) and for condition 1 is the highest 
-                   % (9.6869). We have chosen the scale factor a little 
-                   % lower than Condition 5.
+                   % should be the same. In our case there are 6
+                   % conditions. The scale factor for condition 6 is the
+                   % lowest (4.9302) and for condition 2 is the highest 
+                   % (11.7440). We have chosen the scale factor a little 
+                   % lower than Condition 6.
 
 % Check for the file with the information about this subject's acquisitons
 subjectInfoFileName = fullfile(getpref('VirtualWorldPsychophysics','dataDir'),'SubjectInformation',[subjectName,'.mat']);
@@ -47,7 +48,7 @@ else
     subjectInfoStruct.SelectionTrialFinished = zeros(1,numberOfSubjectSelectionAcquisitions);
     subjectInfoStruct.SelectionTrialDate = cell(1,numberOfSubjectSelectionAcquisitions);
     subjectInfoStruct.FinalExperimentAcquisition = zeros(1,numberOfExperimentIterations*numberOfConditions);
-    subjectInfoStruct.FinalExperimentOrder = [ConditionNames(randperm(5)) ConditionNames(randperm(5)) ConditionNames(randperm(5))];
+    subjectInfoStruct.FinalExperimentOrder = [ConditionNames(randperm(numberOfConditions)) ConditionNames(randperm(numberOfConditions)) ConditionNames(randperm(numberOfConditions))];
     subjectInfoStruct.FinalExperimentDate = cell(1,numberOfExperimentIterations*numberOfConditions);
 end
 
@@ -80,7 +81,7 @@ else
         makeTrialStructForSubjectSelection(subjectName,nextSubjectSelectionTrial);
         % Run the acquisition
         acquisitionStatus = runSubjectSelectionAcquisition(subjectName, nextSubjectSelectionTrial, scaleFactor);
-        
+
         % If the acquisition was completed update the acquisition information
         % and save the updated struct
         if acquisitionStatus
@@ -109,6 +110,6 @@ else
         deleteTrialStructForFinalExperiment(subjectName,iterationNumber, nextConditioToBeRun)
     end
     % Send email to Vijay when experiment finishes.
-    SendEmail('vsin@sas.upenn.edu', 'experimentFinished', 'experimentFinished');
+%     SendEmail('vsin@sas.upenn.edu', 'experimentFinished', 'experimentFinished');
 end
 end
