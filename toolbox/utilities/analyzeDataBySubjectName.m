@@ -35,7 +35,7 @@ if (subjectInfoStruct.SelectionTrialFinished(3))
 iterCond = 1;
 for iterTrial = 1:3
     thresholds = drawPsychometricFunction('ExperimentType', 'Lightness',...
-        'directoryName', 'StimuliCondition2_covScaleFactor_0_0', ...
+        'directoryName', 'StimuliCondition2_covScaleFactor_0_00_NoReflection', ...
         'subjectName', [subjectName,'_SelectionSessionId_',num2str(iterTrial)], ...
         'date', char(subjectInfoStruct.SelectionTrialDate(iterTrial)), ...
         'fileNumber', 1,...
@@ -67,12 +67,12 @@ end
 
 if (subjectInfoStruct.FinalExperimentAcquisition(15))
 
-condition_0_0.directoryName = 'StimuliCondition2_covScaleFactor_0_0';
-condition_0_01.directoryName = 'StimuliCondition2_covScaleFactor_0_01';
-condition_0_05.directoryName = 'StimuliCondition2_covScaleFactor_0_05';
-condition_0_1.directoryName = 'StimuliCondition2_covScaleFactor_0_1';
-condition_0_5.directoryName = 'StimuliCondition2_covScaleFactor_0_5';
-condition_1.directoryName = 'StimuliCondition2_covScaleFactor_1';
+condition_0_0.directoryName = 'StimuliCondition2_covScaleFactor_0_00_NoReflection';
+condition_0_01.directoryName = 'StimuliCondition2_covScaleFactor_0_01_NoReflection';
+condition_0_05.directoryName = 'StimuliCondition2_covScaleFactor_0_03_NoReflection';
+condition_0_1.directoryName = 'StimuliCondition2_covScaleFactor_0_10_NoReflection';
+condition_0_5.directoryName = 'StimuliCondition2_covScaleFactor_0_30_NoReflection';
+condition_1.directoryName = 'StimuliCondition2_covScaleFactor_1_00_NoReflection';
 % condition5.directoryName = 'StimuliCondition2_covScaleFactor_5';
 % condition10.directoryName = 'StimuliCondition2_covScaleFactor_10';
 
@@ -94,17 +94,17 @@ for iterTrial = 1:3
 %         L(iterTrial) = thresholds.L;
 %         PSE(iterTrial) = thresholds.PSE;
         switch char(whichCondition)
-            case '0_0'
+            case '0_00'
                 threshold(1, iterTrial) = thresholds.threshold;
             case '0_01'
                 threshold(2, iterTrial) = thresholds.threshold;
-            case '0_05'
+            case '0_03'
                 threshold(3, iterTrial) = thresholds.threshold;
-            case '0_1'
+            case '0_10'
                 threshold(4, iterTrial) = thresholds.threshold;
-            case '0_5'
+            case '0_30'
                 threshold(5, iterTrial) = thresholds.threshold;
-            case '1'
+            case '1_00'
                 threshold(6, iterTrial) = thresholds.threshold;
         end
         
@@ -125,7 +125,7 @@ ylim([-0.005 0.08]);
 xlabel('Covariance Scale Factor');
 ylabel('');
 xticks([1:5])
-xticklabels({'0.0', '0.01', '0.05', '0.1', '0.5', '1'});
+xticklabels({'0.00', '0.01', '0.03', '0.10', '0.30', '1.00'});
 l = legend({'Threshold (Mean +/- SEM)'}, 'location', 'best', 'fontsize',15);
 l.Position = [    0.2301    0.7920    0.3893    0.1012];
 title([subjectName,' Thresholds'],'interpreter','latex');

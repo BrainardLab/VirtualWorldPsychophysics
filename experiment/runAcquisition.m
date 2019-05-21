@@ -12,22 +12,22 @@ function acquisitionStatus = runAcquisition(subjectName, iterationNumber, condit
 nameOfTrialStruct = [subjectName,'_Condition_',condition,'_Iteration_',num2str(iterationNumber)];
 
 switch condition
-    case '0_0'
-        directoryName = 'StimuliCondition2_covScaleFactor_0_0';
+    case '0_00'
+        directoryName = 'StimuliCondition2_covScaleFactor_0_00_NoReflection';
     case '0_01'
-        directoryName = 'StimuliCondition2_covScaleFactor_0_01';
-    case '0_05'
-        directoryName = 'StimuliCondition2_covScaleFactor_0_05';
-    case '0_1'
-        directoryName = 'StimuliCondition2_covScaleFactor_0_1';
-    case '0_5'
-        directoryName = 'StimuliCondition2_covScaleFactor_0_5';
-    case '1'
-        directoryName = 'StimuliCondition2_covScaleFactor_1';
-    case '5'
-        directoryName = 'StimuliCondition2_covScaleFactor_5';
-    case '10'
-        directoryName = 'StimuliCondition2_covScaleFactor_10';
+        directoryName = 'StimuliCondition2_covScaleFactor_0_01_NoReflection';
+    case '0_03'
+        directoryName = 'StimuliCondition2_covScaleFactor_0_03_NoReflection';
+    case '0_10'
+        directoryName = 'StimuliCondition2_covScaleFactor_0_10_NoReflection';
+    case '0_30'
+        directoryName = 'StimuliCondition2_covScaleFactor_0_30_NoReflection';
+    case '1_00'
+        directoryName = 'StimuliCondition2_covScaleFactor_1_00_NoReflection';
+%     case '5'
+%         directoryName = 'StimuliCondition2_covScaleFactor_5';
+%     case '10'
+%         directoryName = 'StimuliCondition2_covScaleFactor_10';
 end
 
 acquisitionStatus = runLightnessExperiment('directoryName', directoryName,...

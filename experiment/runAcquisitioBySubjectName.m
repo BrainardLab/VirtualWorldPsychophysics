@@ -25,15 +25,15 @@ function runAcquisitioBySubjectName(subjectName)
 numberOfSubjectSelectionAcquisitions = 3;
 numberOfExperimentIterations = 3;
 numberOfConditions = 6;
-ConditionNames = {'0_0','0_01', '0_05', '0_1', '0_5', '1'};
+ConditionNames = {'0_00','0_01', '0_03', '0_10', '0_30', '1_00'};
 
-scaleFactor = 4.9; % This scale factor is determined using the function
+scaleFactor = 5.4; % This scale factor is determined using the function
                    % findScaleFactor(cal, LMSStruct). For all images that
                    % are displayed in one experiment the scale factor
                    % should be the same. In our case there are 6
                    % conditions. The scale factor for condition 6 is the
-                   % lowest (4.9302) and for condition 2 is the highest 
-                   % (11.7440). We have chosen the scale factor a little 
+                   % lowest (5.4229) and for condition 1 is the highest 
+                   % (14.9939). We have chosen the scale factor a little 
                    % lower than Condition 6.
 
 % Check for the file with the information about this subject's acquisitons
@@ -56,7 +56,7 @@ end
 if ~subjectInfoStruct.DemoFinished
     
     % Run  demo 
-    runLightnessExperiment('directoryName', 'StimuliCondition2_covScaleFactor_1',...
+    runLightnessExperiment('directoryName', 'StimuliCondition2_covScaleFactor_0_00_NoReflection',...
         'nameOfTrialStruct', 'demoTrialStruct', ...
         'controlSignal', 'gamePad', ...
         'interval1Key', 'GP:UpperLeftTrigger', ...
