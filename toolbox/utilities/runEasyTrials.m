@@ -4,7 +4,7 @@ function runEasyTrials(nEasyTrials, trialStruct, cal, scaleFactor, LMSStruct, pa
 % the experiment. These trials are not saved.
 
 keepLooping = 1;
-trialToRun = find(trialStruct.trialCmpIndex == max(trialStruct.trialCmpIndex),nEasyTrials);
+trialToRun = find(trialStruct.cmpYInTrial == max(trialStruct.cmpYInTrial),nEasyTrials);
 
 rightSound = sin(2*pi*[1:1000]/10)/10;
 wrongSound = rand(1,1000).*sin(2*pi*[1:1000]/10)/10;
