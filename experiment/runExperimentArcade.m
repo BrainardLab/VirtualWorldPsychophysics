@@ -77,9 +77,7 @@ params.ITI = 0.25;
 params.stimDuration = 0.25;
 params.interval1Key = interval1Key;
 params.interval2Key = interval2Key;
-params.totalCorrect = 0;
-params.totalTrials = 0;
-
+results = [0 0];
 
 % If the game pad has symbol 1 2 3 4, instead of X A B Y
 if strcmp(interval1Key,'GP:1') params.interval1Key = 'GP:UpperLeftTrigger'; end
@@ -123,8 +121,8 @@ response = struct('subjectName',subjectName, ...
     'correctResponse',[],...
     'actualResponse',[]);
 
-%% Initiale display
-[win, params] = initDisplay(params);
+%% Initiate display
+[win, params] = initDisplay(params, results);
 
 %% Start key capture and clear keyboard queue before we draw the stimuli.
 ListenChar(2);
@@ -163,9 +161,17 @@ win.disableObject('TrialStartText');
 win.disableObject('keyOptions');
 
 % Run easy trials
-nEasyTrials = 10;
+nEasyTrials = 5;
 
 runEasyTrials(nEasyTrials, trialStruct, cal, scaleFactor, LMSStruct, params, controlSignal, win, gamePad, parser);
+
+win.enableObject('fp');
+win.enableObject('PracticeOverText');
+win.draw;
+pause(10);
+win.disableObject('PracticeOverText');
+win.disableObject('keyOptions');
+
 
 % Clear out any previous keypresses.
 FlushEvents;
@@ -367,8 +373,11 @@ end
 %% Done with experiment, close up
 %
 % Show end of experimetn text
-params.totalCorrect = sum(actualResponse == correctResponse);
-params.totalTrials = length(actualResponse);
+results(1) = sum(actualResponse == correctResponse);
+results(2) = length(actualResponse);
+win.close;
+
+[win, params] = initDisplay(params, results);
 
 win.enableObject('Result');
 win.draw;
@@ -384,7 +393,7 @@ ListenChar(0);
 end
 
 
-function [win, params] = initDisplay(params)
+function [win, params] = initDisplay(params, results)
 
 % Create the GLWindow object and linearize the clut.
 win = GLWindow('SceneDimensions', params.screenDimsCm, ...
@@ -403,6 +412,12 @@ try
         'FontSize', 75, ...   % Font size
         'Color', params.textColor, ...  % RGB color
         'Name', 'TrialStartText');     % Identifier for the object.
+ 
+    win.addText('Practice Session Over.', ...        % Text to display
+        'Center', [0 8], ...% Where to center the text. (x,y)
+        'FontSize', 75, ...   % Font size
+        'Color', params.textColor, ...  % RGB color
+        'Name', 'PracticeOverText');     % Identifier for the object.
     
     % Add text
     win.addText('Real Session: Hit any button to start', ...        % Text to display
@@ -447,11 +462,11 @@ try
         'Name', 'twoThirdText');     % Identifier for the object.
 
     % Add text
-    win.addText([num2str(params.totalCorrect), ' out of ', num2str(params.totalTrials)], ...        % Text to display
+    win.addText([num2str(results(1)), ' out of ', num2str(results(2))], ...        % Text to display
         'Center', [0 8], ...% Where to center the text. (x,y)
         'FontSize', 75, ...   % Font size
         'Color', params.textColor, ...  % RGB color
-        'Name', 'finishText');     % Identifier for the object.
+        'Name', 'Result');     % Identifier for the object.
 
     % Turn all objects off for now.
     win.disableAllObjects;
