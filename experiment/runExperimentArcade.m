@@ -1,4 +1,4 @@
-function numberOfCorrectResponse = runExperimentArcade(varargin)
+function results = runExperimentArcade(varargin)
 %%runExperiment : run lightness estimation experiment for the arcade game
 %
 % Usage:
@@ -420,7 +420,7 @@ try
         'Name', 'PracticeOverText');     % Identifier for the object.
     
     % Add text
-    win.addText('Real Session: Hit any button to start', ...        % Text to display
+    win.addText('Game begins: Hit any button to start', ...        % Text to display
         'Center', [0 8], ...% Where to center the text. (x,y)
         'FontSize', 75, ...   % Font size
         'Color', params.textColor, ...  % RGB color
@@ -462,7 +462,7 @@ try
         'Name', 'twoThirdText');     % Identifier for the object.
 
     % Add text
-    win.addText([num2str(results(1)), ' out of ', num2str(results(2))], ...        % Text to display
+    win.addText([num2str(results(1)), ' correct out of ', num2str(results(2)), '. :)'], ...        % Text to display
         'Center', [0 8], ...% Where to center the text. (x,y)
         'FontSize', 75, ...   % Font size
         'Color', params.textColor, ...  % RGB color
