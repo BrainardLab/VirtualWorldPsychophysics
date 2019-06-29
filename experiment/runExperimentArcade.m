@@ -51,14 +51,10 @@ subjectName = parser.Results.subjectName;
 theoreticalPsychophysicsMode = parser.Results.theoreticalPsychophysicsMode;
 
 projectName = 'VirtualWorldPsychophysics';
-ExperimentType = 'Lightness';
-% May want to change this to name the experiment cases differently
-caseName = directoryName;
 
 rightSound = sin(2*pi*[1:1000]/10)/10;
 wrongSound = rand(1,1000).*sin(2*pi*[1:1000]/10)/10;
 
-numberOfCorrectResponse = 0;
 %% Some experimental parameters.
 %
 % May want to read these from a file at
@@ -66,7 +62,7 @@ numberOfCorrectResponse = 0;
 params.screenDimsCm = [59.65 33.55];
 params.fpSize = [0.1 0.1]; % fixation point size
 params.fpColor = [34 70 34]/255; % fixation point color
-params.bgColor = [0 0 0];
+params.bgColor = [0 0 0 0];
 params.textColor = [0.6 0.2 0.2];
 params.firstImageLoc = [0 0];
 params.secondImageLoc = [0 0];
@@ -163,6 +159,7 @@ win.disableObject('keyOptions');
 % Run easy trials
 nEasyTrials = 5;
 
+runEasyTrials(nEasyTrials, trialStruct, cal, scaleFactor, LMSStruct, params, controlSignal, win, gamePad, parser);
 runEasyTrials(nEasyTrials, trialStruct, cal, scaleFactor, LMSStruct, params, controlSignal, win, gamePad, parser);
 
 win.enableObject('fp');
@@ -381,7 +378,7 @@ win.close;
 
 win.enableObject('Result');
 win.draw;
-pause(20);
+pause(10);
 win.disableObject('Result');
 
 % Close our display.
@@ -397,7 +394,7 @@ function [win, params] = initDisplay(params, results)
 
 % Create the GLWindow object and linearize the clut.
 win = GLWindow('SceneDimensions', params.screenDimsCm, ...
-    'BackgroundColor', params.bgColor);
+    'BackgroundColor', params.bgColor, 'SpoofFullScreen', false);
 
 try
     % Open the display.

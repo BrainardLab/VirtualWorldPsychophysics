@@ -20,12 +20,13 @@ function runAcquisitioBySubjectName(subjectName)
 % Vijay Singh wrote this Dec 19 2018
 % Vijay Singh updated this Feb 21 2019
 % Vijay Singh updated this May 1 2019
+% Vijay Singh updated this June 29 2019
 
 % Some information about the experiment
 numberOfSubjectSelectionAcquisitions = 3;
 numberOfExperimentIterations = 3;
-numberOfConditions = 6;
-ConditionNames = {'0_00','0_01', '0_03', '0_10', '0_30', '1_00'};
+numberOfConditions = 5;
+ConditionNames = {'0_00', '0_10', '0_25', '0_40', '0_55'};
 
 scaleFactor = 5.4; % This scale factor is determined using the function
                    % findScaleFactor(cal, LMSStruct). For all images that
@@ -56,7 +57,7 @@ end
 if ~subjectInfoStruct.DemoFinished
     
     % Run  demo 
-    runLightnessExperiment('directoryName', 'StimuliCondition2_covScaleFactor_0_00_NoReflection',...
+    runLightnessExperiment('directoryName', 'Radius_0_00',...
         'nameOfTrialStruct', 'demoTrialStruct', ...
         'controlSignal', 'gamePad', ...
         'interval1Key', 'GP:UpperLeftTrigger', ...

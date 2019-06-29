@@ -13,21 +13,15 @@ nameOfTrialStruct = [subjectName,'_Condition_',condition,'_Iteration_',num2str(i
 
 switch condition
     case '0_00'
-        directoryName = 'StimuliCondition2_covScaleFactor_0_00_NoReflection';
-    case '0_01'
-        directoryName = 'StimuliCondition2_covScaleFactor_0_01_NoReflection';
-    case '0_03'
-        directoryName = 'StimuliCondition2_covScaleFactor_0_03_NoReflection';
+        directoryName = 'Radius_0_00';
     case '0_10'
-        directoryName = 'StimuliCondition2_covScaleFactor_0_10_NoReflection';
-    case '0_30'
-        directoryName = 'StimuliCondition2_covScaleFactor_0_30_NoReflection';
-    case '1_00'
-        directoryName = 'StimuliCondition2_covScaleFactor_1_00_NoReflection';
-%     case '5'
-%         directoryName = 'StimuliCondition2_covScaleFactor_5';
-%     case '10'
-%         directoryName = 'StimuliCondition2_covScaleFactor_10';
+        directoryName = 'Radius_0_10';
+    case '0_25'
+        directoryName = 'Radius_0_25';
+    case '0_40'
+        directoryName = 'Radius_0_40';
+    case '0_55'
+        directoryName = 'Radius_0_55';
 end
 
 acquisitionStatus = runLightnessExperiment('directoryName', directoryName,...
