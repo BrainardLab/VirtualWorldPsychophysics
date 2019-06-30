@@ -112,8 +112,8 @@ trialStruct.luminanceLevelIndexInTrialCmp = trialStruct.luminanceLevelIndexInTri
 trialStruct.luminanceLevelIndexInTrialStd = trialStruct.luminanceLevelIndexInTrialStd(newIndex);
 
 trialStruct.cmpInterval = zeros(1,nBlocks*nCmpLevels);
-tempIndex = randperm(nBlocks*nCmpLevels);
-trialStruct.cmpInterval(tempIndex(1:ceil((nBlocks*nCmpLevels)/2))) = 1;
+% tempIndex = randperm(nBlocks*nCmpLevels);
+% trialStruct.cmpInterval(tempIndex(1:ceil((nBlocks*nCmpLevels)/2))) = 1;
     
 save(fullfile(getpref(projectName,'stimulusInputBaseDir'),...
     parser.Results.directoryName,[outputFileName,'.mat']),...
