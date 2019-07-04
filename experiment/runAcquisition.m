@@ -22,6 +22,8 @@ switch condition
         directoryName = 'Radius_0_40';
     case '0_55'
         directoryName = 'Radius_0_55';
+    case '0_55_FixedLocation'
+        directoryName = 'Radius_0_55_FixedLocation';        
 end
 
 acquisitionStatus = runLightnessExperiment('directoryName', directoryName,...
