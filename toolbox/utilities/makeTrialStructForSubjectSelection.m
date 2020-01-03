@@ -8,17 +8,17 @@ function makeTrialStructForSubjectSelection(subjectName, TrialId)
 % TrialId = trial id, Ex 3
 %
 % The trial struct will be saved in
-% LightnessCasesForExperiment/Experiment3/StimuliCondition2_covScaleFactor_0_00_NoReflection
+% LightnessCasesForExperiment/Experiment5/Stimuli_IlluminantShapeVariation_covScaleFactor_0_00_NoReflection
 %
 % Vijay Singh wrote this. Dec 12 2018
 % Vijay Singh modified. Feb 21 2019
 % Vijay Singh modified. May 1 2019
 % Vijay Singh modified. May 20 2019
-% Vijay Singh modified. June 29 2019
+% Vijay Singh modified. Jan 03 2020
 
 nameOfTrialStruct = [subjectName,'_SelectionSessionId_',num2str(TrialId)];
 
-makeTrialStruct('directoryName','Radius_0_00',...
+makeTrialStruct('directoryName','Stimuli_IlluminantShapeVariation_covScaleFactor_0_00_NoReflection',...
     'LMSstructName', 'LMSStruct',...
     'outputFileName', nameOfTrialStruct,...
     'nBlocks', 30,...

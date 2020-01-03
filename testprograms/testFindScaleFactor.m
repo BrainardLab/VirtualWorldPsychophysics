@@ -6,7 +6,7 @@ dir = fullfile(getpref('VirtualWorldPsychophysics','calibrationDir'));
 
 
 %% Load the LMS struct
-pathToLMSStruct = '/Users/colorlab/Dropbox (Aguirre-Brainard Lab)/CNST_materials/VirtualWorldPsychophysics/Experiment4/Radius_0_25/LMSStruct.mat';
+pathToLMSStruct = '/Users/colorlab/Dropbox (Aguirre-Brainard Lab)/CNST_materials/VirtualWorldPsychophysics/Experiment3/StimuliCondition2_covScaleFactor_1_00_NoReflection/LMSStruct.mat';
 temp = load(pathToLMSStruct); 
 LMSStruct = temp.LMSStruct; 
 clear temp;

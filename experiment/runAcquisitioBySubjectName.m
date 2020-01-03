@@ -20,19 +20,14 @@ function runAcquisitioBySubjectName(subjectName)
 % Vijay Singh wrote this Dec 19 2018
 % Vijay Singh updated this Feb 21 2019
 % Vijay Singh updated this May 1 2019
-% Vijay Singh updated this June 29 2019
 
 % Some information about the experiment
 numberOfSubjectSelectionAcquisitions = 3;
 numberOfExperimentIterations = 3;
-% numberOfConditions = 5;
-% ConditionNames = {'0_00', '0_10', '0_25', '0_40', '0_55'};
+numberOfConditions = 2;
+ConditionNames = {'0_00','1_00'};
 
-numberOfConditions = 7;
-ConditionNames = {'0_00', '0_03', '0_10', '0_30', '0_55', '0_55_FixedLocation', '0_55_TargetAtCenter'};
-
-
-scaleFactor = 6; % This scale factor is determined using the function
+scaleFactor = 5.4; % This scale factor is determined using the function
                    % findScaleFactor(cal, LMSStruct). For all images that
                    % are displayed in one experiment the scale factor
                    % should be the same. In our case there are 6
@@ -61,7 +56,7 @@ end
 if ~subjectInfoStruct.DemoFinished
     
     % Run  demo 
-    runLightnessExperiment('directoryName', 'Radius_0_00',...
+    runLightnessExperiment('directoryName', 'Stimuli_IlluminantShapeVariation_covScaleFactor_0_00_NoReflection',...
         'nameOfTrialStruct', 'demoTrialStruct', ...
         'controlSignal', 'gamePad', ...
         'interval1Key', 'GP:UpperLeftTrigger', ...
@@ -81,7 +76,7 @@ else
     nextAcquisition = find(subjectInfoStruct.FinalExperimentAcquisition == 0, 1);
     
     % If subject selection acquisition are left. First finish those acquisition.
-    if nextSubjectSelectionTrial < 3
+    if nextSubjectSelectionTrial < (numberOfSubjectSelectionAcquisitions+1)
         %Make the trial struct
         makeTrialStructForSubjectSelection(subjectName,nextSubjectSelectionTrial);
         % Run the acquisition
@@ -94,38 +89,7 @@ else
             subjectInfoStruct.SelectionTrialDate{nextSubjectSelectionTrial} = date;
             save(subjectInfoFileName, 'subjectInfoStruct');
         end
-        deleteTrialStructForSubjectSelection(subjectName, nextSubjectSelectionTrial);
-    elseif nextSubjectSelectionTrial == 3
-        nameOfTrialStruct = [subjectName,'_SelectionSessionId_',num2str(nextSubjectSelectionTrial)];
-        makeTrialStructStdFirstImage('directoryName','Radius_0_55',...
-            'LMSstructName', 'LMSStruct',...
-            'outputFileName', nameOfTrialStruct,...
-            'nBlocks', 30,...
-            'stdYIndex', 6, ...
-            'cmpYIndex', (1:11), ...
-            'comparisionTargetSameSpectralShape',false);
-
-        directoryName = 'Radius_0_55';
-        
-        acquisitionStatus = runLightnessExperiment('directoryName', directoryName,...
-            'nameOfTrialStruct', nameOfTrialStruct, ...
-            'controlSignal', 'gamePad', ...
-            'interval1Key', 'GP:UpperLeftTrigger', ...
-            'interval2Key', 'GP:UpperRightTrigger', ...
-            'feedback', 1, ...
-            'subjectName', nameOfTrialStruct, ...
-            'scaleFactor', scaleFactor);
-                % If the acquisition was completed update the acquisition information
-        % and save the updated struct
-        if acquisitionStatus
-            subjectInfoStruct.SelectionTrialFinished(nextSubjectSelectionTrial) = 1;
-            subjectInfoStruct.SelectionTrialDate{nextSubjectSelectionTrial} = date;
-            save(subjectInfoFileName, 'subjectInfoStruct');
-        end
-        pathToTrialStruct = fullfile(getpref('VirtualWorldPsychophysics','stimulusInputBaseDir'),...
-                            'Radius_0_55',[nameOfTrialStruct '.mat']);
-        delete(pathToTrialStruct);
-        
+        deleteTrialStructForSubjectSelection(subjectName, nextSubjectSelectionTrial)
     else
         % Iteration number
         iterationNumber = ceil(nextAcquisition/numberOfConditions);
@@ -143,7 +107,7 @@ else
             subjectInfoStruct.FinalExperimentDate{nextAcquisition} = date;
             save(subjectInfoFileName, 'subjectInfoStruct');
         end
-        deleteTrialStructForFinalExperiment(subjectName,iterationNumber, nextConditioToBeRun);
+        deleteTrialStructForFinalExperiment(subjectName,iterationNumber, nextConditioToBeRun)
     end
     % Send email to Vijay when experiment finishes.
 %     SendEmail('vsin@sas.upenn.edu', 'experimentFinished', 'experimentFinished');
