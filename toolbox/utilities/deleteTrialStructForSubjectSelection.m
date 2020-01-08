@@ -12,5 +12,5 @@ function deleteTrialStructForSubjectSelection(subjectName, TrialId)
 nameOfTrialStruct = [subjectName,'_SelectionSessionId_',num2str(TrialId)];
 
 pathToTrialStruct = fullfile(getpref('VirtualWorldPsychophysics','stimulusInputBaseDir'),...
-                            'Stimuli_IlluminantShapeVariation_covScaleFactor_0_00_NoReflection',[nameOfTrialStruct '.mat']);
+                            'StimuliIlluminantScale_0_0_to_0_0',[nameOfTrialStruct '.mat']);
 delete(pathToTrialStruct);

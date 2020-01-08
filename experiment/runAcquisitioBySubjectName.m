@@ -24,10 +24,10 @@ function runAcquisitioBySubjectName(subjectName)
 % Some information about the experiment
 numberOfSubjectSelectionAcquisitions = 3;
 numberOfExperimentIterations = 3;
-numberOfConditions = 2;
-ConditionNames = {'0_00','1_00'};
+numberOfConditions = 3;
+ConditionNames = {'_0_0_to_0_0','_0_1_to_1_0', '_0_5_to_2_0'};
 
-scaleFactor = 5.4; % This scale factor is determined using the function
+scaleFactor = 5.1; % This scale factor is determined using the function
                    % findScaleFactor(cal, LMSStruct). For all images that
                    % are displayed in one experiment the scale factor
                    % should be the same. In our case there are 6
@@ -56,7 +56,7 @@ end
 if ~subjectInfoStruct.DemoFinished
     
     % Run  demo 
-    runLightnessExperiment('directoryName', 'Stimuli_IlluminantShapeVariation_covScaleFactor_0_00_NoReflection',...
+    runLightnessExperiment('directoryName', 'StimuliIlluminantScale_0_0_to_0_0',...
         'nameOfTrialStruct', 'demoTrialStruct', ...
         'controlSignal', 'gamePad', ...
         'interval1Key', 'GP:UpperLeftTrigger', ...
