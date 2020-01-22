@@ -63,7 +63,7 @@ acquisitionStatus = 0;
 %
 % May want to read these from a file at
 % some point.
-params.screenDimsCm = [59.65 33.55];
+params.screenDimsCm = [59.67 33.57];
 params.fpSize = [0.1 0.1]; % fixation point size
 params.fpColor = [34 70 34]/255; % fixation point color
 params.bgColor = [0 0 0];
