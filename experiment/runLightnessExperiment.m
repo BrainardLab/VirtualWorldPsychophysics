@@ -66,6 +66,7 @@ acquisitionStatus = 0;
 params.screenDimsCm = [59.67 33.57];
 params.fpSize = [0.1 0.1]; % fixation point size
 params.fpColor = [34 70 34]/255; % fixation point color
+params.fpColorRed = [0.6 0.2 0.2]; % fixation point color red
 params.bgColor = [0 0 0];
 params.textColor = [0.6 0.2 0.2];
 params.firstImageLoc = [0 0];
@@ -331,10 +332,14 @@ while keepLooping
     %% Check if one third of experiment is reached
     if (iterTrials == ceil(length(trialStruct.trialStdIndex)/3))
         win.enableObject('oneThirdText');
+        win.disableObject('fp');        
+        win.enableObject('fpRed');
         win.draw;
         pause(60);
         win.disableObject('oneThirdText');
         win.enableObject('restOver');
+        win.disableObject('fpRed');
+        win.enableObject('fp');
         win.draw;
         FlushEvents;
         %% Wait for key
@@ -358,10 +363,14 @@ while keepLooping
     %% Check if two third of experiment is reached
     if (iterTrials == ceil(2*length(trialStruct.trialStdIndex)/3))
         win.enableObject('twoThirdText');
+        win.disableObject('fp');        
+        win.enableObject('fpRed');
         win.draw;
         pause(60);
         win.disableObject('twoThirdText');
         win.enableObject('restOver');
+        win.disableObject('fpRed');
+        win.enableObject('fp');
         win.draw;        
         FlushEvents;
         %% Wait for key
@@ -470,6 +479,9 @@ try
     
     % Add the fixation point.
     win.addOval([0 0], params.fpSize, params.fpColor, 'Name', 'fp');
+    
+    % Add the fixation point in red color.
+    win.addOval([0 0], params.fpSize, params.fpColorRed, 'Name', 'fpRed');
     
     % Add text
     win.addText('Hit any button to start', ...        % Text to display
