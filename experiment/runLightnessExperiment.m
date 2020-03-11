@@ -56,7 +56,7 @@ ExperimentType = 'Lightness';
 caseName = directoryName;
 
 rightSound = sin(2*pi*[1:1000]/10)/10;
-wrongSound = rand(1,1000).*sin(2*pi*[1:1000]/10)/10;
+wrongSound = rand(1,1000).*ceil(sin(2*pi*[1:1000]/10))/10;
 
 acquisitionStatus = 0;
 %% Some experimental parameters.
