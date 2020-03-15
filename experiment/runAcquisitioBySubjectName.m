@@ -27,13 +27,13 @@ numberOfExperimentIterations = 3;
 numberOfConditions = 6;
 ConditionNames = {'_0_0_to_0_0',  '_0_95_to_1_05', '_0_9_to_1_1',  '_0_85_to_1_15', '_0_8_to_1_2', '_0_75_to_1_25'};
 
-scaleFactor = 5.1; % This scale factor is determined using the function
+scaleFactor = 6.5; % This scale factor is determined using the function
                    % findScaleFactor(cal, LMSStruct). For all images that
                    % are displayed in one experiment the scale factor
                    % should be the same. In our case there are 6
                    % conditions. The scale factor for condition 6 is the
-                   % lowest (5.4229) and for condition 1 is the highest 
-                   % (14.9939). We have chosen the scale factor a little 
+                   % lowest (6.7950) and for condition 1 is the highest 
+                   % (8.4978). We have chosen the scale factor a little 
                    % lower than Condition 6.
 
 % Check for the file with the information about this subject's acquisitons

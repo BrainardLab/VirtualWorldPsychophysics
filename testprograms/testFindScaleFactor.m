@@ -6,7 +6,7 @@ dir = fullfile(getpref('VirtualWorldPsychophysics','calibrationDir'));
 
 
 %% Load the LMS struct
-pathToLMSStruct = '/Users/colorlab/Dropbox (Aguirre-Brainard Lab)/CNST_materials/VirtualWorldPsychophysics/Experiment3/StimuliCondition2_covScaleFactor_1_00_NoReflection/LMSStruct.mat';
+pathToLMSStruct = '/Volumes/G-DRIVE USB/VirtualWorldPsychophysics/VWP_materials/Experiment5/StimuliIlluminantScale_0_75_to_1_25/LMSStruct.mat';
 temp = load(pathToLMSStruct); 
 LMSStruct = temp.LMSStruct; 
 clear temp;
@@ -20,6 +20,16 @@ cal = SetSensorColorSpace(cal, LMSStruct.T_cones, LMSStruct.S); % Fix the last o
 %% Find Scale factor
 
 scaleFactor = findScaleFactor(cal, LMSStruct);
+
+%% Experiment 5
+
+% StimuliIlluminantScale_0_00_to_0_00; monitor scalefactor = 8.4978
+% StimuliIlluminantScale_0_95_to_1_05; monitor scalefactor = 8.5559
+% StimuliIlluminantScale_0_90_to_1_10; monitor scalefactor = 7.7803
+% StimuliIlluminantScale_0_85_to_1_15; monitor scalefactor = 7.4562
+% StimuliIlluminantScale_0_80_to_1_20; monitor scalefactor = 7.1677
+% StimuliIlluminantScale_0_75_to_1_25; monitor scalefactor = 6.7950
+
 
 %% Experiment 3
 
