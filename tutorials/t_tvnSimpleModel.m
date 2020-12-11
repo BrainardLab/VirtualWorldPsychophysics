@@ -1,6 +1,8 @@
 % t_tvnSimpleModel
 %
 % Simple model for thresholds versus noise
+%
+% See also: t_equivNoiseEtc
 
 % History:
 %   11/13/19  dhb Wrote it.
@@ -92,5 +94,3 @@ function threshold = ComputeTvNThreshold(sigmaExternal,criterionDPrime,sigmaInte
     exponentiatedThreshold = criterionDPrime*sigma;
     threshold = exponentiatedThreshold^(1/signalExponent);
 end
-
-
