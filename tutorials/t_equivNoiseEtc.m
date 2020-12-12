@@ -50,10 +50,15 @@ simSignalExponent = 1;
 % fixed at the values above (set to false here), or search on them (set to
 % true).
 fitThresholdDPrime = false;
-fitSignalExponent = true;
+fitSignalExponent = false;
 
 %% Simulate or set threshold data and smooth curve for plotting
-SIMULATE = true;
+SIMULATE = false;
+
+%% Use the effective scalars rather than the nominal scalars when analyzing actual data
+USE_EFFECTIVESCALARS = true;
+
+%% Generate data to be used here
 if (SIMULATE)
     % Simulated parameters
     %   simSigma2_i is the variance of the internal noise
@@ -81,6 +86,14 @@ if (SIMULATE)
     lrfSigma2_i = simSigma2_i;
     lrfSigma2_e = simSigma2_e;
 else
+    % See estimateModelTresholds in paper repository for how these
+    % effective scale factors were derived.  The model generated there is
+    % run for more covariance scale factors than the experiment, so we need
+    % to pull out just the ones that correspond to the experimental values,
+    % when we put these into the data matrix.
+    covarianceScalarsModelNominal = [0.0001 0.0003, 0.001, 0.003, 0.01, 0.03, 0.10, 0.30, 1];
+    effectiveCovarianceScalars = [0.0015, 0.0018, 0.0041, 0.0082, 0.0236, 0.0544, 0.2345, 0.4628, 1.0000];
+    effectiveUseIndex = [1 5 6 7 8 9];
     thresholdDeltaInput = [
         0.0001	0.0237
         0.01	0.0226
@@ -89,6 +102,9 @@ else
         0.3		0.0338
         1		0.0374]';
     nCovScalarsPlot = 100;
+    if (USE_EFFECTIVESCALARS)
+        thresholdDeltaInput(1,:) = effectiveCovarianceScalars(effectiveUseIndex);
+    end
     covScalarsData = thresholdDeltaInput(1,:);
     covScalarsPlot = logspace(log10(covScalarsData(1)),log10(covScalarsData(end)),nCovScalarsPlot);
     thresholdDeltaData = thresholdDeltaInput(2,:);
@@ -97,9 +113,15 @@ else
     yPlotLimHigh = -1.5;
     
     % Chosen by hand to approximate our data
-    lrfThresholdDPrime = 1;
-    lrfSigma2_i = (0.034)^2/2;
-    lrfSigma2_e = (0.05)^2/2;
+    if (USE_EFFECTIVESCALARS)
+        lrfThresholdDPrime = 1;
+        lrfSigma2_i = 0.0006031;
+        lrfSigma2_e = 0.000896;
+    else
+        lrfThresholdDPrime = 1;
+        lrfSigma2_i = (0.034)^2/2;
+        lrfSigma2_e = (0.05)^2/2;
+    end
 end
 
 %% Fit the underlying TSD model
