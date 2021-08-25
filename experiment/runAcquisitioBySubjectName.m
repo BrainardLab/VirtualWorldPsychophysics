@@ -25,7 +25,7 @@ function runAcquisitioBySubjectName(subjectName)
 numberOfSubjectSelectionAcquisitions = 3;
 numberOfExperimentIterations = 3;
 numberOfConditions = 6;
-ConditionNames = {'_0_0_to_0_0',  '_0_95_to_1_05', '_0_9_to_1_1',  '_0_85_to_1_15', '_0_8_to_1_2', '_0_75_to_1_25'};
+ConditionNames = {'0_00',  '0_01', '0_03',  '0_10', '0_30', '1_00'};
 
 scaleFactor = 6.5; % This scale factor is determined using the function
                    % findScaleFactor(cal, LMSStruct). For all images that
@@ -56,7 +56,7 @@ end
 if ~subjectInfoStruct.DemoFinished
     
     % Run  demo 
-    runLightnessExperiment('directoryName', 'StimuliIlluminantScale_0_0_to_0_0',...
+    runLightnessExperiment('directoryName', 'StimuliCondition2_covScaleFactor_0_00_NoReflection',...
         'nameOfTrialStruct', 'demoTrialStruct', ...
         'controlSignal', 'gamePad', ...
         'interval1Key', 'GP:UpperLeftTrigger', ...
@@ -80,7 +80,7 @@ else
         %Make the trial struct
         makeTrialStructForSubjectSelection(subjectName,nextSubjectSelectionTrial);
         % Run the acquisition
-        acquisitionStatus = runSubjectSelectionAcquisition(subjectName, nextSubjectSelectionTrial, scaleFactor);
+        acquisitionStatus = 1 % runSubjectSelectionAcquisition(subjectName, nextSubjectSelectionTrial, scaleFactor);
 
         % If the acquisition was completed update the acquisition information
         % and save the updated struct
@@ -98,7 +98,7 @@ else
         % Make the required trial struct for this condition
         makeTrialStructForFinalExperiment(subjectName, iterationNumber, nextConditioToBeRun);
         % Run this trial struct
-        acquisitionStatus = runAcquisition(subjectName, iterationNumber, nextConditioToBeRun, scaleFactor);
+        acquisitionStatus = 1; % runAcquisition(subjectName, iterationNumber, nextConditioToBeRun, scaleFactor);
         
         % If the acquisition was completed update the acquisition information
         % and save the updated struct

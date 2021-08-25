@@ -3,7 +3,7 @@ function acquisitionStatus = runAcquisition(subjectName, iterationNumber, condit
 % This script runs the sessions over three conditions of lightness experiment.
 % First generate random sequence for the conditions for the three sessions
 % and save it in the excel file
-% VirtualWorldPsychophysics/data/Experiment5/SubjectInformation/SequenceForExperiment.
+% VirtualWorldPsychophysics/data/Experiment3/SubjectInformation/SequenceForExperiment.
 % This random sequence is the order in which the conditions will be run for
 % a given session.
 %
@@ -12,23 +12,22 @@ function acquisitionStatus = runAcquisition(subjectName, iterationNumber, condit
 nameOfTrialStruct = [subjectName,'_Condition_',condition,'_Iteration_',num2str(iterationNumber)];
 
 switch condition
-    case '_0_0_to_0_0'
-        directoryName = 'StimuliIlluminantScale_0_0_to_0_0';
-    case '_0_95_to_1_05'
-        directoryName = 'StimuliIlluminantScale_0_95_to_1_05';
-    case '_0_9_to_1_1'
-        directoryName = 'StimuliIlluminantScale_0_9_to_1_1';
-    case '_0_85_to_1_15'
-        directoryName = 'StimuliIlluminantScale_0_85_to_1_15';
-    case '_0_8_to_1_2'
-        directoryName = 'StimuliIlluminantScale_0_8_to_1_2';
-    case '_0_75_to_1_25'
-        directoryName = 'StimuliIlluminantScale_0_75_to_1_25';
-    case '_0_7_to_1_3'
-        directoryName = 'StimuliIlluminantScale_0_7_to_1_3';
-    case '_0_5_to_2_0'
-        directoryName = 'StimuliIlluminantScale_0_5_to_2_0';
-    
+    case '0_00'
+        directoryName = 'StimuliCondition2_covScaleFactor_0_00_NoReflection';
+    case '0_01'
+        directoryName = 'StimuliCondition2_covScaleFactor_0_01_NoReflection';
+    case '0_03'
+        directoryName = 'StimuliCondition2_covScaleFactor_0_03_NoReflection';
+    case '0_10'
+        directoryName = 'StimuliCondition2_covScaleFactor_0_10_NoReflection';
+    case '0_30'
+        directoryName = 'StimuliCondition2_covScaleFactor_0_30_NoReflection';
+    case '1_00'
+        directoryName = 'StimuliCondition2_covScaleFactor_1_00_NoReflection';
+%     case '5'
+%         directoryName = 'StimuliCondition2_covScaleFactor_5';
+%     case '10'
+%         directoryName = 'StimuliCondition2_covScaleFactor_10';
 end
 
 acquisitionStatus = runLightnessExperiment('directoryName', directoryName,...

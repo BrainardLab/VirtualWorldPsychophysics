@@ -7,7 +7,7 @@ function acquisitionStatus = runSubjectSelectionAcquisition(subjectName, TrialId
 
 nameOfTrialStruct = [subjectName,'_SelectionSessionId_',num2str(TrialId)];
 
-directoryName = 'StimuliIlluminantScale_0_0_to_0_0';
+directoryName = 'StimuliCondition2_covScaleFactor_0_00_NoReflection';
 
 acquisitionStatus = runLightnessExperiment('directoryName', directoryName,...
     'nameOfTrialStruct', nameOfTrialStruct, ...
