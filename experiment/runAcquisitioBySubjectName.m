@@ -80,7 +80,7 @@ else
         %Make the trial struct
         makeTrialStructForSubjectSelection(subjectName,nextSubjectSelectionTrial);
         % Run the acquisition
-        acquisitionStatus = 1 % runSubjectSelectionAcquisition(subjectName, nextSubjectSelectionTrial, scaleFactor);
+        acquisitionStatus = runSubjectSelectionAcquisition(subjectName, nextSubjectSelectionTrial, scaleFactor);
 
         % If the acquisition was completed update the acquisition information
         % and save the updated struct
@@ -98,7 +98,7 @@ else
         % Make the required trial struct for this condition
         makeTrialStructForFinalExperiment(subjectName, iterationNumber, nextConditioToBeRun);
         % Run this trial struct
-        acquisitionStatus = 1; % runAcquisition(subjectName, iterationNumber, nextConditioToBeRun, scaleFactor);
+        acquisitionStatus = runAcquisition(subjectName, iterationNumber, nextConditioToBeRun, scaleFactor);
         
         % If the acquisition was completed update the acquisition information
         % and save the updated struct
