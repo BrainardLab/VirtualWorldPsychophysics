@@ -67,12 +67,12 @@ end
 
 if (subjectInfoStruct.FinalExperimentAcquisition(15))
 
-condition_0_0.directoryName = 'StimuliCondition2_covScaleFactor_0_00_NoReflection';
+condition_0_00.directoryName = 'StimuliCondition2_covScaleFactor_0_00_NoReflection';
 condition_0_01.directoryName = 'StimuliCondition2_covScaleFactor_0_01_NoReflection';
-condition_0_05.directoryName = 'StimuliCondition2_covScaleFactor_0_03_NoReflection';
-condition_0_1.directoryName = 'StimuliCondition2_covScaleFactor_0_10_NoReflection';
-condition_0_5.directoryName = 'StimuliCondition2_covScaleFactor_0_30_NoReflection';
-condition_1.directoryName = 'StimuliCondition2_covScaleFactor_1_00_NoReflection';
+condition_0_03.directoryName = 'StimuliCondition2_covScaleFactor_0_03_NoReflection';
+condition_0_10.directoryName = 'StimuliCondition2_covScaleFactor_0_10_NoReflection';
+condition_0_30.directoryName = 'StimuliCondition2_covScaleFactor_0_30_NoReflection';
+condition_1_00.directoryName = 'StimuliCondition2_covScaleFactor_1_00_NoReflection';
 % condition5.directoryName = 'StimuliCondition2_covScaleFactor_5';
 % condition10.directoryName = 'StimuliCondition2_covScaleFactor_10';
 
@@ -81,12 +81,12 @@ threshold = zeros(nConditions,3);
 
 for iterTrial = 1:3
     for iterCond = 1:nConditions
-        whichCondition = subjectInfoStruct.FinalExperimentOrder((iterTrial-1)*5 + iterCond);
+        whichCondition = subjectInfoStruct.FinalExperimentOrder((iterTrial-1)*nConditions + iterCond);
         condition = eval(['condition_', char(whichCondition)]);
         thresholds = drawPsychometricFunction('ExperimentType', 'Lightness',...
             'directoryName', condition.directoryName, ...
             'subjectName', [subjectName,'_Condition_',char(whichCondition),'_Iteration_',num2str(iterTrial)], ...
-            'date', char(subjectInfoStruct.FinalExperimentDate((iterTrial-1)*5 + iterCond)), ...
+            'date', char(subjectInfoStruct.FinalExperimentDate((iterTrial-1)*nConditions + iterCond)), ...
             'fileNumber', 1,...
             'thresholdU', 0.75, ...
             'thresholdL', 0.25);
