@@ -117,7 +117,7 @@ end
 %% Plot thresholds for the five conditions and save the plot
 meanthreshold = mean(threshold');
 SEMthreshold = std(threshold')/sqrt(size(threshold,2));
-errorbar([1 2 3 4 5], meanthreshold, SEMthreshold);
+errorbar([1 2 3 4 5 6], meanthreshold, SEMthreshold);
 hold on;box on;
 axis square;
 xlim([0.5 5.5]);
