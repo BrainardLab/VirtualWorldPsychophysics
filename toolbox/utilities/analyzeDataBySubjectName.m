@@ -17,6 +17,7 @@ function analyzeDataBySubjectName(subjectName)
 %
 % Vijay Singh wrote this Jan 03 2019
 % Vijay Singh modified May 01 2019
+% Devin Reynolds modified Sep 21 2021
 
 %% Load the struct with subject information
 subjectInfoFileName = fullfile(getpref('VirtualWorldPsychophysics','dataDir'),'SubjectInformation',[subjectName,'.mat']);
@@ -64,8 +65,9 @@ else
 end
 
 %% Final Analysis
-
-if (subjectInfoStruct.FinalExperimentAcquisition(15))
+nConditions = 6;
+nIterations = 3; % Number of times threshold is estimated for each condition
+if (subjectInfoStruct.FinalExperimentAcquisition(nConditions*nIterations))
 
 condition_0_00.directoryName = 'StimuliCondition2_covScaleFactor_0_00_NoReflection';
 condition_0_01.directoryName = 'StimuliCondition2_covScaleFactor_0_01_NoReflection';
@@ -76,7 +78,7 @@ condition_1_00.directoryName = 'StimuliCondition2_covScaleFactor_1_00_NoReflecti
 % condition5.directoryName = 'StimuliCondition2_covScaleFactor_5';
 % condition10.directoryName = 'StimuliCondition2_covScaleFactor_10';
 
-nConditions = 6;
+
 threshold = zeros(nConditions,3);
 
 for iterTrial = 1:3
@@ -115,23 +117,26 @@ for iterTrial = 1:3
 end
 
 %% Plot thresholds for the five conditions and save the plot
-meanthreshold = mean(threshold');
-SEMthreshold = std(threshold')/sqrt(size(threshold,2));
+
+thresholdSqr = threshold.^2;
+logThresholdSqr = log10(thresholdSqr);
+meanthreshold = mean(logThresholdSqr');
+SEMthreshold = std(logThresholdSqr')/sqrt(size(logThresholdSqr,2));
 errorbar([1 2 3 4 5 6], meanthreshold, SEMthreshold);
 hold on;box on;
 axis square;
-xlim([0.5 5.5]);
+xlim([0.5 6.5]);
 ylim([-0.005 0.08]);
 xlabel('Covariance Scale Factor');
 ylabel('');
-xticks([1:5])
+xticks([1:6])
 xticklabels({'0.00', '0.01', '0.03', '0.10', '0.30', '1.00'});
 l = legend({'Threshold (Mean +/- SEM)'}, 'location', 'best', 'fontsize',15);
 l.Position = [    0.2301    0.7920    0.3893    0.1012];
 title([subjectName,' Thresholds'],'interpreter','latex');
 set(gca,'FontSize',20);
 
-pathToFolder = fullfile(getpref('VirtualWorldPsychophysics','analysisDir'),'Lightness','SubjectThresholdsSummary',subjectName);
+pathToFolder = fullfile(getpref('VirtualWorldPsychophysics','analysisDir'),'Lightness','SubjectThresholdsSummary');
 if ~(exist(pathToFolder))
     mkdir(pathToFolder)
 end
