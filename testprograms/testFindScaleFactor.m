@@ -40,6 +40,15 @@ scaleFactor = findScaleFactor(cal, LMSStruct);
 % CovScaleFactor = 0_30 ; monitor scalefactor = 7.9536
 % CovScaleFactor = 1_00 ; monitor scalefactor = 5.4229
 
+%% Experiment 3 AT NCAT
+
+% CovScaleFactor = 0_00 ; monitor scalefactor = 22.8523
+% CovScaleFactor = 0_01 ; monitor scalefactor = 19.5725
+% CovScaleFactor = 0_03 ; monitor scalefactor = 17.1635
+% CovScaleFactor = 0_10 ; monitor scalefactor = 13.4940
+% CovScaleFactor = 0_30 ; monitor scalefactor = 11.5302
+% CovScaleFactor = 1_00 ; monitor scalefactor = 8.4897
+
 %% Experiment 2
 
 % Condition = 1 ; monitor scalefactor = 6.3094
