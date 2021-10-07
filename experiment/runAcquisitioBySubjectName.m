@@ -20,12 +20,13 @@ function runAcquisitioBySubjectName(subjectName)
 % Vijay Singh wrote this Dec 19 2018
 % Vijay Singh updated this Feb 21 2019
 % Vijay Singh updated this May 1 2019
+% Vijay Singh updated this Oct 7 2021
 
 % Some information about the experiment
 numberOfSubjectSelectionAcquisitions = 3;
 numberOfExperimentIterations = 3;
-numberOfConditions = 6;
-ConditionNames = {'0_00',  '0_01', '0_03',  '0_10', '0_30', '1_00'};
+numberOfConditions = 9;
+ConditionNames = {'0_00',  '0_01', '0_03',  '0_10', '0_30', '1_00', '0_03_GrayBkg', '0_30_GrayBkg', '1_00_GrayBkg'};
 
 scaleFactor = 8.0; % This scale factor is determined using the function
                    % findScaleFactor(cal, LMSStruct). For all images that

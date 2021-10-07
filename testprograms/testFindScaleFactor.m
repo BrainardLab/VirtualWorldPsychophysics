@@ -6,7 +6,7 @@ dir = fullfile(getpref('VirtualWorldPsychophysics','calibrationDir'));
 
 
 %% Load the LMS struct
-pathToLMSStruct = '/Volumes/G-DRIVE USB/VirtualWorldPsychophysics/VWP_materials/Experiment5/StimuliIlluminantScale_0_75_to_1_25/LMSStruct.mat';
+pathToLMSStruct = '/Volumes/G-DRIVE USB/VirtualWorldPsychophysics/VWP_materials/Experiment6/StimuliCondition2_covScaleFactor_1_00_GrayBkg_NoReflection/LMSStruct.mat';
 temp = load(pathToLMSStruct); 
 LMSStruct = temp.LMSStruct; 
 clear temp;
@@ -40,14 +40,17 @@ scaleFactor = findScaleFactor(cal, LMSStruct);
 % CovScaleFactor = 0_30 ; monitor scalefactor = 7.9536
 % CovScaleFactor = 1_00 ; monitor scalefactor = 5.4229
 
-%% Experiment 3 AT NCAT
+%% Experiment 6 AT NCAT
 
-% CovScaleFactor = 0_00 ; monitor scalefactor = 22.8523
-% CovScaleFactor = 0_01 ; monitor scalefactor = 19.5725
-% CovScaleFactor = 0_03 ; monitor scalefactor = 17.1635
-% CovScaleFactor = 0_10 ; monitor scalefactor = 13.4940
-% CovScaleFactor = 0_30 ; monitor scalefactor = 11.5302
-% CovScaleFactor = 1_00 ; monitor scalefactor = 8.4897
+% CovScaleFactor = 0_00 ;        monitor scalefactor = 22.8523
+% CovScaleFactor = 0_01 ;        monitor scalefactor = 19.5725
+% CovScaleFactor = 0_03 ;        monitor scalefactor = 17.1635
+% CovScaleFactor = 0_03_GrayBkg; monitor scalefactor = 21.8393
+% CovScaleFactor = 0_10 ;        monitor scalefactor = 13.4940
+% CovScaleFactor = 0_30 ;        monitor scalefactor = 11.5302
+% CovScaleFactor = 0_30_GrayBkg; monitor scalefactor = 14.1973
+% CovScaleFactor = 1_00 ;        monitor scalefactor = 8.4897
+% CovScaleFactor = 1_00_GrayBkg; monitor scalefactor = 9.6023
 
 %% Experiment 2
 
