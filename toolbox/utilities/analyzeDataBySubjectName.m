@@ -65,16 +65,19 @@ else
 end
 
 %% Final Analysis
-nConditions = 6;
+nConditions = 9;
 nIterations = 3; % Number of times threshold is estimated for each condition
 if (subjectInfoStruct.FinalExperimentAcquisition(nConditions*nIterations))
 
 condition_0_00.directoryName = 'StimuliCondition2_covScaleFactor_0_00_NoReflection';
 condition_0_01.directoryName = 'StimuliCondition2_covScaleFactor_0_01_NoReflection';
 condition_0_03.directoryName = 'StimuliCondition2_covScaleFactor_0_03_NoReflection';
+condition_0_03.directoryName = 'StimuliCondition2_covScaleFactor_0_03_GrayBkg_NoReflection';
 condition_0_10.directoryName = 'StimuliCondition2_covScaleFactor_0_10_NoReflection';
 condition_0_30.directoryName = 'StimuliCondition2_covScaleFactor_0_30_NoReflection';
+condition_0_30.directoryName = 'StimuliCondition2_covScaleFactor_0_30_GrayBkg_NoReflection';
 condition_1_00.directoryName = 'StimuliCondition2_covScaleFactor_1_00_NoReflection';
+condition_1_00.directoryName = 'StimuliCondition2_covScaleFactor_1_00_GrayBkg_NoReflection';
 % condition5.directoryName = 'StimuliCondition2_covScaleFactor_5';
 % condition10.directoryName = 'StimuliCondition2_covScaleFactor_10';
 
@@ -122,15 +125,15 @@ thresholdSqr = threshold.^2;
 logThresholdSqr = log10(thresholdSqr);
 meanthreshold = mean(logThresholdSqr');
 SEMthreshold = std(logThresholdSqr')/sqrt(size(logThresholdSqr,2));
-errorbar([1 2 3 4 5 6], meanthreshold, SEMthreshold);
+errorbar([1: nConditions], meanthreshold, SEMthreshold);
 hold on;box on;
 axis square;
-xlim([0.5 6.5]);
+xlim([0.5 nConditions+0.5]);
 ylim([-0.005 0.08]);
 xlabel('Covariance Scale Factor');
 ylabel('');
-xticks([1:6])
-xticklabels({'0.00', '0.01', '0.03', '0.10', '0.30', '1.00'});
+xticks([1:nConditions])
+xticklabels({'0.00', '0.01', '0.03', '0.03_GrayBkg', '0.10', '0.30', '0.30_GrayBkg', '1.00', '1.00_GrayBkg'});
 l = legend({'Threshold (Mean +/- SEM)'}, 'location', 'best', 'fontsize',15);
 l.Position = [    0.2301    0.7920    0.3893    0.1012];
 title([subjectName,' Thresholds'],'interpreter','latex');
@@ -145,7 +148,7 @@ save2pdf(fullfile(pathToFolder,[subjectName,'.pdf']),gcf,600);
 close all;
 
 else
-    display(['All 18 acquisitions have not been finished. Remaining acquisitions = ',num2str(18 - length(find(subjectInfoStruct.FinalExperimentAcquisition)))]);
+    display(['All 27 acquisitions have not been finished. Remaining acquisitions = ',num2str(nConditions*nIterations - length(find(subjectInfoStruct.FinalExperimentAcquisition)))]);
 end
 
 end
