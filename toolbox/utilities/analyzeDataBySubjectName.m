@@ -72,12 +72,12 @@ if (subjectInfoStruct.FinalExperimentAcquisition(nConditions*nIterations))
 condition_0_00.directoryName = 'StimuliCondition2_covScaleFactor_0_00_NoReflection';
 condition_0_01.directoryName = 'StimuliCondition2_covScaleFactor_0_01_NoReflection';
 condition_0_03.directoryName = 'StimuliCondition2_covScaleFactor_0_03_NoReflection';
-condition_0_03.directoryName = 'StimuliCondition2_covScaleFactor_0_03_GrayBkg_NoReflection';
+condition_0_03_GrayBkg.directoryName = 'StimuliCondition2_covScaleFactor_0_03_GrayBkg_NoReflection';
 condition_0_10.directoryName = 'StimuliCondition2_covScaleFactor_0_10_NoReflection';
 condition_0_30.directoryName = 'StimuliCondition2_covScaleFactor_0_30_NoReflection';
-condition_0_30.directoryName = 'StimuliCondition2_covScaleFactor_0_30_GrayBkg_NoReflection';
+condition_0_30_GrayBkg.directoryName = 'StimuliCondition2_covScaleFactor_0_30_GrayBkg_NoReflection';
 condition_1_00.directoryName = 'StimuliCondition2_covScaleFactor_1_00_NoReflection';
-condition_1_00.directoryName = 'StimuliCondition2_covScaleFactor_1_00_GrayBkg_NoReflection';
+condition_1_00_GrayBkg.directoryName = 'StimuliCondition2_covScaleFactor_1_00_GrayBkg_NoReflection';
 % condition5.directoryName = 'StimuliCondition2_covScaleFactor_5';
 % condition10.directoryName = 'StimuliCondition2_covScaleFactor_10';
 
@@ -105,12 +105,18 @@ for iterTrial = 1:3
                 threshold(2, iterTrial) = thresholds.threshold;
             case '0_03'
                 threshold(3, iterTrial) = thresholds.threshold;
-            case '0_10'
+            case '0_03_GrayBkg'
                 threshold(4, iterTrial) = thresholds.threshold;
-            case '0_30'
+            case '0_10'
                 threshold(5, iterTrial) = thresholds.threshold;
-            case '1_00'
+            case '0_30'
                 threshold(6, iterTrial) = thresholds.threshold;
+            case '0_30_GrayBkg'
+                threshold(7, iterTrial) = thresholds.threshold;
+            case '1_00'
+                threshold(8, iterTrial) = thresholds.threshold;
+            case '1_00_GrayBkg'
+                threshold(9, iterTrial) = thresholds.threshold;
         end
         
 %         fractionCorrect(iterTrial,:) = thresholds.fractionCorrect;
@@ -127,9 +133,8 @@ meanthreshold = mean(logThresholdSqr');
 SEMthreshold = std(logThresholdSqr')/sqrt(size(logThresholdSqr,2));
 errorbar([1: nConditions], meanthreshold, SEMthreshold);
 hold on;box on;
-axis square;
 xlim([0.5 nConditions+0.5]);
-ylim([-0.005 0.08]);
+% ylim([-0.005 0.08]);
 xlabel('Covariance Scale Factor');
 ylabel('');
 xticks([1:nConditions])
