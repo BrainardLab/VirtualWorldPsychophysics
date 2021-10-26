@@ -24,7 +24,7 @@ subjectInfoFileName = fullfile(getpref('VirtualWorldPsychophysics','dataDir'),'S
 subjectInfoStruct = load(subjectInfoFileName);
 subjectInfoStruct = subjectInfoStruct.subjectInfoStruct;
 
-criteria = 0.025; % The threshold criteria for subject selection.
+criteria = 0.030; % The threshold criteria for subject selection.
 
 %% Subject selection analysis
 % For do the analysis to find out if the subject can be used for the rest
