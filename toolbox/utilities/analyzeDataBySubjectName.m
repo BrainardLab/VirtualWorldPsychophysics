@@ -138,7 +138,8 @@ xlim([0.5 nConditions+0.5]);
 xlabel('Covariance Scale Factor');
 ylabel('');
 xticks([1:nConditions])
-xticklabels({'0.00', '0.01', '0.03', '0.03_GrayBkg', '0.10', '0.30', '0.30_GrayBkg', '1.00', '1.00_GrayBkg'});
+conditionNames = {'0.00', '0.01', '0.03', '0.03_GrayBkg', '0.10', '0.30', '0.30_GrayBkg', '1.00', '1.00_GrayBkg'};
+xticklabels(conditionNames);
 l = legend({'Threshold (Mean +/- SEM)'}, 'location', 'best', 'fontsize',15);
 l.Position = [    0.2301    0.7920    0.3893    0.1012];
 title([subjectName,' Thresholds'],'interpreter','latex');
